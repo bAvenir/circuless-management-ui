@@ -5,7 +5,7 @@ import { miscTypes, userTypes } from '~/shared/types'
 import type { InviteRepresentation, MemberRepresentation, OrganisationRepresentation } from './auth'
 import type { ParsedOrganizationClaim } from '../types/jwt'
 
-export enum SyncStatus {
+enum SyncStatus {
   CREATED = 'CREATED',
   UPDATED = 'UPDATED',
   DELETED = 'DELETED',
@@ -43,7 +43,6 @@ class UserManager {
         affected.created.push(...usersAffected.created)
         affected.updated.push(...usersAffected.updated)
       }
-      console.log('allKcUsers', allKcUsers)
       affected.deleted.push(...(await deleteUsersNotInKcUsers(event, realm, allKcUsers)))
     }
     return affected
@@ -67,7 +66,7 @@ class UserManager {
 
   private getKcUsersWithOrganisation = async (event: H3Event<EventHandlerRequest>, realm: Realm) => {
     const kcOrganisatoins = await auth.getOrganisations(event, realm)
-    const kcUsers = await auth.getUsers(event, realm)
+    let kcUsers = await auth.getUsers(event, realm)
     const kcUsersWithOrganisation: KcUsersWithOrganisation[] = []
 
     let allKcUsers = [...kcUsers]
@@ -77,6 +76,7 @@ class UserManager {
       const members = await auth.getOrganisationMembers(event, kcOrganisation.id!, realm)
       kcUsersWithOrganisation.push({ users: members, organisation: kcOrganisation })
       allKcUsers.push(...members)
+      kcUsers = kcUsers.filter((u) => !members.find((m) => m.id === u.id))
     }
     // Add users without organisation
     kcUsersWithOrganisation.push({ users: kcUsers })

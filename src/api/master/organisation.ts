@@ -29,4 +29,13 @@ export const MasterOrganisationApi = {
       },
     }).then((res) => res.data.value)
   },
+
+  async sync() {
+    return await $fetch(`/api/master/organisation/sync`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  },
 }

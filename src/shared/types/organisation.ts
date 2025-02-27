@@ -21,6 +21,7 @@ export const CreateBodyMasterSchema = Joi.object({
 export type GetMaster = Prisma.PromiseReturnType<typeof api.organisation.master.get>
 export type GetMyRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.getMy>
 export type GetAllMaster = Prisma.PromiseReturnType<typeof api.organisation.master.getAll>
+export type Sync = Prisma.PromiseReturnType<typeof api.organisation.master.sync>
 
 const withNoDates = Prisma.validator<Prisma.OrganisationDefaultArgs>()({
   omit: {

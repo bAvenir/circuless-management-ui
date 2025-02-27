@@ -54,6 +54,10 @@ export const useToastService = () => {
         success: () => success('Organisation deleted', 'Organisation has been deleted successfully'),
         error: () => error('Organisation deletion failed', 'Organisation could not be deleted'),
       },
+      synced: {
+        success: () => success('Organisation synced', 'Organisation has been synced successfully'),
+        error: () => error('Organisation sync failed', 'Organisation could not be synced'),
+      }
     },
   }
 

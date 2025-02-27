@@ -39,5 +39,26 @@ export const useMasterOrganisationStore = defineStore('masterOrganisationStore',
         this.loading = false
       }
     },
+
+    async sync() {
+      try {
+        this.loading = true
+        const affected = await api.organisation.master.sync()
+
+        this.allOrganisations = this.allOrganisations?.concat(affected.created) ?? []
+        this.allOrganisations = this.allOrganisations?.map((u) => affected.updated.find((d) => d.id === u.id) ?? u) ?? []
+        this.allOrganisations = this.allOrganisations?.filter((u) => !affected.deleted.find((d) => d.id === u.id)) ?? []
+
+        const deleteOrganisation = affected.deleted.find((d) => d.id === this.organisation?.id)
+        const updateOrganisation = affected.updated.find((d) => d.id === this.organisation?.id)
+
+        if (updateOrganisation) this.organisation = updateOrganisation
+        if (deleteOrganisation) this.organisation = undefined
+
+        return affected
+      } finally {
+        this.loading = false
+      }
+    },
   },
 })

@@ -4,7 +4,11 @@
       <Button icon="pi pi-plus" label="Add organisation" @click="createOrganisationVisible = true" />
     </div>
     <div class="w-full grow">
-      <MasterOrganisationTable :organisations="allOrganisations ?? []" :loading="loading" />
+      <MasterOrganisationTable :organisations="allOrganisations ?? []" :loading="loading">
+        <template #table-actions>
+          <Button icon="pi pi-refresh" label="Sync organisations" severity="secondary" @click="syncOrganisations" :loading="loading" />
+        </template>
+      </MasterOrganisationTable>
     </div>
     <Dialog v-model:visible="createOrganisationVisible" modal class="min-w-[556px]" :draggable="false" :resizable="false">
       <template #header>
@@ -15,6 +19,12 @@
         @onSave="onOrganisationCreated"
         @onCancel="createOrganisationVisible = false"
       ></MasterOrganisationCreate>
+    </Dialog>
+    <Dialog v-model:visible="syncedOrganisationsVisible" modal class="min-w-[556px]" :draggable="false" :resizable="false">
+      <template #header>
+        <h5 class="pl-1">Affected organisations</h5>
+      </template>
+      <MasterOrganisationSyncStatus :affectedOrganisations="affectedOrganisations" />
     </Dialog>
   </div>
 </template>
@@ -30,8 +40,22 @@ const router = useRouter()
 const { allOrganisations, loading } = storeToRefs(masterOrganisationStore)
 
 const createOrganisationVisible = ref(false)
+const syncedOrganisationsVisible = ref(false)
+
+const affectedOrganisations = ref<organisationTypes.Sync>({ created: [], updated: [], deleted: [] })
 
 await masterOrganisationStore.getAll()
+
+const syncOrganisations = async () => {
+  try {
+    affectedOrganisations.value = await masterOrganisationStore.sync()
+    toast.predefined.organisation.synced.success()
+    syncedOrganisationsVisible.value = true
+  } catch (error) {
+    toast.predefined.organisation.synced.error()
+    throw error
+  }
+}
 
 const onOrganisationCreated = async (data: organisationTypes.CreateBodyMaster) => {
   try {

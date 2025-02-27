@@ -1,10 +1,11 @@
 <template>
   <div class="w-full h-full flex flex-col gap-4">
-    <div class="w-fit px-2 sm:px-0">
+    <div class="w-full flex items-center gap-4 justify-between px-2 sm:px-0">
       <IconField>
         <InputText type="text" v-model="filters['global'].value" placeholder="Search organisation..." class="w-80" />
         <InputIcon class="pi pi-search" />
       </IconField>
+      <slot name="table-actions"></slot>
     </div>
     <DataTable
       :value="organisations ?? []"

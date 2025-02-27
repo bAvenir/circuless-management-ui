@@ -33,6 +33,16 @@ export const OrganisationQueries = {
     )
   },
 
+  async getAllRealm<T extends Prisma.OrganisationDefaultArgs>(realm: Realm, args?: T) {
+    return queryWrapper(
+      async () =>
+        (await prisma.organisation.findMany({
+          where: { realm },
+          ...args,
+        })) as unknown as Prisma.OrganisationGetPayload<T>[]
+    )
+  },
+
   async get<T extends Prisma.OrganisationDefaultArgs>(id: string, args?: T) {
     return queryWrapper(
       async () =>
