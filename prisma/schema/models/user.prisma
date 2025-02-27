@@ -1,0 +1,16 @@
+model User {
+  id         String @id @default(cuid())
+  kcId       String @unique
+  email      String
+  givenName  String?
+  familyName String?
+  realm      Realm
+
+  organisation   Organisation? @relation(fields: [organisationId], references: [id], onDelete: SetNull)
+  organisationId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([email, realm])
+}

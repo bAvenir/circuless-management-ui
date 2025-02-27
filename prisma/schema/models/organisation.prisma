@@ -1,0 +1,13 @@
+model Organisation {
+    id    String @id @default(cuid())
+    kcId  String @unique
+    name  String
+    alias String
+    users User[]
+    realm Realm
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([name, realm])
+}

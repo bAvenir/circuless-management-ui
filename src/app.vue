@@ -1,0 +1,10 @@
+<template>
+  <div class="w-screen h-dvh">
+    <NuxtLoadingIndicator />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+    <Toast position="bottom-left" />
+    <ConfirmDialog />
+  </div>
+</template>

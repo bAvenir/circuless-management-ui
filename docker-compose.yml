@@ -1,0 +1,15 @@
+services:
+    circuless-db:
+        image: postgres:14-alpine
+        restart: always
+        environment:
+          POSTGRES_USER: ${DATABASE_USER}
+          POSTGRES_DB: ${DATABASE_NAME}
+          POSTGRES_PASSWORD: ${DATABASE_PASSWORD}     
+        volumes:
+          - circuless-pgdata:/var/lib/postgresql/data
+        ports:
+          - "5435:5432"
+volumes:
+  circuless-pgdata:
+    external: true

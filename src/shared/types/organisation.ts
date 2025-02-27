@@ -1,0 +1,33 @@
+import { Prisma, Realm } from '@prisma/client'
+import Joi from 'joi'
+import { clientRelms } from './misc'
+
+export interface CreateBodyMaster {
+  name: string
+  redirectUrl: string
+  domain: string
+  realm: Realm
+}
+
+export const CreateBodyMasterSchema = Joi.object({
+  name: Joi.string().required(),
+  redirectUrl: Joi.string().required(),
+  domain: Joi.string().required(),
+  realm: Joi.string()
+    .valid(...clientRelms)
+    .required(),
+}).required()
+
+export type GetMaster = Prisma.PromiseReturnType<typeof api.organisation.master.get>
+export type GetMyRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.getMy>
+export type GetAllMaster = Prisma.PromiseReturnType<typeof api.organisation.master.getAll>
+
+const withNoDates = Prisma.validator<Prisma.OrganisationDefaultArgs>()({
+  omit: {
+    createdAt: true,
+    updatedAt: true,
+  },
+})
+
+// Workaround for issue https://github.com/prisma/prisma/issues/25827
+export type WithNoDates = Prisma.OrganisationGetPayload<typeof withNoDates>

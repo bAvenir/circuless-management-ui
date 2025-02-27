@@ -1,0 +1,9 @@
+.p-confirmdialog-message {
+  @apply max-w-[600px];
+}
+
+/* Workaround for this issue: https://github.com/primefaces/primevue/issues/882 */
+.p-overflow-hidden {
+  overflow: visible !important;
+  overflow-x: visible !important;
+}
