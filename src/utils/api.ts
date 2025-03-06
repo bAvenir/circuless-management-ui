@@ -1,16 +1,18 @@
-import { AuthApi } from '~/api/auth'
+import { RealmAuthApi } from '~/api/realm/auth'
 import { RealmUserApi } from '~/api/realm/user'
 import { MasterOrganisationApi } from '~/api/master/organisation'
 import { MasterUserApi } from '~/api/master/user'
-import { UserApi } from '~/api/user'
 import { RealmOrganisationApi } from '~/api/realm/organisation'
+import { CirculessUserApi } from '~/api/circuless/user'
 
 class Api {
-  auth = AuthApi
+  auth = {
+    realm: RealmAuthApi
+  }
   user = {
-    ...UserApi,
     master: MasterUserApi,
     realm: RealmUserApi,
+    circuless: CirculessUserApi,
   }
   organisation = {
     master: MasterOrganisationApi,

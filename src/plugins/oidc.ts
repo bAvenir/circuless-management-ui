@@ -36,8 +36,8 @@ class Oidc {
     return new UserManager({
       authority: `${authority}/realms/${realm}`,
       client_id,
-      redirect_uri: `${appUrl}/api/${realm}/auth/loginCallback`,
-      post_logout_redirect_uri: `${appUrl}/api/${realm}/auth/logoutCallback`,
+      redirect_uri: `${appUrl}/api/realm/${realm}/auth/loginCallback`,
+      post_logout_redirect_uri: `${appUrl}/api/realm/${realm}/auth/logoutCallback`,
       response_type: 'code',
       response_mode: 'query',
       scope: 'openid profile email organization',

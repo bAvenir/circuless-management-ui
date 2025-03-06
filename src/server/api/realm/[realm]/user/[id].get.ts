@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     },
     {
       schemas: {
-        params: Joi.object({ ...miscTypes.IdParamSchema, ...miscTypes.ClientRealmsParamSchema }),
+        params: Joi.object({ ...miscTypes.IdParamSchema, ...miscTypes.AllRealmsParamSchema }),
       },
       protected: true,
     }

@@ -80,7 +80,7 @@ class Auth {
         grant_type: 'authorization_code',
         client_id,
         client_secret,
-        redirect_uri: `${appUrl}/api/${realm}/auth/loginCallback`,
+        redirect_uri: `${appUrl}/api/realm/${realm}/auth/loginCallback`,
         code,
       })
 

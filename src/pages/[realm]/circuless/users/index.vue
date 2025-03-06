@@ -13,7 +13,7 @@
       <RealmUserInvite
         realm="circuless"
         :kcOrganisationId="myOrganisation?.kcId"
-        :loading="loadingUser || loadingOrganisation"
+        :loading="loadingUser || loadingCirculess || loadingOrganisation"
         @onSave="onUserInvited"
         @onCancel="inviteUserVisible = false"
       ></RealmUserInvite>
@@ -24,14 +24,17 @@
 <script setup lang="ts">
 import type { userTypes } from '~/shared/types'
 import { useRealmUserStore } from '~/stores/realm/user'
+import { useCirculessUserStore } from '~/stores/circuless/user'
 import { useRealmOrganisationStore } from '~/stores/realm/organisation'
 
 const realmUserStore = useRealmUserStore()
+const circulessUserStore = useCirculessUserStore()
 const realmOrganisationStore = useRealmOrganisationStore()
 const toast = useToastService()
 const router = useRouter()
 
 const { allUsers, loading: loadingUser } = storeToRefs(realmUserStore)
+const { loading: loadingCirculess } = storeToRefs(circulessUserStore)
 const { myOrganisation, loading: loadingOrganisation } = storeToRefs(realmOrganisationStore)
 
 const inviteUserVisible = ref(false)
@@ -43,7 +46,7 @@ await realmUserStore.getAll()
 
 const onUserInvited = async (data: userTypes.InviteBody) => {
   try {
-    await realmUserStore.invite(data)
+    await circulessUserStore.invite(data)
     toast.predefined.user.invited.success()
     inviteUserVisible.value = false
   } catch (error) {

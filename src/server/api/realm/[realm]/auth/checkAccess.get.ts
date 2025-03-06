@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     },
     {
       schemas: {
-        params: miscTypes.ClientRealmsParamSchema,
+        params: miscTypes.AllRealmsParamSchema,
       },
     }
   )

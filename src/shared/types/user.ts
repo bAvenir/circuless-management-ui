@@ -25,7 +25,7 @@ export type GetRealm = Prisma.PromiseReturnType<typeof api.user.realm.get>
 export type GetAllMaster = Prisma.PromiseReturnType<typeof api.user.master.getAll>
 export type GetAllRealm = Prisma.PromiseReturnType<typeof api.user.realm.getAll>
 export type InviteMaster = Prisma.PromiseReturnType<typeof api.user.master.invite>
-export type InviteRealm = Prisma.PromiseReturnType<typeof api.user.realm.invite>
+export type InviteCirculess = Prisma.PromiseReturnType<typeof api.user.circuless.invite>
 export type Sync = Prisma.PromiseReturnType<typeof api.user.master.sync>
 
 const withNoDates = Prisma.validator<Prisma.UserDefaultArgs>()({

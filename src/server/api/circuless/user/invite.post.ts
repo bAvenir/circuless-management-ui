@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
       }
       const tokens = await auth.getMasterToken(event)
       await userManager.invite(event, data, tokens.access_token)
-      // await userManager.invite(event, data)
       return 'User invitation sent'
     },
     {

@@ -7,11 +7,15 @@ export default defineEventHandler(async (event) => {
     async ({ params, query }) => {
       const realm = params!.realm as Realm
       await auth.login(event, query!.code as string, realm)
-      sendRedirect(event, `/${realm}/${realm}`)
+      if (realm === 'master') {
+        sendRedirect(event, `/master/users`)
+      } else {
+        sendRedirect(event, `/${realm}/${realm}`)
+      }
     },
     {
       schemas: {
-        params: miscTypes.ClientRealmsParamSchema,
+        params: miscTypes.AllRealmsParamSchema,
         query: authTypes.KeycloakAuthCodeQuerySchema,
       },
     }

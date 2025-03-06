@@ -12,16 +12,6 @@ export const useRealmUserStore = defineStore('realmUserStore', {
       this.realm = realm
     },
 
-    async invite(data: userTypes.InviteBody) {
-      try {
-        this.loading = true
-        if (!this.realm) throw new Error('Realm not set')
-        await api.user.realm.invite(data, this.realm)
-      } finally {
-        this.loading = false
-      }
-    },
-
     async getAll() {
       try {
         this.loading = true

@@ -12,7 +12,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   try {
     if (import.meta.server) return
-    await api.auth.checkAccess(realm)
+    await api.auth.realm.checkAccess(realm)
   } catch (error) {
     if (error instanceof FetchError && error.response?.status === 401) {
       await $oidc.login(realm)
