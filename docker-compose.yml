@@ -1,27 +1,28 @@
 services:
-    cc-app:
-        image: cc-app
-        container_name: cc-app
-        restart: unless-stopped
-        build:
-          context: .
-        depends_on:
-        - cc-db
-        env_file:
-          - .env
-        ports:
-          - "3000:3000"
-    cc-db:
+    # collaboration-catalogue:
+    #     image: reg.bavenir.eu/private/collaboration-catalogue:latest
+    #     container_name: collaboration-catalogue
+    #     restart: unless-stopped
+    #     build:
+    #       context: .
+    #     depends_on:
+    #     - collaboration-catalogue-db
+    #     env_file:
+    #       - .env
+    #     ports:
+    #       - "3000:3000"
+    collaboration-catalogue-db:
         image: postgres:14-alpine
+        container_name: collaboration-catalogue-db
         restart: always
         environment:
           POSTGRES_USER: ${DATABASE_USER}
           POSTGRES_DB: ${DATABASE_NAME}
-          POSTGRES_PASSWORD: ${DATABASE_PASSWORD}     
+          POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
         volumes:
-          - cc-pgdata:/var/lib/postgresql/data
-        # ports:
-        #   - "5436:5432"
+          - collaboration-catalogue-pgdata:/var/lib/postgresql/data
+        ports:
+          - "5433:5432"
 volumes:
-  cc-pgdata:
+  collaboration-catalogue-pgdata:
     external: true

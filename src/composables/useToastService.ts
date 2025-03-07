@@ -59,6 +59,16 @@ export const useToastService = () => {
         error: () => error('Organisation sync failed', 'Organisation could not be synced'),
       }
     },
+    node: {
+      created: {
+        success: () => success('Node created', 'Node has been created successfully'),
+        error: () => error('Node creation failed', 'Node could not be created'),
+      },
+      deleted: {
+        success: () => success('Node deleted', 'Node has been deleted successfully'),
+        error: () => error('Node deletion failed', 'Node could not be deleted'),
+      },
+    },
   }
 
   return { show, success, error, info, warn, predefined }

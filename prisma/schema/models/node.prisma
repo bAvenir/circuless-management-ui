@@ -1,0 +1,42 @@
+enum NodeAccess {
+    DIRECT
+    WIREGUARD
+}
+
+enum NodeRestrictions {
+    DISCOVERY
+    REGISTRY
+}
+
+model Node {
+    id           String             @id @default(cuid())
+    name         String
+    host         String
+    access       NodeAccess         @default(DIRECT)
+    csr          String?            @unique
+    restrictions NodeRestrictions[] @default([DISCOVERY])
+    realm        Realm
+
+    wireguard   NodeWireguard?
+    wireguardId String?
+
+    owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([host, realm])
+}
+
+model NodeWireguard {
+    id     String @id @default(cuid())
+    pubkey String
+    pvtkey String
+
+    node   Node   @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+    nodeId String @unique
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

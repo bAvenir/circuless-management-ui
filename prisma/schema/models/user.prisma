@@ -9,6 +9,8 @@ model User {
   organisation   Organisation? @relation(fields: [organisationId], references: [id], onDelete: SetNull)
   organisationId String?
 
+  nodes Node[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

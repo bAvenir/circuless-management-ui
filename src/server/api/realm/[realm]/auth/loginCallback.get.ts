@@ -1,6 +1,8 @@
 import { Realm } from '@prisma/client'
 import { authTypes, miscTypes } from '~/shared/types'
 
+const config = useRuntimeConfig()
+
 export default defineEventHandler(async (event) => {
   return await apiWrapper(
     event,
@@ -8,9 +10,9 @@ export default defineEventHandler(async (event) => {
       const realm = params!.realm as Realm
       await auth.login(event, query!.code as string, realm)
       if (realm === 'master') {
-        sendRedirect(event, `/master/users`)
+        sendRedirect(event, `${config.public.APPURL}/master/users`)
       } else {
-        sendRedirect(event, `/${realm}/${realm}`)
+        sendRedirect(event, `${config.public.APPURL}/${realm}/${realm}`)
       }
     },
     {
