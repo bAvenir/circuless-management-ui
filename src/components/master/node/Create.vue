@@ -12,25 +12,6 @@
           <InputText id="host" name="host" type="text" placeholder="bavenir.eu" style="width: 216px" />
           <Message v-if="$form.host?.invalid" severity="error" size="small" variant="simple">{{ $form.host.error?.message }}</Message>
         </div>
-        <div class="w-full flex flex-col gap-1 pl-1">
-          <label for="redirectUrl">Redirect url</label>
-          <InputText id="redirectUrl" name="redirectUrl" type="text" placeholder="circuless.eu" style="width: 216px" />
-          <Message v-if="$form.redirectUrl?.invalid" severity="error" size="small" variant="simple">{{ $form.redirectUrl.error?.message }}</Message>
-        </div>
-        <div v-if="avaliableAccess" class="w-full flex flex-col gap-1 pl-1">
-          <label for="access">Access</label>
-          <Select
-            id="access"
-            name="access"
-            :options="avaliableAccess"
-            optionLabel="name"
-            optionValue="code"
-            filter
-            placeholder="Select a access..."
-            style="width: 216px"
-          />
-          <Message v-if="$form.access?.invalid" severity="error" size="small" variant="simple">{{ $form.access.error?.message }}</Message>
-        </div>
         <div v-if="avaliableRealms" class="w-full flex flex-col gap-1 pl-1">
           <label for="realm">Realm</label>
           <Select
@@ -44,6 +25,25 @@
             style="width: 216px"
           />
           <Message v-if="$form.realm?.invalid" severity="error" size="small" variant="simple">{{ $form.realm.error?.message }}</Message>
+        </div>
+        <div v-if="avaliableRoles" class="w-full flex flex-col gap-1 pl-1">
+          <label for="roles">Roles</label>
+          <MultiSelect
+            id="roles"
+            name="roles"
+            :options="avaliableRoles"
+            optionLabel="name"
+            optionValue="code"
+            filter
+            placeholder="Select a roles..."
+            style="width: 216px"
+          />
+          <Message v-if="$form.roles?.invalid" severity="error" size="small" variant="simple">{{ $form.roles.error?.message }}</Message>
+        </div>
+        <div v-if="avaliableAccess" class="w-full flex flex-col gap-1 pl-1">
+          <label for="access">Access</label>
+          <SelectButton id="access" name="access" :options="avaliableAccess" optionLabel="name" optionValue="code" :allowEmpty="false" />
+          <Message v-if="$form.access?.invalid" severity="error" size="small" variant="simple">{{ $form.access.error?.message }}</Message>
         </div>
       </div>
       <div v-if="!alignActions || alignActions === 'end'" class="flex justify-end gap-4 mt-4">
@@ -59,6 +59,7 @@
 </template>
 
 <script setup lang="ts">
+import { NodeAccess } from '@prisma/client'
 import { miscTypes, nodeTypes } from '~/shared/types'
 
 type Error = {
@@ -103,7 +104,7 @@ const avaliableRoles = ref(
 const initialValues = reactive({
   name: '',
   host: '',
-  access: '',
+  access: NodeAccess.direct,
   roles: [],
   ownerId: '',
   realm: '',
