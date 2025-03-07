@@ -11,7 +11,7 @@
         <h5 class="pl-1">Invite user</h5>
       </template>
       <RealmUserInvite
-        realm="circuless"
+        :realm="circuless"
         :kcOrganisationId="myOrganisation?.kcId"
         :loading="loadingUser || loadingCirculess || loadingOrganisation"
         @onSave="onUserInvited"
@@ -26,12 +26,14 @@ import type { userTypes } from '~/shared/types'
 import { useRealmUserStore } from '~/stores/realm/user'
 import { useCirculessUserStore } from '~/stores/circuless/user'
 import { useRealmOrganisationStore } from '~/stores/realm/organisation'
+import { Realm } from '@prisma/client'
 
 const realmUserStore = useRealmUserStore()
 const circulessUserStore = useCirculessUserStore()
 const realmOrganisationStore = useRealmOrganisationStore()
 const toast = useToastService()
 const router = useRouter()
+const circuless = Realm.circuless
 
 const { allUsers, loading: loadingUser } = storeToRefs(realmUserStore)
 const { loading: loadingCirculess } = storeToRefs(circulessUserStore)
@@ -39,8 +41,8 @@ const { myOrganisation, loading: loadingOrganisation } = storeToRefs(realmOrgani
 
 const inviteUserVisible = ref(false)
 
-realmUserStore.init('circuless')
-realmOrganisationStore.init('circuless')
+realmUserStore.init(circuless)
+realmOrganisationStore.init(circuless)
 await realmOrganisationStore.getMy()
 await realmUserStore.getAll()
 

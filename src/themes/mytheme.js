@@ -1,6 +1,6 @@
-import { definePreset } from '@primevue/themes'
-import Aura from '@primevue/themes/aura'
-// import Lara from '@primevue/themes/lara'
+import { definePreset } from '@primeuix/themes'
+import Aura from '@primeuix/themes/aura'
+// import Lara from '@primeuix/themes/lara'
 
 const MyPreset = definePreset(Aura, {
   semantic: {

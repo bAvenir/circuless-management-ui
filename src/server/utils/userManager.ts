@@ -34,7 +34,7 @@ class UserManager {
   }
 
   syncAllUsersWithKc = async (event: H3Event<EventHandlerRequest>) => {
-    const realms = miscTypes.clientRelms
+    const realms = miscTypes.clientRealms
     const affected: Affected = { created: [], updated: [], deleted: [] }
     for (const realm of realms) {
       const { allKcUsers, kcUsersWithOrganisation } = await this.getKcUsersWithOrganisation(event, realm)

@@ -1,14 +1,15 @@
-import type { userTypes, miscTypes } from '~/shared/types'
+import type { Realm } from '@prisma/client'
+import type { userTypes } from '~/shared/types'
 
 export const useRealmUserStore = defineStore('realmUserStore', {
   state: () => ({
-    realm: undefined as miscTypes.ClientRealms | undefined,
+    realm: undefined as Realm | undefined,
     allUsers: [] as userTypes.GetAllRealm,
     user: undefined as userTypes.GetRealm | undefined,
     loading: false,
   }),
   actions: {
-    init(realm: miscTypes.ClientRealms) {
+    init(realm: Realm) {
       this.realm = realm
     },
 

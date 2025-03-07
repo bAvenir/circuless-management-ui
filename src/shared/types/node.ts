@@ -1,15 +1,15 @@
-import { NodeAccess, NodeRestrictions, Prisma, Realm } from '@prisma/client'
+import { NodeAccess, NodeRole, Prisma, Realm } from '@prisma/client'
 import Joi from 'joi'
-import { clientRelms } from './misc'
+import { miscTypes } from '.'
 
 export const nodeAccess = Object.values(NodeAccess)
-export const nodeRestrictions = Object.values(NodeRestrictions)
+export const nodeRole = Object.values(NodeRole)
 
 export interface CreateBodyMaster {
   name: string
   host: string
   access: NodeAccess
-  restrictions: NodeRestrictions[]
+  roles: NodeRole[]
   ownerId: string
   realm: Realm
 }
@@ -20,16 +20,16 @@ export const CreateBodyMasterSchema = Joi.object({
   access: Joi.string()
     .valid(...nodeAccess)
     .required(),
-  restrictions: Joi.array()
+  roles: Joi.array()
     .items(
       Joi.string()
-        .valid(...nodeRestrictions)
+        .valid(...nodeRole)
         .required()
     )
     .required(),
   ownerId: Joi.string().required(),
   realm: Joi.string()
-    .valid(...clientRelms)
+    .valid(...miscTypes.clientRealms)
     .required(),
 }).required()
 

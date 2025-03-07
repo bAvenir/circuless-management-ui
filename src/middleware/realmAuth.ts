@@ -1,5 +1,5 @@
+import type { Realm } from '@prisma/client'
 import { FetchError } from 'ofetch'
-import { Realm } from '@prisma/client'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const nuxtApp = useNuxtApp()

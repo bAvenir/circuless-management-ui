@@ -1,12 +1,9 @@
+
 import { Realm } from '@prisma/client'
 import Joi from 'joi'
 
-export const allRelms = Object.values(Realm)
-export const clientRelms = allRelms.filter((r) => r != 'master')
-
-export type AllRealms = typeof allRelms[number]
-export type ClientRealms = typeof clientRelms[number]
-
+export const allRealms = Object.values(Realm)
+export const clientRealms = allRealms.filter((r) => r != 'master')
 export interface IdParam {
   id: string
 }
@@ -21,12 +18,12 @@ export const IdParamSchema = Joi.object({
 
 export const AllRealmsParamSchema = Joi.object({
   realm: Joi.string()
-    .valid(...allRelms)
+    .valid(...allRealms)
     .required(),
 }).required()
 
 export const ClientRealmsParamSchema = Joi.object({
   realm: Joi.string()
-    .valid(...clientRelms)
+    .valid(...clientRealms)
     .required(),
 }).required()

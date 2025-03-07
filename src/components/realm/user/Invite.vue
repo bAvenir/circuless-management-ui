@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { Realm } from '@prisma/client'
+import type { Realm } from '@prisma/client'
 import type { userTypes } from '~/shared/types'
 
 type Error = {

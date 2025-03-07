@@ -1,13 +1,14 @@
-import type { miscTypes, organisationTypes } from '~/shared/types'
+import type { Realm } from '@prisma/client'
+import type { organisationTypes } from '~/shared/types'
 
 export const useRealmOrganisationStore = defineStore('realmOrganisationStore', {
   state: () => ({
-    realm: undefined as miscTypes.ClientRealms | undefined,
+    realm: undefined as Realm | undefined,
     myOrganisation: undefined as organisationTypes.GetMyRealm | undefined,
     loading: false,
   }),
   actions: {
-    init(realm: miscTypes.ClientRealms) {
+    init(realm: Realm) {
       this.realm = realm
     },
 

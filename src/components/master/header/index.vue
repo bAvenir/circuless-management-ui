@@ -44,6 +44,11 @@ const items = ref([
     route: '/master/organisations',
   },
   {
+    label: 'Nodes',
+    icon: 'pi pi-server',
+    route: '/master/nodes',
+  },
+  {
     label: 'Logout',
     icon: 'pi pi-sign-out',
     command: logout,

@@ -1,6 +1,6 @@
 import { Prisma, Realm } from '@prisma/client'
 import Joi from 'joi'
-import { clientRelms } from './misc'
+import { miscTypes } from '.'
 
 export interface CreateBodyMaster {
   name: string
@@ -13,9 +13,7 @@ export const CreateBodyMasterSchema = Joi.object({
   name: Joi.string().required(),
   redirectUrl: Joi.string().required(),
   domain: Joi.string().required(),
-  realm: Joi.string()
-    .valid(...clientRelms)
-    .required(),
+  realm: Joi.string().valid(...miscTypes.clientRealms).required(),
 }).required()
 
 export type GetMaster = Prisma.PromiseReturnType<typeof api.organisation.master.get>

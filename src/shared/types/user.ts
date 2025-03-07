@@ -1,6 +1,6 @@
 import { Prisma, Realm } from '@prisma/client'
 import Joi from 'joi'
-import { clientRelms } from './misc'
+import { miscTypes } from '.'
 
 export interface InviteBody {
   email: string
@@ -11,10 +11,8 @@ export interface InviteBody {
 }
 
 export const InviteBodySchema = Joi.object({
-  email: Joi.string().email().required(),
-  realm: Joi.string()
-    .valid(...clientRelms)
-    .required(),
+  email: Joi.string().email({ tlds: false }).required(),
+  realm: Joi.string().valid(...miscTypes.clientRealms).required(),
   givenName: Joi.string().optional(),
   familyName: Joi.string().optional(),
   kcOrganisationId: Joi.string().required(),

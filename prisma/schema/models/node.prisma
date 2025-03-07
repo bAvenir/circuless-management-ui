@@ -1,21 +1,21 @@
 enum NodeAccess {
-    DIRECT
-    WIREGUARD
+    direct
+    wireguard
 }
 
-enum NodeRestrictions {
-    DISCOVERY
-    REGISTRY
+enum NodeRole {
+    discovery
+    registry
 }
 
 model Node {
-    id           String             @id @default(cuid())
-    name         String
-    host         String
-    access       NodeAccess         @default(DIRECT)
-    csr          String?            @unique
-    restrictions NodeRestrictions[] @default([DISCOVERY])
-    realm        Realm
+    id     String     @id @default(cuid())
+    name   String
+    host   String
+    access NodeAccess @default(direct)
+    csr    String?    @unique
+    role   NodeRole[] @default([])
+    realm  Realm
 
     wireguard   NodeWireguard?
     wireguardId String?
@@ -30,12 +30,15 @@ model Node {
 }
 
 model NodeWireguard {
-    id     String @id @default(cuid())
-    pubkey String
-    pvtkey String
+    id        String @id @default(cuid())
+    pubkey    String @unique
+    preshared String
 
     node   Node   @relation(fields: [nodeId], references: [id], onDelete: Cascade)
     nodeId String @unique
+
+    lighthouse   Lighthouse @relation(fields: [lighthouseId], references: [id], onDelete: Cascade)
+    lighthouseId String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

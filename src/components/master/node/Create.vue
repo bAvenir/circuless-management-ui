@@ -8,14 +8,28 @@
           <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{ $form.name.error?.message }}</Message>
         </div>
         <div class="w-full flex flex-col gap-1 pl-1">
-          <label for="domain">Domain</label>
-          <InputText id="domain" name="domain" type="text" placeholder="bavenir.eu" style="width: 216px" />
-          <Message v-if="$form.domain?.invalid" severity="error" size="small" variant="simple">{{ $form.domain.error?.message }}</Message>
+          <label for="host">Host</label>
+          <InputText id="host" name="host" type="text" placeholder="bavenir.eu" style="width: 216px" />
+          <Message v-if="$form.host?.invalid" severity="error" size="small" variant="simple">{{ $form.host.error?.message }}</Message>
         </div>
         <div class="w-full flex flex-col gap-1 pl-1">
           <label for="redirectUrl">Redirect url</label>
           <InputText id="redirectUrl" name="redirectUrl" type="text" placeholder="circuless.eu" style="width: 216px" />
           <Message v-if="$form.redirectUrl?.invalid" severity="error" size="small" variant="simple">{{ $form.redirectUrl.error?.message }}</Message>
+        </div>
+        <div v-if="avaliableAccess" class="w-full flex flex-col gap-1 pl-1">
+          <label for="access">Access</label>
+          <Select
+            id="access"
+            name="access"
+            :options="avaliableAccess"
+            optionLabel="name"
+            optionValue="code"
+            filter
+            placeholder="Select a access..."
+            style="width: 216px"
+          />
+          <Message v-if="$form.access?.invalid" severity="error" size="small" variant="simple">{{ $form.access.error?.message }}</Message>
         </div>
         <div v-if="avaliableRealms" class="w-full flex flex-col gap-1 pl-1">
           <label for="realm">Realm</label>
@@ -32,17 +46,20 @@
           <Message v-if="$form.realm?.invalid" severity="error" size="small" variant="simple">{{ $form.realm.error?.message }}</Message>
         </div>
       </div>
-      <div class="flex justify-end gap-4 mt-4">
+      <div v-if="!alignActions || alignActions === 'end'" class="flex justify-end gap-4 mt-4">
         <Button label="Cancel" @click="onCancel" severity="secondary" />
-        <Button label="Save" type="submit" :loading="loading" />
+        <Button :label="saveLabel ?? 'Save'" type="submit" :loading="loading" />
+      </div>
+      <div v-if="alignActions === 'start'" class="flex justify-start gap-4 mt-4">
+        <Button :label="saveLabel ?? 'Save'" type="submit" :loading="loading" />
+        <Button label="Cancel" @click="onCancel" severity="secondary" />
       </div>
     </div>
   </Form>
 </template>
 
 <script setup lang="ts">
-import { Realm, NodeAccess, NodeRestrictions } from '@prisma/client'
-import type { nodeTypes } from '~/shared/types'
+import { miscTypes, nodeTypes } from '~/shared/types'
 
 type Error = {
   message: string
@@ -54,6 +71,8 @@ type Errors = {
 
 const props = defineProps<{
   loading: boolean
+  saveLabel?: string
+  alignActions?: 'start' | 'end'
 }>()
 
 const emit = defineEmits(['onSave', 'onCancel'])
@@ -61,35 +80,31 @@ const emit = defineEmits(['onSave', 'onCancel'])
 const { loading } = toRefs(props)
 
 const avaliableRealms = ref(
-  Object.keys(Realm)
-    .filter((key) => key !== 'master')
-    .map((key) => ({
-      name: key[0]?.toUpperCase() + key.slice(1),
-      code: key,
-    }))
+  miscTypes.clientRealms.map((key) => ({
+    name: key[0]?.toUpperCase() + key.slice(1),
+    code: key,
+  }))
 )
 
 const avaliableAccess = ref(
-  Object.keys(NodeAccess)
-    .map((key) => ({
-      name: key[0]?.toUpperCase() + key.slice(1),
-      code: key,
-    }))
+  nodeTypes.nodeAccess.map((key) => ({
+    name: key[0]?.toUpperCase() + key.slice(1),
+    code: key,
+  }))
 )
 
-const avaliableRestrictions = ref(
-  Object.keys(NodeRestrictions)
-    .map((key) => ({
-      name: key[0]?.toUpperCase() + key.slice(1),
-      code: key,
-    }))
+const avaliableRoles = ref(
+  nodeTypes.nodeRole.map((key) => ({
+    name: key[0]?.toUpperCase() + key.slice(1),
+    code: key,
+  }))
 )
 
 const initialValues = reactive({
   name: '',
   host: '',
   access: '',
-  restrictions: [],
+  roles: [],
   ownerId: '',
   realm: '',
 })
@@ -109,8 +124,8 @@ const resolver = (event: any) => {
     errors.access = [{ message: 'Access is required' }]
   }
 
-  if (!event?.values?.restrictions && event?.values?.restrictions.length === 0) {
-    errors.restrictions = [{ message: 'Restrictions are required' }]
+  if (!event?.values?.roles && event?.values?.roles.length === 0) {
+    errors.roles = [{ message: 'Roles are required' }]
   }
 
   if (!event?.values?.ownerId && event?.values?.ownerId === '') {
@@ -133,7 +148,7 @@ const onFormSubmit = async (event: any) => {
       name: states.name?.value,
       host: states.host?.value,
       access: states.access?.value,
-      restrictions: states.restrictions?.value,
+      roles: states.roles?.value,
       ownerId: states.ownerId?.value,
       realm: states.realm?.value,
     }

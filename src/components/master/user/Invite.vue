@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { Realm } from '@prisma/client'
-import type { organisationTypes, userTypes } from '~/shared/types'
+import { miscTypes, type organisationTypes, type userTypes } from '~/shared/types'
 
 type Error = {
   message: string
@@ -77,12 +77,10 @@ const emit = defineEmits(['onSave', 'onCancel'])
 const { loading } = toRefs(props)
 
 const avaliableRealms = ref(
-  Object.keys(Realm)
-    .filter((key) => key !== 'master')
-    .map((key) => ({
-      name: key[0]?.toUpperCase() + key.slice(1),
-      code: key,
-    }))
+  miscTypes.clientRealms.map((key) => ({
+    name: key[0]?.toUpperCase() + key.slice(1),
+    code: key,
+  }))
 )
 
 const selectedRealm = ref('')
