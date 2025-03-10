@@ -10,9 +10,9 @@ export default defineEventHandler(async (event) => {
       const realm = params!.realm as Realm
       await auth.login(event, query!.code as string, realm)
       if (realm === 'master') {
-        sendRedirect(event, `${config.public.APPURL}/master/users`)
+        sendRedirect(event, `${config.public.APP_URL}/master/users`)
       } else {
-        sendRedirect(event, `${config.public.APPURL}/${realm}/${realm}`)
+        sendRedirect(event, `${config.public.APP_URL}/${realm}/${realm}`)
       }
     },
     {

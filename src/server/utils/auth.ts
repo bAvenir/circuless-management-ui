@@ -42,12 +42,15 @@ export interface MemberRepresentation {
 const config = useRuntimeConfig()
 
 class Auth {
-  private publicKeys: Record<Realm, undefined> = Object.keys(config.public.OIDC.REALMS).reduce((acc, realm) => {
-    acc[realm as Realm] = undefined
-    return acc
-  }, {} as Record<Realm, undefined>)
+  private realms = config.public.OIDC.REALMS
+  private realmSecrets = config.OIDC.REALM_SECRETS
+  private publicKeys!: Record<Realm, undefined>
 
   async init() {
+    this.publicKeys = Object.keys(this.realms).reduce((acc, realm) => {
+      acc[realm as Realm] = undefined
+      return acc
+    }, {} as Record<Realm, undefined>)
     for (const realm of Object.keys(this.publicKeys) as Realm[]) {
       this.publicKeys[realm] = await this.getPublicKey(realm)
     }
@@ -55,7 +58,7 @@ class Auth {
   }
 
   async getPublicKey(realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
     const jwksUrl = `${endpoint}/realms/${realm}/protocol/openid-connect/certs`
     const { keys } = await keycloakApiWrapper(async () => {
       return await $fetch<{ keys: any[] }>(jwksUrl, {
@@ -69,10 +72,10 @@ class Auth {
   }
 
   async login(event: H3Event<EventHandlerRequest>, code: string, realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
-    const { client_id } = config.public.OIDC.REALMS[realm]
-    const client_secret = config.OIDC.REALM_SECRETS[realm]
-    const appUrl = config.public.APPURL
+    const endpoint = config.public.OIDC.ENDPOINT
+    const { client_id } = this.realms[realm]
+    const client_secret = this.realmSecrets[realm]
+    const appUrl = config.public.APP_URL
 
     const tokens = await keycloakApiWrapper(async () => {
       const url = `${endpoint}/realms/${realm}/protocol/openid-connect/token`
@@ -154,9 +157,9 @@ class Auth {
   }
 
   async refreshTokens(event: H3Event<EventHandlerRequest>, refresh_token: string, realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
-    const { client_id } = config.public.OIDC.REALMS[realm]
-    const client_secret = config.OIDC.REALM_SECRETS[realm]
+    const endpoint = config.public.OIDC.ENDPOINT
+    const { client_id } = this.realms[realm]
+    const client_secret = this.realmSecrets[realm]
 
     const tokens = await keycloakApiWrapper(async () => {
       const url = `${endpoint}/realms/${realm}/protocol/openid-connect/token`
@@ -219,7 +222,7 @@ class Auth {
   }
 
   async createOrganisation(event: H3Event<EventHandlerRequest>, organisation: OrganisationRepresentation, realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
 
     if (realm === 'master') {
       throw new ApplicationError('Cannot create an organisation in master realm', HttpStatusCode.BAD_REQUEST)
@@ -263,7 +266,7 @@ class Auth {
   }
 
   async getOrganisationById(event: H3Event<EventHandlerRequest>, id: string, realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations/${id}`
@@ -278,7 +281,7 @@ class Auth {
   }
 
   async getOrganisationByName(event: H3Event<EventHandlerRequest>, name: string, realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations`
@@ -304,7 +307,7 @@ class Auth {
   }
 
   async deleteOrganisation(event: H3Event<EventHandlerRequest>, id: string, realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
 
     if (realm === 'master') {
       throw new ApplicationError('Cannot delete an organisation in master realm', HttpStatusCode.BAD_REQUEST)
@@ -324,7 +327,7 @@ class Auth {
   }
 
   async inviteUser(event: H3Event<EventHandlerRequest>, invite: InviteRepresentation, kcOrganisationId: string, realm: Realm, accessToken?: string) {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
 
     if (realm === 'master') {
       throw new ApplicationError('Cannot register user in master realm', HttpStatusCode.BAD_REQUEST)
@@ -352,7 +355,7 @@ class Auth {
   }
 
   async deleteUser(event: H3Event<EventHandlerRequest>, id: string, realm: Realm): Promise<void> {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
 
     if (realm === 'master') {
       throw new ApplicationError('Cannot register user in master realm', HttpStatusCode.BAD_REQUEST)
@@ -372,7 +375,7 @@ class Auth {
   }
 
   async getUsers(event: H3Event<EventHandlerRequest>, realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/users`
@@ -387,7 +390,7 @@ class Auth {
   }
 
   async getOrganisations(event: H3Event<EventHandlerRequest>, realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations`
@@ -402,7 +405,7 @@ class Auth {
   }
 
   async getOrganisationMembers(event: H3Event<EventHandlerRequest>, id: string, realm: Realm) {
-    const endpoint = config.OIDC.ENDPOINT
+    const endpoint = config.public.OIDC.ENDPOINT
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations/${id}/members`
@@ -417,9 +420,9 @@ class Auth {
   }
 
   async getMasterToken(event: H3Event<EventHandlerRequest>) {
-    const endpoint = config.OIDC.ENDPOINT
-    const { client_id } = config.public.OIDC.REALMS.master
-    const client_secret = config.OIDC.REALM_SECRETS.master
+    const endpoint = config.public.OIDC.ENDPOINT
+    const { client_id } = this.realms.master
+    const client_secret = this.realmSecrets.master
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/realms/master/protocol/openid-connect/token`

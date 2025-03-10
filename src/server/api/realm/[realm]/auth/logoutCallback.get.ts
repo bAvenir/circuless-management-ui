@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     async ({ params }) => {
       const realm = params!.realm as Realm
       auth.logout(event, realm)
-      sendRedirect(event, `${config.public.APPURL}/`)
+      sendRedirect(event, `${config.public.APP_URL}/`)
     },
     {
       schemas: {

@@ -38,14 +38,13 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     OIDC: {
-      REALM_SECRETS: JSON.parse(process.env.OIDC_REALM_SECRETS ?? '{}') as RealmSecrets,
-      ENDPOINT: process.env.OIDC_ENDPOINT_SERVER ?? '',
+      REALM_SECRETS: JSON.parse(process.env.NUXT_OIDC_REALM_SECRETS ?? '{}') as RealmSecrets,
     },
     public: {
-      APPURL: process.env.APP_URL ?? '',
+      APP_URL: process.env.NUXT_PUBLIC_APP_URL ?? '',
       OIDC: {
-        ENDPOINT: process.env.OIDC_ENDPOINT_CLIENT ?? '',
-        REALMS: JSON.parse(process.env.OIDC_REALMS ?? '{}') as Realms,
+        ENDPOINT: process.env.NUXT_PUBLIC_OIDC_ENDPOINT ?? '',
+        REALMS: JSON.parse(process.env.NUXT_PUBLIC_OIDC_REALMS ?? '{}') as Realms,
       },
     },
   },

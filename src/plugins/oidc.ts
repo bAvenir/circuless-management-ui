@@ -1,13 +1,16 @@
 import type { Realm } from '@prisma/client'
-import { User, UserManager } from 'oidc-client-ts'
+import type { RuntimeConfig } from 'nuxt/schema'
+import { UserManager } from 'oidc-client-ts'
 
 type Managers = Record<Realm, UserManager>
 
 class Oidc {
+  config!: RuntimeConfig
   managers!: Managers
 
   constructor() {
     if (import.meta.client) {
+      this.config = useRuntimeConfig()
       this.managers = {} as Managers
       this._initManagers()
     }
@@ -22,17 +25,16 @@ class Oidc {
   }
 
   private _initManagers() {
-    const config = useRuntimeConfig()
-    const authority = config.public.OIDC.ENDPOINT
-    const realms = config.public.OIDC.REALMS
-    const appUrl = config.public.APPURL
+    const realms = this.config.public.OIDC.REALMS
 
     Object.entries(realms).forEach(([key, value]) => {
-      this.managers[key as Realm] = this._createUserManager(authority, value.realm, value.client_id, appUrl)
+      this.managers[key as Realm] = this._createUserManager(value.realm, value.client_id)
     })
   }
 
-  private _createUserManager(authority: string, realm: string, client_id: string, appUrl: string): UserManager {
+  private _createUserManager(realm: string, client_id: string): UserManager {
+    const authority = this.config.public.OIDC.ENDPOINT
+    const appUrl = this.config.public.APP_URL
     return new UserManager({
       authority: `${authority}/realms/${realm}`,
       client_id,
