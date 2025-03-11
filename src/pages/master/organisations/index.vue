@@ -4,7 +4,12 @@
       <Button icon="pi pi-plus" label="Add organisation" @click="createOrganisationVisible = true" />
     </div>
     <div class="w-full grow">
-      <MasterOrganisationTable :organisations="allOrganisations ?? []" :loading="loading">
+      <MasterOrganisationTable
+        :organisations="allOrganisations ?? []"
+        :loading="loading"
+        @onSelect="onOrganisationSelected"
+        @onDelete="onOrganisationDeleted"
+      >
         <template #table-actions>
           <Button icon="pi pi-refresh" label="Sync organisations" severity="secondary" @click="syncOrganisations" :loading="loading" />
         </template>
@@ -70,7 +75,7 @@ const onOrganisationCreated = async (data: organisationTypes.CreateBodyMaster) =
 
 const onOrganisationDeleted = async (organisationId: string) => {
   try {
-    // await masterOrganisationStore.delete(organisationId)
+    await masterOrganisationStore.delete(organisationId)
     toast.predefined.organisation.deleted.success()
   } catch (error) {
     toast.predefined.organisation.deleted.error()
@@ -79,7 +84,7 @@ const onOrganisationDeleted = async (organisationId: string) => {
 }
 
 const onOrganisationSelected = (organisationId: string) => {
-  router.push({ path: `/admin/home/organisations/${organisationId}` })
+  router.push({ path: `/master/organisations/${organisationId}/users` })
 }
 </script>
 

@@ -1,4 +1,4 @@
-import type { organisationTypes } from '~/shared/types'
+import type { organisationTypes, userTypes } from '~/shared/types'
 
 export const useMasterOrganisationStore = defineStore('masterOrganisationStore', {
   state: () => ({
@@ -35,6 +35,26 @@ export const useMasterOrganisationStore = defineStore('masterOrganisationStore',
         const organisation = await api.organisation.master.get(id)
         this.organisation = organisation
         return organisation
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async delete(id: string) {
+      try {
+        this.loading = true
+        await api.organisation.master.delete(id)
+        this.allOrganisations = this.allOrganisations?.filter((o) => o.id !== id) ?? []
+        this.organisation = this.organisation?.id === id ? undefined : this.organisation
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async inviteUser(data: userTypes.InviteBody) {
+      try {
+        this.loading = true
+        await api.user.master.invite(data)
       } finally {
         this.loading = false
       }

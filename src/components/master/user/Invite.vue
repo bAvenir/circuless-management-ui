@@ -17,7 +17,7 @@
           <InputText id="familyName" name="familyName" type="text" placeholder="Doe" style="width: 216px" />
           <Message v-if="$form.familyName?.invalid" severity="error" size="small" variant="simple">{{ $form.familyName.error?.message }}</Message>
         </div>
-        <div v-if="avaliableRealms" class="w-full flex flex-col gap-1 pl-1">
+        <div v-show="!organisation && avaliableRealms" class="w-full flex flex-col gap-1 pl-1">
           <label for="realm">Realm</label>
           <Select
             id="realm"
@@ -32,7 +32,7 @@
           />
           <Message v-if="$form.realm?.invalid" severity="error" size="small" variant="simple">{{ $form.realm.error?.message }}</Message>
         </div>
-        <div v-show="avaliableOrganisations && selectedRealm" class="w-full flex flex-col gap-1 pl-1">
+        <div v-show="!organisation && avaliableOrganisations && selectedRealm" class="w-full flex flex-col gap-1 pl-1">
           <label for="organisation">Organisation</label>
           <Select
             id="organisation"
@@ -56,7 +56,6 @@
 </template>
 
 <script setup lang="ts">
-import { Realm } from '@prisma/client'
 import { miscTypes, type organisationTypes, type userTypes } from '~/shared/types'
 
 type Error = {
@@ -68,13 +67,16 @@ type Errors = {
 }
 
 const props = defineProps<{
-  avaliableOrganisations: organisationTypes.WithNoDates[]
+  avaliableOrganisations?: organisationTypes.WithNoDates[]
+  organisation?: organisationTypes.WithNoDates
   loading: boolean
 }>()
 
 const emit = defineEmits(['onSave', 'onCancel'])
 
 const { loading } = toRefs(props)
+
+const { organisation, avaliableOrganisations } = toRefs(props)
 
 const avaliableRealms = ref(
   miscTypes.clientRealms.map((key) => ({
@@ -83,15 +85,15 @@ const avaliableRealms = ref(
   }))
 )
 
-const selectedRealm = ref('')
-
 const initialValues = reactive({
   email: '',
   givenName: '',
   familyName: '',
-  realm: '',
-  organisation: '',
+  realm: organisation.value?.realm ?? '',
+  organisation: organisation.value?.kcId ?? '',
 })
+
+const selectedRealm = ref(organisation.value?.realm ?? '')
 
 const resolver = (event: any) => {
   const errors: Errors = {}
@@ -124,6 +126,10 @@ const resolver = (event: any) => {
 const onFormSubmit = async (event: any) => {
   if (event.valid) {
     const states = event.states!
+    console.log('states', states)
+    console.log('states.realm?.value', states.realm?.value)
+    console.log('states.organisation?.value', states.organisation?.value)
+    console.log('organisation.value?.realm', organisation.value?.realm)
     const data: userTypes.InviteBody = {
       email: states.email?.value,
       givenName: states.givenName?.value,

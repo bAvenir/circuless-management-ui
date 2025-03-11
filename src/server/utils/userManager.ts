@@ -1,6 +1,5 @@
 import { Prisma, Realm } from '@prisma/client'
 import type { EventHandlerRequest, H3Event } from 'h3'
-import prisma from '~/lib/prisma'
 import { miscTypes, userTypes } from '~/shared/types'
 import type { InviteRepresentation, MemberRepresentation, OrganisationRepresentation } from './auth'
 import type { ParsedOrganizationClaim } from '../types/jwt'
@@ -75,7 +74,7 @@ class UserManager {
     for (const kcOrganisation of kcOrganisatoins) {
       const members = await auth.getOrganisationMembers(event, kcOrganisation.id!, realm)
       kcUsersWithOrganisation.push({ users: members, organisation: kcOrganisation })
-      allKcUsers.push(...members)
+      // allKcUsers.push(...members)
       kcUsers = kcUsers.filter((u) => !members.find((m) => m.id === u.id))
     }
     // Add users without organisation
@@ -148,11 +147,9 @@ async function checkIfUserNeedsSyncing(
 }
 
 async function deleteUser(event: H3Event<EventHandlerRequest>, userId: string) {
-  return await prisma.$transaction(async (tx) => {
-    const user = await db.user.queries.delete(userId, db.user.args.all)
-    await auth.deleteUser(event, user.kcId, user.realm)
-    return user
-  })
+  const user = await db.user.queries.get(userId, db.user.args.all)
+  await auth.deleteUser(event, user.kcId, user.realm)
+  return await db.user.queries.delete(userId, db.user.args.all)
 }
 
 export const userManager = new UserManager()

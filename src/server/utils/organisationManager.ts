@@ -1,6 +1,5 @@
 import { Prisma, Realm } from '@prisma/client'
 import type { EventHandlerRequest, H3Event } from 'h3'
-import prisma from '~/lib/prisma'
 import { miscTypes, organisationTypes } from '~/shared/types'
 import type { OrganisationRepresentation } from './auth'
 import { toSlug } from './misc'
@@ -135,11 +134,9 @@ async function createOrganisation(event: H3Event<EventHandlerRequest>, kcOrganis
 }
 
 async function deleteOrganisation(event: H3Event<EventHandlerRequest>, organisationId: string) {
-  return await prisma.$transaction(async (tx) => {
-    const organisation = await db.organisation.queries.delete(organisationId, db.organisation.args.all)
-    await auth.deleteOrganisation(event, organisation.kcId, organisation.realm)
-    return organisation
-  })
+  const organisation = await db.organisation.queries.get(organisationId, db.organisation.args.all)
+  await auth.deleteOrganisation(event, organisation.kcId, organisation.realm)
+  return await db.organisation.queries.delete(organisationId, db.organisation.args.all)
 }
 
 export const organisationManager = new OrganisationManager()

@@ -1,6 +1,6 @@
 import { NodeAccess, NodeRole, Prisma, Realm } from '@prisma/client'
 import Joi from 'joi'
-import { miscTypes } from '.'
+import { clientRealms } from './misc'
 
 export const nodeAccess = Object.values(NodeAccess)
 export const nodeRole = Object.values(NodeRole)
@@ -29,7 +29,7 @@ export const CreateBodyMasterSchema = Joi.object({
     .required(),
   ownerId: Joi.string().required(),
   realm: Joi.string()
-    .valid(...miscTypes.clientRealms)
+    .valid(...clientRealms)
     .required(),
 }).required()
 

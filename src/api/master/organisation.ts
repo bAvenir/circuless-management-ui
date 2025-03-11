@@ -30,6 +30,16 @@ export const MasterOrganisationApi = {
     }).then((res) => res.data.value)
   },
 
+  async delete(id: string) {
+    if (!isValidId(id)) throw new Error('Invalid id')
+    return await $fetch(`/api/master/organisation/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  },
+
   async sync() {
     return await $fetch(`/api/master/organisation/sync`, {
       method: 'GET',

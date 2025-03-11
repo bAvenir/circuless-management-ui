@@ -6,7 +6,7 @@ model User {
   familyName String?
   realm      Realm
 
-  organisation   Organisation? @relation(fields: [organisationId], references: [id], onDelete: SetNull)
+  organisation   Organisation? @relation(fields: [organisationId], references: [id], onDelete: Cascade)
   organisationId String?
 
   nodes Node[]
