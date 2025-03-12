@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full h-full flex flex-col gap-4 items-end">
+  <div class="w-full h-full container mx-auto pt-8">
+    <div class="w-full h-full flex flex-col gap-4 items-end">
     <div class="w-fit">
       <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
     </div>
@@ -18,6 +19,7 @@
         @onCancel="inviteUserVisible = false"
       ></RealmUserInvite>
     </Dialog>
+  </div>
   </div>
 </template>
 

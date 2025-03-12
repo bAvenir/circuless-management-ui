@@ -1,7 +1,7 @@
 import type { Realm } from '@prisma/client'
 
 export const RealmNodeApi = {
-  async getMy(realm: Realm) {
+  async getAllMy(realm: Realm) {
     return await useFetch(`/api/realm/${realm}/node/my`, {
       method: 'GET',
       headers: {

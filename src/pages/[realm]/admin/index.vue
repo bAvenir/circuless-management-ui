@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="/logos/circuless-logo.png" alt="Circuless Logo" class="h-10" />
+    Hello
   </div>
 </template>
 

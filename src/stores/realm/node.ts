@@ -4,7 +4,7 @@ import type { nodeTypes } from '~/shared/types'
 export const useRealmNodeStore = defineStore('realmNodeStore', {
   state: () => ({
     realm: undefined as Realm | undefined,
-    myNodes: undefined as nodeTypes.GetMyRealm | undefined,
+    allMy: undefined as nodeTypes.GetAllMyRealm | undefined,
     loading: false,
   }),
   actions: {
@@ -12,12 +12,12 @@ export const useRealmNodeStore = defineStore('realmNodeStore', {
       this.realm = realm
     },
 
-    async getMy() {
+    async getAllMy() {
       try {
         this.loading = true
         if (!this.realm) throw new Error('Realm not set')
-        const nodes = await api.node.realm.getMy(this.realm)
-        this.myNodes = nodes
+        const nodes = await api.node.realm.getAllMy(this.realm)
+        this.allMy = nodes
         return nodes
       } finally {
         this.loading = false

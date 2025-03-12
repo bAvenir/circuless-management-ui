@@ -15,6 +15,7 @@ model Node {
     access NodeAccess @default(direct)
     csr    String?    @unique
     role   NodeRole[] @default([])
+    version String?
     realm  Realm
 
     wireguard   NodeWireguard?

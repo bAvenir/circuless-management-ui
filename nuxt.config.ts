@@ -16,8 +16,8 @@ export default defineNuxtConfig({
   srcDir: 'src/',
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  modules: ['@prisma/nuxt', '@nuxtjs/tailwindcss', '@pinia/nuxt', '@primevue/nuxt-module'],
-  css: ['~/assets/css/main.css', '~/assets/css/overrides.css', 'primeicons/primeicons.css'],
+  modules: ['@prisma/nuxt', '@nuxtjs/tailwindcss', '@pinia/nuxt', '@primevue/nuxt-module', 'nuxt-viewport'],
+  css: ['~/assets/css/main.css', '~/assets/css/overrides.css', 'primeicons/primeicons.css', '@fortawesome/fontawesome-svg-core/styles.css'],
   postcss: {
     plugins: {
       tailwindcss: {},
