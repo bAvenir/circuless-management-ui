@@ -4,9 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        circulessPrimary: '#283535',
-        circulessFontPrimary: '#DEE4D6',
+        circulessPrimary: '#4e5f3c',
+        circulessLightGreen: '#cbd9bc',
         earthLighter: '#AF623C',
+        text: '#333333',
         lightGrey: '#6C757D',
         danger: '#EA5455',
       },

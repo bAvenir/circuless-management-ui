@@ -1,20 +1,10 @@
 <template>
-  <div class="w-full flex items-center justify-center gap-6">
-    <Menubar :model="items">
-      <template #item="{ item, props, hasSubmenu }">
-        <NuxtLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-          <a v-ripple :href="href" v-bind="props.action" @click="navigate">
-            <span :class="item.icon" />
-            <span>{{ item.label }}</span>
-          </a>
-        </NuxtLink>
-        <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action">
-          <span :class="item.icon" />
-          <span>{{ item.label }}</span>
-          <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down" />
-        </a>
-      </template>
-    </Menubar>
+  <div class="w-full h-16 bg-circulessLightGreen flex items-center justify-between">
+    <CirculessHeaderLogo class="pl-4" />
+    <div class="flex items-center gap-6 h-full">
+      <Button label="Administration" severity="secondary" size="small" />
+      <RealmProfile realm="circuless" class=" text-text" />
+    </div>
   </div>
 </template>
 

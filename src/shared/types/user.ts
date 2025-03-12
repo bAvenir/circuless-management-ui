@@ -18,6 +18,7 @@ export const InviteBodySchema = Joi.object({
   kcOrganisationId: Joi.string().required(),
 }).required()
 
+export type GetMy = Prisma.PromiseReturnType<typeof api.user.realm.getMy>
 export type GetMaster = Prisma.PromiseReturnType<typeof api.user.master.get>
 export type GetRealm = Prisma.PromiseReturnType<typeof api.user.realm.get>
 export type GetAllMaster = Prisma.PromiseReturnType<typeof api.user.master.getAll>

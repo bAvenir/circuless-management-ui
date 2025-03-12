@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full h-full container mx-auto p-4 flex flex-col">
+  <div class="w-full h-full flex flex-col">
     <CirculessHeader />
-    <div class="grow w-full py-4">
+    <div class="w-full grow container mx-auto">
       <NuxtPage />
     </div>
   </div>

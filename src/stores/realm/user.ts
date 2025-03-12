@@ -3,14 +3,23 @@ import type { userTypes } from '~/shared/types'
 
 export const useRealmUserStore = defineStore('realmUserStore', {
   state: () => ({
+    my: undefined as userTypes.GetMy | undefined,
     realm: undefined as Realm | undefined,
     allUsers: [] as userTypes.GetAllRealm,
     user: undefined as userTypes.GetRealm | undefined,
     loading: false,
   }),
   actions: {
-    init(realm: Realm) {
-      this.realm = realm
+    async init(realm: Realm) {
+      try {
+        this.loading = true
+        const user = await api.user.realm.getMy(realm)
+        this.my = user
+        this.realm = realm
+        return user
+      } finally {
+        this.loading = false
+      }
     },
 
     async getAll() {
