@@ -28,7 +28,7 @@ const items = ref([
   {
     label: 'Users',
     icon: 'pi pi-user',
-    route: '/circuless/circuless/users',
+    route: '/circuless/users',
   },
   {
     label: 'Logout',

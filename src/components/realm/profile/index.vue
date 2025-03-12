@@ -22,7 +22,7 @@ const realmUserStore = useRealmUserStore()
 
 const { my, loading } = storeToRefs(realmUserStore)
 
-await realmUserStore.init(realm)
+await realmUserStore.getMy(realm)
 
 const logout = async () => {
   await $oidc.logout(realm)

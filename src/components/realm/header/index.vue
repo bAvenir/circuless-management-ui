@@ -2,7 +2,7 @@
   <div class="w-full h-14 bg-white shadow-sm flex items-center justify-between">
     <div></div>
     <div class="flex items-center gap-6 h-full">
-      <NuxtLink :to="`/${realm}/${realm}`">
+      <NuxtLink :to="`/${realm}`">
         <Button :label="`${realmName} dashboard`" size="small" />
       </NuxtLink>
       <RealmProfile realm="circuless" class="text-text" />

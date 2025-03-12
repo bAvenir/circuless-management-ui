@@ -17,8 +17,7 @@ const route = useRoute()
 
 const realm = ref(route.params.realm as Realm)
 
-realmNodeStore.init(realm.value)
-await realmNodeStore.getAllMy()
+await realmNodeStore.getAllMy(realm.value)
 
 </script>
 

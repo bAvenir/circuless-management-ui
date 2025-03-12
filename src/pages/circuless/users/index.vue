@@ -12,9 +12,9 @@
         <h5 class="pl-1">Invite user</h5>
       </template>
       <RealmUserInvite
-        :realm="circuless"
-        :kcOrganisationId="myOrganisation?.kcId"
-        :loading="loadingUser || loadingCirculess || loadingOrganisation"
+        realm="circuless"
+        :kcOrganisationId="user?.organisation?.kcId"
+        :loading="loadingUser || loadingCirculess"
         @onSave="onUserInvited"
         @onCancel="inviteUserVisible = false"
       ></RealmUserInvite>
@@ -27,26 +27,22 @@
 import type { userTypes } from '~/shared/types'
 import { useRealmUserStore } from '~/stores/realm/user'
 import { useCirculessUserStore } from '~/stores/circuless/user'
-import { useRealmOrganisationStore } from '~/stores/realm/organisation'
-import { Realm } from '@prisma/client'
 
 const realmUserStore = useRealmUserStore()
 const circulessUserStore = useCirculessUserStore()
-const realmOrganisationStore = useRealmOrganisationStore()
 const toast = useToastService()
 const router = useRouter()
-const circuless = Realm.circuless
 
-const { allUsers, loading: loadingUser } = storeToRefs(realmUserStore)
+const { user, allUsers, loading: loadingUser } = storeToRefs(realmUserStore)
 const { loading: loadingCirculess } = storeToRefs(circulessUserStore)
-const { myOrganisation, loading: loadingOrganisation } = storeToRefs(realmOrganisationStore)
 
 const inviteUserVisible = ref(false)
 
-realmUserStore.init(circuless)
-realmOrganisationStore.init(circuless)
-await realmOrganisationStore.getMy()
-await realmUserStore.getAll()
+await realmUserStore.getAll('circuless')
+
+if (!user.value) {
+  await realmUserStore.getMy('circuless')
+}
 
 const onUserInvited = async (data: userTypes.InviteBody) => {
   try {
@@ -70,7 +66,7 @@ const onUserDeleted = async (userId: string) => {
 }
 
 const onUserSelected = (userId: string) => {
-  router.push({ path: `/circuless/circuless/home/users/${userId}` })
+  router.push({ path: `/circuless/home/users/${userId}` })
 }
 </script>
 

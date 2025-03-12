@@ -9,6 +9,8 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: ['realm-auth'],
+  middleware: ['circuless-auth'],
 })
+
+await navigateTo('/circuless/users')
 </script>

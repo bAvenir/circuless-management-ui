@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
       if (realm === 'master') {
         sendRedirect(event, `${config.public.APP_URL}/master/users`)
       } else {
-        sendRedirect(event, `${config.public.APP_URL}/${realm}/${realm}`)
+        sendRedirect(event, `${config.public.APP_URL}/${realm}`)
       }
     },
     {

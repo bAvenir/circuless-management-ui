@@ -4,7 +4,7 @@
       <div class="flex items-center gap-2 justify-between w-full border-b border-whitesmoke border-opacity-20 py-8 hover:bg-realm-secondary-800 cursor-pointer px-4">
         <RealmNodesPreview :node="node" class="text-white" />
         <div class="flex items-center gap-4 shrink-0">
-          <Button icon="pi pi-ellipsis-h" variant="text" class="text-white" />
+          <Button icon="pi pi-ellipsis-h" text class="text-white"  />
           <i class="pi pi-chevron-right text-white"></i>
         </div>
       </div>
