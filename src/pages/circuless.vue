@@ -10,7 +10,6 @@
 <script setup lang="ts">
 definePageMeta({
   middleware: ['circuless-auth'],
+  redirect: '/circuless/users'
 })
-
-await navigateTo('/circuless/users')
 </script>
