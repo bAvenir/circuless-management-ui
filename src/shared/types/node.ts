@@ -37,12 +37,8 @@ export type GetMaster = Prisma.PromiseReturnType<typeof api.node.master.get>
 export type GetAllMyRealm = Prisma.PromiseReturnType<typeof api.node.realm.getAllMy>
 export type GetAllMaster = Prisma.PromiseReturnType<typeof api.node.master.getAll>
 
-const withNoDates = Prisma.validator<Prisma.NodeDefaultArgs>()({
-  omit: {
-    createdAt: true,
-    updatedAt: true,
-  },
-})
-
-// Workaround for issue https://github.com/prisma/prisma/issues/25827
-export type WithNoDates = Prisma.NodeGetPayload<typeof withNoDates>
+// Workaround for issue https://github.com/prisma/prisma/discussions/5522
+export type WithStringDates = Omit<Prisma.NodeGetPayload<{}>, 'createdAt' | 'updatedAt'> & {
+  createdAt: string
+  updatedAt: string
+}

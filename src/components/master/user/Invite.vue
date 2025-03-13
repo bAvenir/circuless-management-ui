@@ -67,8 +67,8 @@ type Errors = {
 }
 
 const props = defineProps<{
-  avaliableOrganisations?: organisationTypes.WithNoDates[]
-  organisation?: organisationTypes.WithNoDates
+  avaliableOrganisations?: organisationTypes.GetAllMaster
+  organisation?: organisationTypes.GetMaster
   loading: boolean
 }>()
 

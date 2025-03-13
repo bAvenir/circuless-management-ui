@@ -39,7 +39,7 @@ import { FilterMatchMode } from '@primevue/core/api'
 import { organisationTypes } from '~/shared/types'
 
 const props = defineProps<{
-  organisations: organisationTypes.WithNoDates[]
+  organisations: organisationTypes.GetAllMaster
   loading: boolean
 }>()
 

@@ -45,7 +45,7 @@ import { FilterMatchMode } from '@primevue/core/api'
 import { userTypes } from '~/shared/types'
 
 const props = defineProps<{
-  users: userTypes.WithNoDates[]
+  users: userTypes.GetAllRealm
   loading: boolean
 }>()
 

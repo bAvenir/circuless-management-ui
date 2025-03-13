@@ -39,7 +39,7 @@ import { FilterMatchMode } from '@primevue/core/api'
 import { nodeTypes } from '~/shared/types'
 
 const props = defineProps<{
-  nodes: nodeTypes.WithNoDates[]
+  nodes: nodeTypes.GetAllMaster
   loading: boolean
 }>()
 
