@@ -8,6 +8,10 @@ npx prisma generate
 echo "Running Prisma migrations..."
 npx prisma migrate deploy
 
+# Seed the database
+echo "Seeding the database..."
+npx prisma db seed --preview-feature
+
 # Start the Node.js server
 echo "Starting Node.js server..."
 exec node .output/server/index.mjs
