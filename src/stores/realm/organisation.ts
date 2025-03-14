@@ -3,7 +3,7 @@ import type { organisationTypes } from '~/shared/types'
 
 export const useRealmOrganisationStore = defineStore('realmOrganisationStore', {
   state: () => ({
-    myOrganisation: undefined as organisationTypes.GetMyRealm | undefined,
+    my: undefined as organisationTypes.GetMyRealm | undefined,
     loading: false,
   }),
   actions: {
@@ -11,7 +11,7 @@ export const useRealmOrganisationStore = defineStore('realmOrganisationStore', {
       try {
         this.loading = true
         const organisation = await api.organisation.realm.getMy(realm)
-        this.myOrganisation = organisation
+        this.my = organisation
         return organisation
       } finally {
         this.loading = false

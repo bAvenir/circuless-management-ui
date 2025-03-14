@@ -2,8 +2,8 @@
   <div class="w-full h-14 bg-circuless-lightGreen flex items-center justify-between">
     <CirculessHeaderLogo class="pl-4" />
     <div class="flex items-center gap-6 h-full">
-      <NuxtLink to="/circuless/admin/nodes">
-        <Button label="Administration" severity="secondary" size="small" />
+      <NuxtLink to="/circuless/node-admin">
+        <Button label="Node management" icon="pi pi-cog"  severity="secondary" size="small" />
       </NuxtLink>
       <RealmProfile realm="circuless" class=" text-text" />
     </div>

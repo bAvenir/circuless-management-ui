@@ -17,13 +17,14 @@
           <i class="pi pi-users text-2xl"></i>
           <div class="text-xs text-realm-text-300">Organisation:</div>
           <div>{{ my?.organisation?.name }}</div>
-          <div class="mt-2">
-            <Button label="Manage organisation" icon="pi pi-cog" severity="secondary" />
+          <div class="mt-2 flex flex-col gap-1">
+            <Button label="Organisation settings" severity="secondary" icon="pi pi-cog" @click="goToOrganisationAdmin" />
           </div>
         </div>
       </Panel>
-      <div class="flex flex-col gap-1 mt-2">
+      <div class="flex flex-col gap-1">
         <Button label="Open profile" icon="pi pi-user" severity="secondary" />
+        <Button label="Node management" severity="secondary" icon="pi pi-cog" @click="goToNodeAdmin" />
         <Button label="Logout" icon="pi pi-sign-out" @click="logout" severity="danger" />
       </div>
     </div>
@@ -54,6 +55,16 @@ const toggle = (event: any) => {
 const logout = async () => {
   await $oidc.logout(realm)
   router.push('/')
+}
+
+const goToNodeAdmin = () => {
+  router.push(`/${realm}/node-admin`)
+  open.value = false
+}
+
+const goToOrganisationAdmin = () => {
+  router.push(`/${realm}/organisation-admin`)
+  open.value = false
 }
 
 const name = computed(() => `${my.value?.givenName} ${my.value?.familyName?.at(0)}.`)

@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
-    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@pinia/nuxt": "^0.10.1",
     "@primeuix/themes": "^1.0.0",
@@ -35,6 +34,9 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@nuxtjs/tailwindcss": "^6.13.1",
     "@primevue/nuxt-module": "^4.2.5",
     "autoprefixer": "^10.4.20",
