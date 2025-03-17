@@ -1,25 +1,25 @@
 <template>
   <div class="w-full h-full container mx-auto pt-8">
     <div class="w-full h-full flex flex-col gap-4 items-end">
-    <div class="w-fit">
-      <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
+      <div class="w-fit">
+        <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
+      </div>
+      <div class="w-full grow">
+        <RealmUserTable :users="allUsers ?? []" :loading="loadingUser" />
+      </div>
+      <Dialog v-model:visible="inviteUserVisible" modal class="min-w-[556px]" :draggable="false" :resizable="false">
+        <template #header>
+          <h5 class="pl-1">Invite user</h5>
+        </template>
+        <RealmUserInvite
+          realm="circuless"
+          :kcOrganisationId="user?.organisation?.kcId"
+          :loading="loadingUser || loadingCirculess"
+          @onSave="onUserInvited"
+          @onCancel="inviteUserVisible = false"
+        ></RealmUserInvite>
+      </Dialog>
     </div>
-    <div class="w-full grow">
-      <UserTable :users="allUsers ?? []" :loading="loadingUser" />
-    </div>
-    <Dialog v-model:visible="inviteUserVisible" modal class="min-w-[556px]" :draggable="false" :resizable="false">
-      <template #header>
-        <h5 class="pl-1">Invite user</h5>
-      </template>
-      <RealmUserInvite
-        realm="circuless"
-        :kcOrganisationId="user?.organisation?.kcId"
-        :loading="loadingUser || loadingCirculess"
-        @onSave="onUserInvited"
-        @onCancel="inviteUserVisible = false"
-      ></RealmUserInvite>
-    </Dialog>
-  </div>
   </div>
 </template>
 

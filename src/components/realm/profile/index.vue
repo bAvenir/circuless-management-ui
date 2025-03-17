@@ -13,10 +13,10 @@
         <div class="text-xs">{{ my?.email }}</div>
       </div>
       <Panel>
-        <div class="flex flex-col justify-center gap-0.5 pb-4">
+        <div class="flex flex-col justify-center gap-0.5 pb-4 w-full text-center">
           <i class="pi pi-users text-2xl"></i>
           <div class="text-xs text-realm-text-300">Organisation:</div>
-          <div>{{ my?.organisation?.name }}</div>
+          <div class="truncate w-full">{{ my?.organisation?.name }}</div>
           <div class="mt-2 flex flex-col gap-1">
             <Button label="Organisation settings" severity="secondary" icon="pi pi-cog" @click="goToOrganisationAdmin" />
           </div>

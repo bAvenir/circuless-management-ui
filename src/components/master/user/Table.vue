@@ -8,7 +8,7 @@
       <slot name="table-actions"></slot>
     </div>
     <DataTable
-      :value="my?.users ?? []"
+      :value="users ?? []"
       :paginator="true"
       :rows="10"
       :rowsPerPageOptions="[5, 10, 20]"
@@ -40,22 +40,20 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { FilterMatchMode } from '@primevue/core/api'
-import { organisationTypes } from '~/shared/types'
+import { userTypes } from '~/shared/types'
 
 const props = defineProps<{
-  my: organisationTypes.GetMyRealm
+  users: userTypes.GetAllMaster
   loading: boolean
 }>()
 
 const emit = defineEmits(['onSelect', 'onDelete'])
 
-const { my } = toRefs(props)
+const { users } = toRefs(props)
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 })
 </script>
-
-<style></style>

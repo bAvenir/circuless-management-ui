@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full pt-8">
-    <UserTable :users="organisation?.users ?? []" :loading="loading" />
+    <MasterUserTable :users="organisation?.users ?? []" :loading="loading" />
   </div>
 </template>
 

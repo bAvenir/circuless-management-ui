@@ -2,7 +2,7 @@ import { Prisma, Realm } from '@prisma/client'
 import type { EventHandlerRequest, H3Event } from 'h3'
 import { miscTypes, organisationTypes } from '~/shared/types'
 import type { OrganisationRepresentation } from './auth'
-import { toSlug } from './misc'
+import { toSlug } from '~/utils/misc'
 
 enum SyncStatus {
   CREATED = 'CREATED',
@@ -44,6 +44,16 @@ class OrganisationManager {
       affected.deleted.push(...(await deleteOrganisationsNotInKcOrganisations(event, realm, allKcOrganisations)))
     }
     return affected
+  }
+
+  update = async (event: H3Event<EventHandlerRequest>, organisationId: string, data: organisationTypes.UpdateBodyMaster) => {
+    const organisation = await db.organisation.queries.get(organisationId, db.organisation.args.all)
+    const name = data.name ?? organisation.name
+    const kcOrganisation: OrganisationRepresentation = {
+      name,
+      alias: toSlug(name),
+    }
+    return await updateOrganisation(event, kcOrganisation, organisation.realm)
   }
 
   delete = async (event: H3Event<EventHandlerRequest>, organisationId: string) => {
@@ -117,7 +127,7 @@ async function checkIfOrganisationNeedsSyncing(
 
 async function createOrganisation(event: H3Event<EventHandlerRequest>, kcOrganisation: OrganisationRepresentation, realm: Realm) {
   try {
-    const existingKcOrganisation = await auth.getOrganisationByName(event, kcOrganisation.name, realm)
+    const existingKcOrganisation = await auth.getOrganisationByName(event, kcOrganisation.name!, realm)
     return db.organisation.queries.upsert(existingKcOrganisation.id!, realm, kcOrganisation, db.organisation.args.all)
   } catch (error) {
     if (error instanceof ApplicationError && error.statusCode === HttpStatusCode.NOT_FOUND) {
@@ -131,6 +141,11 @@ async function createOrganisation(event: H3Event<EventHandlerRequest>, kcOrganis
     }
     throw error
   }
+}
+
+async function updateOrganisation(event: H3Event<EventHandlerRequest>, kcOrganisation: OrganisationRepresentation, realm: Realm) {
+  await auth.updateOrganisation(event, kcOrganisation.id!, kcOrganisation, realm)
+  return await db.organisation.queries.upsert(kcOrganisation.id!, realm, kcOrganisation, db.organisation.args.all)
 }
 
 async function deleteOrganisation(event: H3Event<EventHandlerRequest>, organisationId: string) {

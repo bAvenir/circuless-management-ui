@@ -1,5 +1,5 @@
 import type { Realm } from '@prisma/client'
-import type { userTypes } from '~/shared/types'
+import type { organisationTypes, userTypes } from '~/shared/types'
 
 export const useRealmUserStore = defineStore('realmUserStore', {
   state: () => ({
@@ -41,5 +41,17 @@ export const useRealmUserStore = defineStore('realmUserStore', {
         this.loading = false
       }
     },
+
+    async updateMyOrganisation(realm: Realm, body: organisationTypes.UpdateBodyRealm) {
+      try {
+        if (!this.my) throw new Error('User not loaded')
+        this.loading = true
+        const organisation = await api.organisation.realm.updateMy(realm, body)
+        this.my.organisation = organisation
+        return organisation
+      } finally {
+        this.loading = false
+      }
+    }
   },
 })

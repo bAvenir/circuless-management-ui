@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="py-8">
-      <RealmOraganisationAdminPreview :organisation="my" :loading="loading" />
+      <RealmOraganisationAdminPreview :organisation="my?.organisation" :loading="loading" />
     </div>
     <RealmOraganisationAdminMenu :realm="realm" />
   </div>
@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import { RealmOraganisationAdminMenu, RealmOraganisationAdminPreview } from '#components'
 import type { Realm } from '@prisma/client'
-import { useRealmOrganisationStore } from '~/stores/realm/organisation'
+import { useRealmUserStore } from '~/stores/realm/user'
 
 definePageMeta({
   middleware: [
@@ -26,12 +26,10 @@ definePageMeta({
 })
 
 const route = useRoute()
-const realmOrganisationStore = useRealmOrganisationStore()
+const realmUserStore = useRealmUserStore()
 
 const realm = ref(route.params.realm as Realm)
-const { my, loading } = storeToRefs(realmOrganisationStore)
-
-await realmOrganisationStore.getMy(realm.value)
+const { my, loading } = storeToRefs(realmUserStore)
 </script>
 
 <style></style>

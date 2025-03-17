@@ -9,11 +9,23 @@ export interface CreateBodyMaster {
   realm: Realm
 }
 
+export interface UpdateBodyRealm {
+  name?: string
+}
+
+export interface UpdateBodyMaster extends UpdateBodyRealm {}
+
 export const CreateBodyMasterSchema = Joi.object({
   name: Joi.string().required(),
   redirectUrl: Joi.string().required(),
   domain: Joi.string().required(),
-  realm: Joi.string().valid(...clientRealms).required(),
+  realm: Joi.string()
+    .valid(...clientRealms)
+    .required(),
+}).required()
+
+export const UpdateBodyRealmSchema = Joi.object({
+  name: Joi.string().optional(),
 }).required()
 
 export type GetMaster = Prisma.PromiseReturnType<typeof api.organisation.master.get>

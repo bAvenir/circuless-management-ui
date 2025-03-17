@@ -4,6 +4,7 @@ import { FetchError } from 'ofetch'
 import { jwtVerify } from 'jose/jwt/verify'
 import { JWSSignatureVerificationFailed } from 'jose/errors'
 import type { ClaimsUnverified, ClaimsVerified } from '../types/jwt'
+import { getFirstKey } from '~/utils/misc'
 
 export interface TokenResponse {
   access_token: string
@@ -14,10 +15,10 @@ export interface TokenResponse {
 
 export interface OrganisationRepresentation {
   id?: string
-  name: string
-  alias: string
-  redirectUrl: string
-  domains: OrganizationDomainRepresentation[]
+  name?: string
+  alias?: string
+  redirectUrl?: string
+  domains?: OrganizationDomainRepresentation[]
 }
 
 export interface OrganizationDomainRepresentation {
@@ -303,6 +304,28 @@ class Auth {
       }
 
       return response[0]
+    })
+  }
+
+  async updateOrganisation(event: H3Event<EventHandlerRequest>, id: string, organisation: OrganisationRepresentation, realm: Realm) {
+    const endpoint = config.public.OIDC.ENDPOINT
+
+    if (realm === 'master') {
+      throw new ApplicationError('Cannot update an organisation in master realm', HttpStatusCode.BAD_REQUEST)
+    }
+
+    await keycloakApiWrapper(async () => {
+      const url = `${endpoint}/admin/realms/${realm}/organizations/${id}`
+      const access_token = event.context.tokens?.access_token
+
+      await $fetch<void>(url, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(organisation),
+      })
     })
   }
 

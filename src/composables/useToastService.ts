@@ -50,6 +50,10 @@ export const useToastService = () => {
         success: () => success('Organisation created', 'Organisation has been created successfully'),
         error: () => error('Organisation creation failed', 'Organisation could not be created'),
       },
+      updated: {
+        success: () => success('Organisation updated', 'Organisation has been updated successfully'),
+        error: () => error('Organisation update failed', 'Organisation could not be updated'),
+      },
       deleted: {
         success: () => success('Organisation deleted', 'Organisation has been deleted successfully'),
         error: () => error('Organisation deletion failed', 'Organisation could not be deleted'),

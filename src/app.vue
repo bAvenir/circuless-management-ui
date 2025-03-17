@@ -4,7 +4,7 @@
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <Toast position="bottom-left" />
+    <Toast position="bottom-center" />
     <ConfirmDialog />
   </div>
 </template>

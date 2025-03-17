@@ -1,10 +1,8 @@
 <template>
-  <div class="text-realm-text-300 lg:text-sm font-medium flex items-center gap-2 px-4 lg:px-0">
-    <i v-if="loading" class="pi pi-spin pi-spinner"></i>
-    <i v-else class="pi pi-users"></i>
-    <div>
-      {{ organisation?.name ?? '--' }}
-    </div>
+  <div class="flex flex-col items-center gap-0.5 w-full text-center">
+    <i class="pi pi-users text-2xl"></i>
+    <div class="text-xs text-realm-text-300">Organisation:</div>
+    <div class="truncate w-full">{{ organisation?.name ?? '--' }}</div>
   </div>
 </template>
 

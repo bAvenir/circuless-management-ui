@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-14 bg-white shadow-sm flex items-center justify-between">
-    <div></div>
-    <div class="flex items-center gap-6 h-full">
+    <div v-if="$viewport.isGreaterThan('tablet')"></div>
+    <div class="flex items-center gap-6 h-full justify-between lg:justify-start w-full lg:w-fit pl-4 lg:pl-0">
       <NuxtLink :to="`/${realm}`">
         <Button :label="`${realmName} dashboard`" size="small" />
       </NuxtLink>

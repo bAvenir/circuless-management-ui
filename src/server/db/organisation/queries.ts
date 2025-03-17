@@ -1,6 +1,7 @@
 import { Prisma, Realm } from '@prisma/client'
 import prisma from '~/lib/prisma'
 import type { OrganisationRepresentation } from '~/server/utils/auth'
+import { organisationTypes } from '~/shared/types'
 
 export const OrganisationQueries = {
   async upsert<T extends Prisma.OrganisationDefaultArgs>(kcId: string, realm: Realm, data: OrganisationRepresentation, args?: T) {
@@ -10,8 +11,8 @@ export const OrganisationQueries = {
         (await prisma.organisation.upsert({
           where: { kcId },
           create: {
-            name,
-            alias,
+            name: name!,
+            alias: alias!,
             kcId,
             realm,
           },
@@ -68,6 +69,17 @@ export const OrganisationQueries = {
       async () =>
         (await prisma.organisation.findUniqueOrThrow({
           where: { id, realm },
+          ...args,
+        })) as unknown as Prisma.OrganisationGetPayload<T>
+    )
+  },
+
+  async updateRealm<T extends Prisma.OrganisationDefaultArgs>(id: string, realm: Realm, data: organisationTypes.UpdateBodyRealm, args?: T) {
+    return queryWrapper(
+      async () =>
+        (await prisma.organisation.update({
+          where: { id, realm },
+          data,
           ...args,
         })) as unknown as Prisma.OrganisationGetPayload<T>
     )
