@@ -4,11 +4,11 @@
       <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
     </div>
     <div class="w-full grow">
-      <UserTable :users="allUsers ?? []" :loading="loading">
+      <MasterUserTable :users="allUsers ?? []" :loading="loading">
         <template #table-actions>
           <Button icon="pi pi-refresh" label="Sync users" severity="secondary" @click="syncUsers" :loading="loading" />
         </template>
-      </UserTable>
+      </MasterUserTable>
     </div>
     <Dialog v-model:visible="inviteUserVisible" modal class="min-w-[556px]" :draggable="false" :resizable="false">
       <template #header>

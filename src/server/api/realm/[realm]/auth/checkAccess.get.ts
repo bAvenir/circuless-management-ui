@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
     event,
     async ({ params }) => {
       const realm = params!.realm as Realm
-      await auth.checkAccess(event, realm)
+      await keycloak.checkAccess(event, realm)
       return true
     },
     {

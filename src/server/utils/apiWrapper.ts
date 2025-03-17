@@ -68,7 +68,7 @@ function validateSchema(schema?: Joi.Schema, data?: any, type?: string) {
 }
 
 async function validateAuthorization(event: H3Event<EventHandlerRequest>, realm: Realm) {
-  await auth.checkAccess(event, realm)
+  await keycloak.checkAccess(event, realm)
   const { user } = await userManager.syncMyUserWithKc(event, realm)
   event.context.user = user
 }

@@ -16,8 +16,7 @@ export default defineEventHandler(async (event) => {
       if (user.organisation.realm !== realm) {
         throw new ApplicationError('User does not belong to this realm', HttpStatusCode.FORBIDDEN)
       }
-      const tokens = await auth.getMasterToken(event)
-      await userManager.invite(event, data, tokens.access_token)
+      await userManager.invite(event, data)
       return 'User invitation sent'
     },
     {

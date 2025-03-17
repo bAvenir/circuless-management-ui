@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     event,
     async ({ params, query }) => {
       const realm = params!.realm as Realm
-      await auth.login(event, query!.code as string, realm)
+      await keycloak.login(event, query!.code as string, realm)
       if (realm === 'master') {
         sendRedirect(event, `${config.public.APP_URL}/master/users`)
       } else {

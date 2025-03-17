@@ -1,7 +1,7 @@
 import { Prisma, Realm } from '@prisma/client'
 import type { EventHandlerRequest, H3Event } from 'h3'
 import { miscTypes, organisationTypes } from '~/shared/types'
-import type { OrganisationRepresentation } from './auth'
+import type { OrganisationRepresentation } from './keycloak'
 import { toSlug } from '~/utils/misc'
 
 enum SyncStatus {
@@ -30,18 +30,39 @@ class OrganisationManager {
         },
       ],
     }
-    return await createOrganisation(event, kcOrganisation, data.realm)
+    try {
+      const existingKcOrganisation = await keycloak.getOrganisationByName(event, kcOrganisation.name!, data.realm)
+      return db.organisation.queries.upsert(existingKcOrganisation.id!, data.realm, kcOrganisation, db.organisation.args.all)
+    } catch (error) {
+      if (error instanceof ApplicationError && error.statusCode === HttpStatusCode.NOT_FOUND) {
+        const newKcOrganisation = await keycloak.createOrganisation(event, kcOrganisation, data.realm)
+        try {
+          return db.organisation.queries.upsert(newKcOrganisation.id!, data.realm, kcOrganisation, db.organisation.args.all)
+        } catch (error) {
+          await keycloak.deleteOrganisation(event, newKcOrganisation.id!, data.realm)
+          throw error
+        }
+      }
+      throw error
+    }
   }
 
-  syncAllOrganisationsWithKc = async (event: H3Event<EventHandlerRequest>) => {
+  syncWithKc = async (event: H3Event<EventHandlerRequest>) => {
     const realms = miscTypes.clientRealms
     const affected: Affected = { created: [], updated: [], deleted: [] }
     for (const realm of realms) {
-      const allKcOrganisations = await auth.getOrganisations(event, realm)
-      const organisationsAffected = await updateAllOrganisationsToMatchKcOrganisations(event, realm, allKcOrganisations)
+      const allKcOrganisations = await keycloak.getOrganisations(event, realm)
+      const organisationsAffected: Affected = { created: [], updated: [], deleted: [] }
+
+      for (const kcOrganisation of allKcOrganisations) {
+        const { organisation, status } = await _updateOrganisationToMatchKcOrganisation(realm, kcOrganisation)
+        if (status === SyncStatus.CREATED) organisationsAffected.created.push(organisation)
+        if (status === SyncStatus.UPDATED) organisationsAffected.updated.push(organisation)
+      }
+
       affected.created.push(...organisationsAffected.created)
       affected.updated.push(...organisationsAffected.updated)
-      affected.deleted.push(...(await deleteOrganisationsNotInKcOrganisations(event, realm, allKcOrganisations)))
+      affected.deleted.push(...(await _deleteOrganisationsNotInKcOrganisations(realm, allKcOrganisations)))
     }
     return affected
   }
@@ -49,37 +70,27 @@ class OrganisationManager {
   update = async (event: H3Event<EventHandlerRequest>, organisationId: string, data: organisationTypes.UpdateBodyMaster) => {
     const organisation = await db.organisation.queries.get(organisationId, db.organisation.args.all)
     const name = data.name ?? organisation.name
+
+    // This is a workaround for the Keycloak API, which requires a token from the master realm util RBAC allows organisation management
+    const { access_token } = await keycloak.getMasterToken(event)
     const kcOrganisation: OrganisationRepresentation = {
+      ...(await keycloak.getOrganisationById(event, organisation.kcId, organisation.realm, access_token)),
       name,
-      alias: toSlug(name),
     }
-    return await updateOrganisation(event, kcOrganisation, organisation.realm)
+    await keycloak.updateOrganisation(event, kcOrganisation.id!, kcOrganisation, organisation.realm, access_token)
+    return await db.organisation.queries.upsert(kcOrganisation.id!, organisation.realm, kcOrganisation, db.organisation.args.all)
   }
 
   delete = async (event: H3Event<EventHandlerRequest>, organisationId: string) => {
-    return await deleteOrganisation(event, organisationId)
+    const organisation = await db.organisation.queries.get(organisationId, db.organisation.args.all)
+    await keycloak.deleteOrganisation(event, organisation.kcId, organisation.realm)
+    return await db.organisation.queries.delete(organisationId, db.organisation.args.all)
   }
 }
 
-async function updateAllOrganisationsToMatchKcOrganisations(
-  event: H3Event<EventHandlerRequest>,
-  realm: Realm,
-  kcOrganisatons: OrganisationRepresentation[]
-) {
-  const affected: Affected = { created: [], updated: [], deleted: [] }
-  for (const kcOrganisation of kcOrganisatons) {
-    const { organisation, status } = await updateOrganisationToMatchKcOrganisation(event, realm, kcOrganisation)
-    if (status === SyncStatus.CREATED) affected.created.push(organisation)
-    if (status === SyncStatus.UPDATED) affected.updated.push(organisation)
-  }
-  return affected
-}
+// Private functions
 
-async function deleteOrganisationsNotInKcOrganisations(
-  event: H3Event<EventHandlerRequest>,
-  realm: Realm,
-  kcOrganisations: OrganisationRepresentation[]
-) {
+async function _deleteOrganisationsNotInKcOrganisations(realm: Realm, kcOrganisations: OrganisationRepresentation[]) {
   const organisations = await db.organisation.queries.getAllRealm(realm, db.organisation.args.all)
   const organisationsToDelete = organisations.filter((o) => !kcOrganisations.find((kcOrganisations) => kcOrganisations.id === o.kcId))
   const deletedOrganisations = []
@@ -89,18 +100,14 @@ async function deleteOrganisationsNotInKcOrganisations(
   return deletedOrganisations
 }
 
-async function updateOrganisationToMatchKcOrganisation(
-  event: H3Event<EventHandlerRequest>,
-  realm: Realm,
-  kcOrganisation: OrganisationRepresentation
-) {
+async function _updateOrganisationToMatchKcOrganisation(realm: Realm, kcOrganisation: OrganisationRepresentation) {
   if (!kcOrganisation.id) {
     throw new ApplicationError('Missing organisation ID', HttpStatusCode.BAD_REQUEST)
   }
 
   try {
     const organisation = await db.organisation.queries.getByKcId(kcOrganisation.id!, db.organisation.args.all)
-    if (await checkIfOrganisationNeedsSyncing(kcOrganisation, organisation)) {
+    if (await _checkIfOrganisationNeedsSyncing(kcOrganisation, organisation)) {
       return {
         organisation: await db.organisation.queries.upsert(kcOrganisation.id!, realm, kcOrganisation, db.organisation.args.all),
         status: SyncStatus.UPDATED,
@@ -118,40 +125,11 @@ async function updateOrganisationToMatchKcOrganisation(
   }
 }
 
-async function checkIfOrganisationNeedsSyncing(
+async function _checkIfOrganisationNeedsSyncing(
   kcOrganisation: OrganisationRepresentation,
   organisation: Prisma.OrganisationGetPayload<typeof db.organisation.args.all>
 ) {
   return !organisation || organisation.name !== kcOrganisation.name
-}
-
-async function createOrganisation(event: H3Event<EventHandlerRequest>, kcOrganisation: OrganisationRepresentation, realm: Realm) {
-  try {
-    const existingKcOrganisation = await auth.getOrganisationByName(event, kcOrganisation.name!, realm)
-    return db.organisation.queries.upsert(existingKcOrganisation.id!, realm, kcOrganisation, db.organisation.args.all)
-  } catch (error) {
-    if (error instanceof ApplicationError && error.statusCode === HttpStatusCode.NOT_FOUND) {
-      const newKcOrganisation = await auth.createOrganisation(event, kcOrganisation, realm)
-      try {
-        return db.organisation.queries.upsert(newKcOrganisation.id!, realm, kcOrganisation, db.organisation.args.all)
-      } catch (error) {
-        await auth.deleteOrganisation(event, newKcOrganisation.id!, realm)
-        throw error
-      }
-    }
-    throw error
-  }
-}
-
-async function updateOrganisation(event: H3Event<EventHandlerRequest>, kcOrganisation: OrganisationRepresentation, realm: Realm) {
-  await auth.updateOrganisation(event, kcOrganisation.id!, kcOrganisation, realm)
-  return await db.organisation.queries.upsert(kcOrganisation.id!, realm, kcOrganisation, db.organisation.args.all)
-}
-
-async function deleteOrganisation(event: H3Event<EventHandlerRequest>, organisationId: string) {
-  const organisation = await db.organisation.queries.get(organisationId, db.organisation.args.all)
-  await auth.deleteOrganisation(event, organisation.kcId, organisation.realm)
-  return await db.organisation.queries.delete(organisationId, db.organisation.args.all)
 }
 
 export const organisationManager = new OrganisationManager()

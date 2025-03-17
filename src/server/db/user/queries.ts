@@ -1,6 +1,6 @@
 import { Prisma, Realm } from '@prisma/client'
 import prisma from '~/lib/prisma'
-import type { MemberRepresentation } from '~/server/utils/auth'
+import type { MemberRepresentation } from '~/server/utils/keycloak'
 
 export const UserQueries = {
   async upsert<T extends Prisma.UserDefaultArgs>(kcId: string, realm: Realm, data: MemberRepresentation, kcOrganisationId?: string, args?: T) {

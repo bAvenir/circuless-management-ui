@@ -42,7 +42,7 @@ export interface MemberRepresentation {
 
 const config = useRuntimeConfig()
 
-class Auth {
+class Keycloak {
   private realms = config.public.OIDC.REALMS
   private realmSecrets = config.OIDC.REALM_SECRETS
   private publicKeys!: Record<Realm, undefined>
@@ -222,7 +222,42 @@ class Auth {
     event.context.tokens = tokens
   }
 
-  async createOrganisation(event: H3Event<EventHandlerRequest>, organisation: OrganisationRepresentation, realm: Realm) {
+  async deleteUser(event: H3Event<EventHandlerRequest>, id: string, realm: Realm, accessToken?: string) {
+    const endpoint = config.public.OIDC.ENDPOINT
+
+    if (realm === 'master') {
+      throw new ApplicationError('Cannot register user in master realm', HttpStatusCode.BAD_REQUEST)
+    }
+
+    await keycloakApiWrapper(async () => {
+      const url = `${endpoint}/admin/realms/${realm}/users/${id}`
+      const access_token = accessToken ?? event.context.tokens?.access_token
+
+      await $fetch(url, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    })
+  }
+
+  async getUsers(event: H3Event<EventHandlerRequest>, realm: Realm, accessToken?: string) {
+    const endpoint = config.public.OIDC.ENDPOINT
+
+    return await keycloakApiWrapper(async () => {
+      const url = `${endpoint}/admin/realms/${realm}/users`
+      const access_token = accessToken ?? event.context.tokens?.access_token
+
+      return await $fetch<MemberRepresentation[]>(url, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    })
+  }
+
+  async createOrganisation(event: H3Event<EventHandlerRequest>, organisation: OrganisationRepresentation, realm: Realm, accessToken?: string) {
     const endpoint = config.public.OIDC.ENDPOINT
 
     if (realm === 'master') {
@@ -231,7 +266,7 @@ class Auth {
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations`
-      const access_token = event.context.tokens?.access_token
+      const access_token = accessToken ?? event.context.tokens?.access_token
 
       await $fetch<void>(url, {
         method: 'POST',
@@ -266,12 +301,12 @@ class Auth {
     })
   }
 
-  async getOrganisationById(event: H3Event<EventHandlerRequest>, id: string, realm: Realm) {
+  async getOrganisationById(event: H3Event<EventHandlerRequest>, id: string, realm: Realm, accessToken?: string) {
     const endpoint = config.public.OIDC.ENDPOINT
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations/${id}`
-      const access_token = event.context.tokens?.access_token
+      const access_token = accessToken ?? event.context.tokens?.access_token
 
       return await $fetch<OrganisationRepresentation>(url, {
         headers: {
@@ -281,12 +316,12 @@ class Auth {
     })
   }
 
-  async getOrganisationByName(event: H3Event<EventHandlerRequest>, name: string, realm: Realm) {
+  async getOrganisationByName(event: H3Event<EventHandlerRequest>, name: string, realm: Realm, accessToken?: string) {
     const endpoint = config.public.OIDC.ENDPOINT
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations`
-      const access_token = event.context.tokens?.access_token
+      const access_token = accessToken ?? event.context.tokens?.access_token
 
       const response = await $fetch<OrganisationRepresentation[]>(url, {
         headers: {
@@ -307,7 +342,13 @@ class Auth {
     })
   }
 
-  async updateOrganisation(event: H3Event<EventHandlerRequest>, id: string, organisation: OrganisationRepresentation, realm: Realm) {
+  async updateOrganisation(
+    event: H3Event<EventHandlerRequest>,
+    id: string,
+    organisation: OrganisationRepresentation,
+    realm: Realm,
+    accessToken?: string
+  ) {
     const endpoint = config.public.OIDC.ENDPOINT
 
     if (realm === 'master') {
@@ -316,7 +357,7 @@ class Auth {
 
     await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations/${id}`
-      const access_token = event.context.tokens?.access_token
+      const access_token = accessToken ?? event.context.tokens?.access_token
 
       await $fetch<void>(url, {
         method: 'PUT',
@@ -329,7 +370,7 @@ class Auth {
     })
   }
 
-  async deleteOrganisation(event: H3Event<EventHandlerRequest>, id: string, realm: Realm) {
+  async deleteOrganisation(event: H3Event<EventHandlerRequest>, id: string, realm: Realm, accessToken?: string) {
     const endpoint = config.public.OIDC.ENDPOINT
 
     if (realm === 'master') {
@@ -338,7 +379,7 @@ class Auth {
 
     await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations/${id}`
-      const access_token = event.context.tokens?.access_token
+      const access_token = accessToken ?? event.context.tokens?.access_token
 
       await $fetch<void>(url, {
         method: 'DELETE',
@@ -377,47 +418,12 @@ class Auth {
     })
   }
 
-  async deleteUser(event: H3Event<EventHandlerRequest>, id: string, realm: Realm): Promise<void> {
-    const endpoint = config.public.OIDC.ENDPOINT
-
-    if (realm === 'master') {
-      throw new ApplicationError('Cannot register user in master realm', HttpStatusCode.BAD_REQUEST)
-    }
-
-    await keycloakApiWrapper(async () => {
-      const url = `${endpoint}/admin/realms/${realm}/users/${id}`
-      const access_token = event.context.tokens?.access_token
-
-      await $fetch(url, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
-    })
-  }
-
-  async getUsers(event: H3Event<EventHandlerRequest>, realm: Realm) {
-    const endpoint = config.public.OIDC.ENDPOINT
-
-    return await keycloakApiWrapper(async () => {
-      const url = `${endpoint}/admin/realms/${realm}/users`
-      const access_token = event.context.tokens?.access_token
-
-      return await $fetch<MemberRepresentation[]>(url, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
-    })
-  }
-
-  async getOrganisations(event: H3Event<EventHandlerRequest>, realm: Realm) {
+  async getOrganisations(event: H3Event<EventHandlerRequest>, realm: Realm, accessToken?: string) {
     const endpoint = config.public.OIDC.ENDPOINT
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations`
-      const access_token = event.context.tokens?.access_token
+      const access_token = accessToken ?? event.context.tokens?.access_token
 
       return await $fetch<OrganisationRepresentation[]>(url, {
         headers: {
@@ -427,12 +433,12 @@ class Auth {
     })
   }
 
-  async getOrganisationMembers(event: H3Event<EventHandlerRequest>, id: string, realm: Realm) {
+  async getOrganisationMembers(event: H3Event<EventHandlerRequest>, id: string, realm: Realm, accessToken?: string) {
     const endpoint = config.public.OIDC.ENDPOINT
 
     return await keycloakApiWrapper(async () => {
       const url = `${endpoint}/admin/realms/${realm}/organizations/${id}/members`
-      const access_token = event.context.tokens?.access_token
+      const access_token = accessToken ?? event.context.tokens?.access_token
 
       return await $fetch<MemberRepresentation[]>(url, {
         headers: {
@@ -479,4 +485,4 @@ async function keycloakApiWrapper<T>(keycloakRequest: () => Promise<T>) {
   }
 }
 
-export const auth = new Auth()
+export const keycloak = new Keycloak()

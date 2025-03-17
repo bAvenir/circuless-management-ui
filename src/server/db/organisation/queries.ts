@@ -1,6 +1,6 @@
 import { Prisma, Realm } from '@prisma/client'
 import prisma from '~/lib/prisma'
-import type { OrganisationRepresentation } from '~/server/utils/auth'
+import type { OrganisationRepresentation } from '~/server/utils/keycloak'
 import { organisationTypes } from '~/shared/types'
 
 export const OrganisationQueries = {

@@ -1,4 +1,4 @@
 export default defineNitroPlugin(async () => {
-  await auth.init()
+  await keycloak.init()
   console.info('🚀 Server initialized!')
 })

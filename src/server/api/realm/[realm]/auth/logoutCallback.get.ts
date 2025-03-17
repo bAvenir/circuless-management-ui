@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     event,
     async ({ params }) => {
       const realm = params!.realm as Realm
-      auth.logout(event, realm)
+      keycloak.logout(event, realm)
       sendRedirect(event, `${config.public.APP_URL}/`)
     },
     {
