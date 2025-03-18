@@ -1,0 +1,18 @@
+enum ParthershipStatus {
+    APPROVED
+    PENDING
+}
+
+model Partnership {
+    id     String            @id @default(cuid())
+    status ParthershipStatus @default(PENDING)
+
+    from   Organisation @relation(fields: [fromId], references: [id], onDelete: Cascade, name: "EgressPartnership")
+    fromId String
+
+    to   Organisation @relation(fields: [toId], references: [id], onDelete: Cascade, name: "IngressPartnership")
+    toId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

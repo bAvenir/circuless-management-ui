@@ -52,6 +52,15 @@ export const useRealmUserStore = defineStore('realmUserStore', {
       } finally {
         this.loading = false
       }
-    }
+    },
+
+    async invite(data: userTypes.InviteBody) {
+      try {
+        this.loading = true
+        await api.user.realm.invite(data)
+      } finally {
+        this.loading = false
+      }
+    },
   },
 })

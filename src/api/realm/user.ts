@@ -1,4 +1,5 @@
 import type { Realm } from '@prisma/client'
+import type { userTypes } from '~/shared/types'
 
 export const RealmUserApi = {
   async getAll(realm: Realm) {
@@ -27,5 +28,15 @@ export const RealmUserApi = {
         'Content-Type': 'application/json',
       },
     }).then((res) => res.data.value)
+  },
+
+  async invite(data: userTypes.InviteBody) {
+    return await $fetch(`/api/realm/${data.realm}/user/invite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data,
+    })
   },
 }

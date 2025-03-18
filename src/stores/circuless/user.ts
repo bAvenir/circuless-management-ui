@@ -8,7 +8,7 @@ export const useCirculessUserStore = defineStore('circulessUserStore', {
     async invite(data: userTypes.InviteBody) {
       try {
         this.loading = true
-        await api.user.circuless.invite(data)
+        await api.user.realm.invite(data)
       } finally {
         this.loading = false
       }

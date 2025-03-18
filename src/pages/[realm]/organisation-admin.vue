@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full flex flex-col relative">
-    <RealmHeader :realm="realm" class="absolute top-0 left-0 w-full" />
+    <RealmHeader :realm="realm" class="absolute top-0 left-0 w-full z-50" />
     <div class="w-full grow bg-whitesmoke bg-opacity-20 pt-14 overflow-y-auto">
       <NuxtPage />
     </div>

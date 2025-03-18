@@ -6,6 +6,9 @@ model Organisation {
     users User[]
     realm Realm
 
+    ingressPartnerships  Partnership[] @relation("IngressPartnership")
+    egressPartnerships   Partnership[] @relation("EgressPartnership")
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
