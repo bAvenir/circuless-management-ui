@@ -5,12 +5,8 @@ export const OrganisationArgs = {
     include: {
       users: {
         include: {
-          organisation: {
-            include: {
-              users: true,
-            },
-          },
-        },
+          organisation: true,
+        }
       },
     },
   } satisfies Prisma.OrganisationDefaultArgs,
