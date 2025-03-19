@@ -63,6 +63,20 @@ export const useToastService = () => {
         error: () => error('Organisation sync failed', 'Organisation could not be synced'),
       }
     },
+    partnership: {
+      created: {
+        success: () => success('Partnership created', 'Partnership has been created successfully'),
+        error: () => error('Partnership creation failed', 'Partnership could not be created'),
+      },
+      updated: {
+        success: () => success('Partnership updated', 'Partnership has been updated successfully'),
+        error: () => error('Partnership update failed', 'Partnership could not be updated'),
+      },
+      deleted: {
+        success: () => success('Partnership deleted', 'Partnership has been deleted successfully'),
+        error: () => error('Partnership deletion failed', 'Partnership could not be deleted'),
+      },
+    },
     node: {
       created: {
         success: () => success('Node created', 'Node has been created successfully'),

@@ -22,7 +22,7 @@
         <h5 class="pl-1">Invite user</h5>
       </template>
       <RealmUserInvite
-        realm="circuless"
+        :realm="realm"
         :kcOrganisationId="my?.organisation?.kcId"
         :loading="loading"
         @onSave="onUserInvited"
@@ -33,13 +33,16 @@
 </template>
 
 <script lang="ts" setup>
+import type { Realm } from '@prisma/client'
 import type { userTypes } from '~/shared/types'
 import { useRealmUserStore } from '~/stores/realm/user'
 
 const realmUserStore = useRealmUserStore()
 const toast = useToastService()
+const route = useRoute()
 const router = useRouter()
 
+const realm = ref(route.params.realm as Realm)
 const { my, loading } = storeToRefs(realmUserStore)
 const inviteUserVisible = ref(false)
 

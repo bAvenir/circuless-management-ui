@@ -67,7 +67,12 @@ class OrganisationManager {
     return affected
   }
 
-  update = async (event: H3Event<EventHandlerRequest>, organisationId: string, data: organisationTypes.UpdateBodyMaster) => {
+  update = async (
+    event: H3Event<EventHandlerRequest>,
+    organisationId: string,
+    data: organisationTypes.UpdateBodyMaster,
+    args?: Prisma.OrganisationDefaultArgs
+  ) => {
     const organisation = await db.organisation.queries.get(organisationId, db.organisation.args.all)
     const name = data.name ?? organisation.name
 
@@ -78,7 +83,7 @@ class OrganisationManager {
       name,
     }
     await keycloak.updateOrganisation(event, kcOrganisation.id!, kcOrganisation, organisation.realm, access_token)
-    return await db.organisation.queries.upsert(kcOrganisation.id!, organisation.realm, kcOrganisation, db.organisation.args.all)
+    return await db.organisation.queries.upsert(kcOrganisation.id!, organisation.realm, kcOrganisation, args ?? db.organisation.args.all)
   }
 
   delete = async (event: H3Event<EventHandlerRequest>, organisationId: string) => {

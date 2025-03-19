@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
       if (!user?.organisationId) {
         throw new ApplicationError('User has no organisation', HttpStatusCode.FORBIDDEN)
       }
-      return await db.organisation.queries.getRealm(user.organisationId, params!.realm as Realm, db.organisation.args.all)
+      return await db.organisation.queries.getRealm(user.organisationId, params!.realm as Realm, db.organisation.args.my)
     },
     {
       protected: true,

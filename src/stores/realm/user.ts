@@ -1,5 +1,5 @@
 import type { Realm } from '@prisma/client'
-import type { organisationTypes, userTypes } from '~/shared/types'
+import type { organisationTypes, partnershipTypes, userTypes } from '~/shared/types'
 
 export const useRealmUserStore = defineStore('realmUserStore', {
   state: () => ({
@@ -58,6 +58,19 @@ export const useRealmUserStore = defineStore('realmUserStore', {
       try {
         this.loading = true
         await api.user.realm.invite(data)
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async createMyPartnership(realm: Realm, body: partnershipTypes.CreateBody) {
+      try {
+        if (!this.my) throw new Error('User not loaded')
+        if (!this.my.organisation) throw new Error('User does not have an organisation')
+        this.loading = true
+        const partnership = await api.partnership.realm.create(realm, body)
+        this.my.organisation.egressPartnerships.push(partnership)
+        return partnership
       } finally {
         this.loading = false
       }

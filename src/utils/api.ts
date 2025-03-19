@@ -3,6 +3,7 @@ import { RealmUserApi } from '~/api/realm/user'
 import { MasterOrganisationApi } from '~/api/master/organisation'
 import { MasterUserApi } from '~/api/master/user'
 import { RealmOrganisationApi } from '~/api/realm/organisation'
+import { RealmPartnershipApi } from '~/api/realm/partnership'
 import { MasterNodeApi } from '~/api/master/node'
 import { RealmNodeApi } from '~/api/realm/node'
 
@@ -17,6 +18,9 @@ class Api {
   organisation = {
     master: MasterOrganisationApi,
     realm: RealmOrganisationApi,
+  }
+  partnership = {
+    realm: RealmPartnershipApi,
   }
   node = {
     master: MasterNodeApi,

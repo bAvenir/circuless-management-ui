@@ -1,13 +1,13 @@
 <template>
   <div class="w-full h-full">
     <div class="w-full pb-8 lg:pb-4">
-      <div class="text-xs text-realm-text-300 w-full font-medium pb-2 px-4 lg:px-0">General</div>
+      <div class="text-xs text-realm-text-300 w-full pb-2 px-4 lg:px-0">General</div>
       <NuxtLink v-for="item in general" :to="item.path" :key="item.path">
         <RealmOraganisationAdminMenuNavButton :active="route.path === item.path" :icon="item.icon" :label="item.label" />
       </NuxtLink>
     </div>
     <div class="w-full pb-8 lg:pb-4">
-      <div class="text-xs text-realm-text-300 w-full font-medium pb-2 px-4 lg:px-0">Management</div>
+      <div class="text-xs text-realm-text-300 w-full pb-2 px-4 lg:px-0">Management</div>
       <NuxtLink v-for="item in management" :to="item.path" :key="item.path">
         <RealmOraganisationAdminMenuNavButton :active="route.path === item.path" :icon="item.icon" :label="item.label" />
       </NuxtLink>

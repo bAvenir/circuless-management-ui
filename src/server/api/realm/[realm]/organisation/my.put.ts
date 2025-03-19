@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
         throw new ApplicationError('User has no organisation', HttpStatusCode.FORBIDDEN)
       }
       const data = body as organisationTypes.UpdateBodyRealm
-      return await organisationManager.update(event, user.organisationId, data)
+      return await organisationManager.update(event, user.organisationId, data, db.organisation.args.my)
     },
     {
       protected: true,

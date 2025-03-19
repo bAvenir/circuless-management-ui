@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full flex flex-col gap-4">
-    <div class="w-full flex items-center gap-4 justify-between px-2 sm:px-0">
+    <div class="w-full flex items-center gap-4 justify-between">
       <IconField>
         <InputText type="text" v-model="filters['global'].value" placeholder="Search user..." class="w-80" />
         <InputIcon class="pi pi-search" />
@@ -8,6 +8,37 @@
       <slot name="table-actions"></slot>
     </div>
     <DataTable
+      v-if="$viewport.isLessOrEquals('tablet')"
+      :value="users ?? []"
+      :paginator="true"
+      :rows="10"
+      :rowsPerPageOptions="[5, 10, 20]"
+      :filters="filters"
+      :globalFilterFields="['givenName', 'familyName', 'email', 'realm', 'organisation.name']"
+      :showHeaders="false"
+    >
+      <Column field="id">
+        <template #body="slotProps">
+          <h4>{{ slotProps.data.givenName }} {{ slotProps.data.familyName }}</h4>
+          <div class="mt-1">{{ slotProps.data.email }}</div>
+          <div class="flex items-center gap-1">
+            <div class="text-realm-text-300">Realm:</div>
+            <div>{{ slotProps.data.realm }}</div>
+          </div>
+          <MasterUserActions
+            :user="slotProps.data"
+            :loading="loading"
+            @onSelect="(event: string) => emit('onSelect', event)"
+            @onDelete="(event: string) => emit('onDelete', event)"
+          />
+        </template>
+      </Column>
+      <template #empty>
+        <div class="flex items-center justify-center h-40 text-lg text-gray-400">No records found</div>
+      </template>
+    </DataTable>
+    <DataTable
+      v-else
       :value="users ?? []"
       :paginator="true"
       :rows="10"
@@ -25,7 +56,7 @@
       </Column>
       <Column field="id" header="Actions">
         <template #body="slotProps">
-          <RealmUserActions
+          <MasterUserActions
             :user="slotProps.data"
             :loading="loading"
             @onSelect="(event: string) => emit('onSelect', event)"

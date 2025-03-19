@@ -15,6 +15,18 @@ export const UserArgs = {
               organisation: true,
             },
           },
+          ingressPartnerships: {
+            include: {
+              from: true,
+              to: true,
+            },
+          },
+          egressPartnerships: {
+            include: {
+              from: true,
+              to: true,
+            },
+          },
         },
       },
     },
