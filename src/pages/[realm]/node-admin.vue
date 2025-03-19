@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import type { Realm } from '@prisma/client'
+import { useRealmUserStore } from '~/stores/realm/user'
 
 definePageMeta({
   middleware: [
@@ -23,7 +24,10 @@ definePageMeta({
   ],
 })
 
+const realmUserStore = useRealmUserStore()
 const route = useRoute()
 
 const realm = ref(route.params.realm as Realm)
+
+await realmUserStore.getMy(realm.value)
 </script>

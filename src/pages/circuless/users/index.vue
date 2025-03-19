@@ -40,10 +40,6 @@ const inviteUserVisible = ref(false)
 
 await realmUserStore.getAll('circuless')
 
-if (!user.value) {
-  await realmUserStore.getMy('circuless')
-}
-
 const onUserInvited = async (data: userTypes.InviteBody) => {
   try {
     await circulessUserStore.invite(data)

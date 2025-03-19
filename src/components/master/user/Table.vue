@@ -25,7 +25,7 @@
       </Column>
       <Column field="id" header="Actions">
         <template #body="slotProps">
-          <UserActions
+          <MasterUserActions
             :user="slotProps.data"
             :loading="loading"
             @onSelect="(event: string) => emit('onSelect', event)"

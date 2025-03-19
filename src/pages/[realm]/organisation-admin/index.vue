@@ -11,10 +11,12 @@
 import { RealmOraganisationAdminMenu, RealmOraganisationAdminPreview } from '#components'
 import type { Realm } from '@prisma/client'
 import { useRealmUserStore } from '~/stores/realm/user'
+import { debounce } from 'lodash'
 
 definePageMeta({
   middleware: [
     function (to, from) {
+      if (import.meta.server) return
       const { $viewport } = useNuxtApp()
       const realm = to.params.realm as Realm
       const path = `/${realm}/organisation-admin`
@@ -25,11 +27,25 @@ definePageMeta({
   ],
 })
 
+const { $viewport } = useNuxtApp()
 const route = useRoute()
+const router = useRouter()
 const realmUserStore = useRealmUserStore()
 
 const realm = ref(route.params.realm as Realm)
 const { my, loading } = storeToRefs(realmUserStore)
+const path = `/${realm.value}/organisation-admin`
+
+onMounted(() => window.addEventListener('resize', handleResize, true))
+onUnmounted(() => window.removeEventListener('resize', handleResize))
+
+const handleResize = debounce(() => {
+  if ($viewport.isGreaterThan('tablet') && route.path === currentPath.value) {
+    navigateTo(`${path}/section/settings`)
+  }
+}, 200)
+
+const currentPath = computed(() => router.currentRoute.value.path)
 </script>
 
 <style></style>
