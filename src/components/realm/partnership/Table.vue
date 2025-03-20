@@ -1,13 +1,13 @@
 <template>
   <div class="w-full h-full">
-    <Tabs value="0">
+    <Tabs value="0" class="w-full h-full flex flex-col">
       <TabList>
         <Tab value="0">Sent</Tab>
         <Tab value="1">Recieved</Tab>
       </TabList>
-      <TabPanels>
-        <TabPanel value="0">
-          <div class="w-full h-full flex flex-col gap-4 mt-5">
+      <TabPanels class="!px-0 lg:!px-[18px] grow w-full flex flex-col">
+        <TabPanel value="0" class="w-full grow">
+          <div class="w-full h-full flex flex-col gap-4 pt-5">
             <div class="w-full flex items-center gap-4 justify-between">
               <IconField>
                 <InputText type="text" v-model="filters['global'].value" placeholder="Search partnerships..." class="w-80" />
@@ -28,11 +28,14 @@
               <Column field="id">
                 <template #body="slotProps">
                   <h4>{{ slotProps.data.to.name }}</h4>
-                  <!-- <div class="mt-1">{{ slotProps.data.email }}</div>
-                  <div class="flex items-center gap-1">
+                  <div class="mt-1 flex items-center gap-1">
                     <div class="text-realm-text-300">Realm:</div>
-                    <div>{{ slotProps.data.realm }}</div>
-                  </div> -->
+                    <div>{{ slotProps.data.to.realm }}</div>
+                  </div>
+                  <div class="mt-1 flex items-center gap-1">
+                    <Tag v-if="slotProps.data.status === 'PENDING'" severity="warn" value="Pending"></Tag>
+                    <Tag v-if="slotProps.data.status === 'ACTIVE'" severity="sucess" value="Active"></Tag>
+                  </div>
                   <!-- <MasterUserActions
                     :user="slotProps.data"
                     :loading="loading"
@@ -53,15 +56,19 @@
               :rowsPerPageOptions="[5, 10, 20]"
               :filters="filters"
               :globalFilterFields="['to.name']"
+              scrollable
+              scrollHeight="flex"
             >
               <Column field="id" header="Organisation" sortable>
                 <template #body="slotProps"> {{ slotProps.data.to.name }}</template>
               </Column>
-              <!-- <Column field="email" header="Email" sortable />
-              <Column field="realm" header="Realm" sortable />
-              <Column field="organisation" header="Organisation" sortable>
-                <template #body="slotProps"> {{ slotProps.data.organisation?.name ?? '---' }} </template>
-              </Column> -->
+              <Column field="to.realm" header="Realm" sortable />
+              <Column field="status" header="Status" sortable>
+                <template #body="slotProps">
+                  <Tag v-if="slotProps.data.status === 'PENDING'" severity="warn" value="Pending"></Tag>
+                  <Tag v-if="slotProps.data.status === 'ACTIVE'" severity="success" value="Active"></Tag>
+                </template>
+              </Column>
               <Column field="id" header="Actions">
                 <template #body="slotProps">
                   <!-- <MasterUserActions
@@ -100,11 +107,14 @@
               <Column field="id">
                 <template #body="slotProps">
                   <h4>{{ slotProps.data.from.name }}</h4>
-                  <!-- <div class="mt-1">{{ slotProps.data.email }}</div>
-                  <div class="flex items-center gap-1">
+                  <div class="mt-1 flex items-center gap-1">
                     <div class="text-realm-text-300">Realm:</div>
-                    <div>{{ slotProps.data.realm }}</div>
-                  </div> -->
+                    <div>{{ slotProps.data.from.realm }}</div>
+                  </div>
+                  <div class="mt-1 flex items-center gap-1">
+                    <Tag v-if="slotProps.data.status === 'PENDING'" severity="warn" value="Pending"></Tag>
+                    <Tag v-if="slotProps.data.status === 'ACTIVE'" severity="sucess" value="Active"></Tag>
+                  </div>
                   <!-- <MasterUserActions
                     :user="slotProps.data"
                     :loading="loading"
@@ -129,11 +139,13 @@
               <Column field="id" header="Organisation" sortable>
                 <template #body="slotProps"> {{ slotProps.data.from.name }}</template>
               </Column>
-              <!-- <Column field="email" header="Email" sortable />
-              <Column field="realm" header="Realm" sortable />
-              <Column field="organisation" header="Organisation" sortable>
-                <template #body="slotProps"> {{ slotProps.data.organisation?.name ?? '---' }} </template>
-              </Column> -->
+              <Column field="from.realm" header="Realm" sortable />
+              <Column field="status" header="Status" sortable>
+                <template #body="slotProps">
+                  <Tag v-if="slotProps.data.status === 'PENDING'" severity="warn" value="Pending"></Tag>
+                  <Tag v-if="slotProps.data.status === 'ACTIVE'" severity="success" value="Active"></Tag>
+                </template>
+              </Column>
               <Column field="id" header="Actions">
                 <template #body="slotProps">
                   <!-- <MasterUserActions
@@ -172,3 +184,9 @@ const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 })
 </script>
+
+<style>
+.p-datatable-tbody {
+  @apply !overflow-y-auto;
+}
+</style>

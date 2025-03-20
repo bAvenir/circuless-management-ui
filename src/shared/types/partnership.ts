@@ -2,7 +2,7 @@ import { ParthershipStatus, Prisma } from '@prisma/client'
 import Joi from 'joi'
 
 export interface CreateBody {
-  toId: string
+  toIds: string[]
 }
 
 export interface CreateData {
@@ -12,7 +12,7 @@ export interface CreateData {
 }
 
 export const CreateBodySchema = Joi.object({
-  toId: Joi.string().required(),
+  toIds: Joi.array().items(Joi.string()).required(),
 }).required()
 
 export type GetMy = Prisma.PromiseReturnType<typeof api.partnership.realm.getMy>

@@ -5,7 +5,7 @@
         <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
       </div>
       <div class="w-full grow">
-        <RealmUserTable :users="allUsers ?? []" :loading="loadingUser" />
+        <RealmUserTable :users="all ?? []" :loading="loadingUser" />
       </div>
       <Dialog v-model:visible="inviteUserVisible" modal class="min-w-[556px]" :draggable="false" :resizable="false">
         <template #header>
@@ -33,7 +33,7 @@ const circulessUserStore = useCirculessUserStore()
 const toast = useToastService()
 const router = useRouter()
 
-const { user, allUsers, loading: loadingUser } = storeToRefs(realmUserStore)
+const { user, all, loading: loadingUser } = storeToRefs(realmUserStore)
 const { loading: loadingCirculess } = storeToRefs(circulessUserStore)
 
 const inviteUserVisible = ref(false)

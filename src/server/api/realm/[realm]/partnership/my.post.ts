@@ -10,7 +10,13 @@ export default defineEventHandler(async (event) => {
         throw new ApplicationError('User has no organisation', HttpStatusCode.FORBIDDEN)
       }
       return await db.partnership.queries.create(
-        { ...data, fromId: user.organisation.id, status: ParthershipStatus.PENDING },
+        data.toIds
+          .filter((id) => id !== user.organisation?.id)
+          .map((toId) => ({
+            fromId: user.organisation!.id,
+            toId,
+            status: ParthershipStatus.PENDING,
+          })),
         db.partnership.args.all
       )
     },

@@ -20,4 +20,23 @@ export const RealmOrganisationApi = {
       body: data,
     })
   },
+
+  async getAll(realm: Realm) {
+    return await useFetch(`/api/realm/${realm}/organisation`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.data.value)
+  },
+
+  async get(id: string, realm: Realm) {
+    if (!isValidId(id)) throw new Error('Invalid id')
+    return await useFetch(`/api/realm/${realm}/organisation/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.data.value)
+  },
 }

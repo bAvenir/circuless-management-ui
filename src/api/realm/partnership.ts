@@ -11,8 +11,8 @@ export const RealmPartnershipApi = {
     }).then((res) => res.data.value)
   },
 
-  async create(realm: Realm, data: partnershipTypes.CreateBody) {
-    return await $fetch(`/api/realm/${realm}/partnership`, {
+  async createMy(realm: Realm, data: partnershipTypes.CreateBody) {
+    return await $fetch(`/api/realm/${realm}/partnership/my`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

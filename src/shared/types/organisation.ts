@@ -31,4 +31,6 @@ export const UpdateBodyRealmSchema = Joi.object({
 export type GetMaster = Prisma.PromiseReturnType<typeof api.organisation.master.get>
 export type GetMyRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.getMy>
 export type GetAllMaster = Prisma.PromiseReturnType<typeof api.organisation.master.getAll>
+export type GetAllRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.getAll>
+export type GetRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.get>
 export type Sync = Prisma.PromiseReturnType<typeof api.organisation.master.sync>

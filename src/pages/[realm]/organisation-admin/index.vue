@@ -36,8 +36,10 @@ const realm = ref(route.params.realm as Realm)
 const { my, loading } = storeToRefs(realmUserStore)
 const path = `/${realm.value}/organisation-admin`
 
-onMounted(() => window.addEventListener('resize', handleResize, true))
-onUnmounted(() => window.removeEventListener('resize', handleResize))
+if (import.meta.client) {
+  onMounted(() => window.addEventListener('resize', handleResize, true))
+  onUnmounted(() => window.removeEventListener('resize', handleResize))
+}
 
 const handleResize = debounce(() => {
   if ($viewport.isGreaterThan('tablet') && route.path === currentPath.value) {

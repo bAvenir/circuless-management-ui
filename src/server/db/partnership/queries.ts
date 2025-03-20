@@ -3,13 +3,14 @@ import prisma from '~/lib/prisma'
 import { partnershipTypes } from '~/shared/types'
 
 export const PartnershipQueries = {
-  async create<T extends Prisma.PartnershipDefaultArgs>(data: partnershipTypes.CreateData, args: T) {
+  async create<T extends Prisma.PartnershipDefaultArgs>(data: partnershipTypes.CreateData[], args?: T) {
     return queryWrapper(
       async () =>
-        (await prisma.partnership.create({
+        (await prisma.partnership.createManyAndReturn({
           data,
+          skipDuplicates: true,
           ...args,
-        })) as unknown as Prisma.PartnershipGetPayload<T>
+        })) as unknown as Prisma.PartnershipGetPayload<T>[]
     )
   },
 

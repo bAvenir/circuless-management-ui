@@ -4,7 +4,7 @@ import type { organisationTypes, partnershipTypes, userTypes } from '~/shared/ty
 export const useRealmUserStore = defineStore('realmUserStore', {
   state: () => ({
     my: undefined as userTypes.GetMy | undefined,
-    allUsers: [] as userTypes.GetAllRealm,
+    all: [] as userTypes.GetAllRealm,
     user: undefined as userTypes.GetRealm | undefined,
     loading: false,
   }),
@@ -24,7 +24,7 @@ export const useRealmUserStore = defineStore('realmUserStore', {
       try {
         this.loading = true
         const users = await api.user.realm.getAll(realm)
-        this.allUsers = users ?? []
+        this.all = users ?? []
         return users
       } finally {
         this.loading = false
@@ -63,14 +63,14 @@ export const useRealmUserStore = defineStore('realmUserStore', {
       }
     },
 
-    async createMyPartnership(realm: Realm, body: partnershipTypes.CreateBody) {
+    async createMyPartnerships(realm: Realm, body: partnershipTypes.CreateBody) {
       try {
         if (!this.my) throw new Error('User not loaded')
         if (!this.my.organisation) throw new Error('User does not have an organisation')
         this.loading = true
-        const partnership = await api.partnership.realm.create(realm, body)
-        this.my.organisation.egressPartnerships.push(partnership)
-        return partnership
+        const partnerships = await api.partnership.realm.createMy(realm, body)
+        this.my.organisation.egressPartnerships.push(...partnerships)
+        return partnerships
       } finally {
         this.loading = false
       }

@@ -1,30 +1,32 @@
 <template>
-  <div v-if="my" class="w-full h-full">
+  <div v-if="myUser" class="w-full h-full">
     <Panel v-if="$viewport.isGreaterThan('tablet')" header="Organisation partnerships" class="w-full h-full flex flex-col">
       <div class="w-full h-full flex flex-col items-end">
         <div class="w-fit">
-          <Button icon="pi pi-plus" label="Add partnership" @click="createPartnershipVisible = true" />
+          <Button icon="pi pi-plus" label="Add partnership" @click="createPartnershipVisible = true" :loading="loadingOrganisation" />
         </div>
-        <RealmOraganisationAdminPartnerships :my="my.organisation" :loading="loading" class="w-full" />
+        <div class="w-full grow overflow-y-auto">
+          <RealmOraganisationAdminPartnerships :my="myUser.organisation" :loading="loadingUser" />
+        </div>
       </div>
     </Panel>
-    <div v-else class="flex flex-col h-full w-full gap-7">
+    <div v-else class="flex flex-col h-full w-full gap-3">
       <div class="w-full relative">
         <div class="font-medium">Organisation partnerships</div>
         <div class="w-fit -top-[60px] right-0 absolute">
-          <Button icon="pi pi-plus" label="Add partnership" @click="createPartnershipVisible = true" />
+          <Button icon="pi pi-plus" label="Add partnership" @click="createPartnershipVisible = true" :loading="loadingOrganisation" />
         </div>
       </div>
-      <RealmOraganisationAdminPartnerships :my="my.organisation" :loading="loading" />
+      <RealmOraganisationAdminPartnerships :my="myUser.organisation" :loading="loadingUser" />
     </div>
     <Dialog v-model:visible="createPartnershipVisible" modal class="min-w-[375px] lg:min-w-[556px]" :draggable="false" :resizable="false">
       <template #header>
         <h5 class="pl-1">Create partnership</h5>
       </template>
       <RealmPartnershipCreate
-        realm="circuless"
-        :kcOrganisationId="my?.organisation?.kcId"
-        :loading="loading"
+        v-if="!loadingOrganisation"
+        :organisations="allOrganisations?.filter((org) => org.id !== myUser?.organisation?.id) ?? []"
+        :loading="loadingUser"
         @onSave="onPartnershipCreated"
         @onCancel="createPartnershipVisible = false"
       ></RealmPartnershipCreate>
@@ -36,18 +38,23 @@
 import type { Realm } from '@prisma/client'
 import type { partnershipTypes } from '~/shared/types'
 import { useRealmUserStore } from '~/stores/realm/user'
+import { useRealmOrganisationStore } from '~/stores/realm/organisation'
 
 const realmUserStore = useRealmUserStore()
+const realmOrganisationStore = useRealmOrganisationStore()
 const toast = useToastService()
 const route = useRoute()
 
 const realm = ref(route.params.realm as Realm)
-const { my, loading } = storeToRefs(realmUserStore)
+const { my: myUser, loading: loadingUser } = storeToRefs(realmUserStore)
+const { all: allOrganisations, loading: loadingOrganisation } = storeToRefs(realmOrganisationStore)
 const createPartnershipVisible = ref(false)
+
+await realmOrganisationStore.getAll(realm.value)
 
 const onPartnershipCreated = async (data: partnershipTypes.CreateBody) => {
   try {
-    await realmUserStore.createMyPartnership(realm.value, data)
+    await realmUserStore.createMyPartnerships(realm.value, data)
     toast.predefined.partnership.created.success()
     createPartnershipVisible.value = false
   } catch (error) {
@@ -67,4 +74,14 @@ const onPartnershipDeleted = async (partnershipId: string) => {
 }
 </script>
 
-<style></style>
+<style>
+
+/* .p-panel-content-container {
+  @apply !grow;
+}
+
+.p-panel-content {
+  @apply w-full h-full;
+} */
+
+</style>
