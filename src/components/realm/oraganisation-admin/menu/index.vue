@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full overflow-y-auto">
     <div class="w-full pb-8 lg:pb-4">
       <div class="text-xs text-realm-text-300 w-full pb-2 px-4 lg:px-0">General</div>
       <NuxtLink v-for="item in general" :to="item.path" :key="item.path">

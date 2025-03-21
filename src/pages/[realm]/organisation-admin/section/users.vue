@@ -5,7 +5,9 @@
         <div class="w-fit">
           <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
         </div>
-        <RealmOraganisationAdminUsers :my="my.organisation" :loading="loading" class="w-full" />
+        <div class="w-full h-[calc(100dvh-200px)] overflow-y-auto">
+          <RealmOraganisationAdminUsers :my="my.organisation" :loading="loading" class="w-full" />
+        </div>
       </div>
     </Panel>
     <div v-else class="flex flex-col h-full w-full gap-7">

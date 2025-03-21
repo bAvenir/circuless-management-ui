@@ -5,7 +5,7 @@
         <div class="w-fit">
           <Button icon="pi pi-plus" label="Add partnership" @click="createPartnershipVisible = true" :loading="loadingOrganisation" />
         </div>
-        <div class="w-full grow overflow-y-auto">
+        <div class="w-full h-[calc(100dvh-200px)] overflow-y-auto">
           <RealmOraganisationAdminPartnerships :my="myUser.organisation" :loading="loadingUser" />
         </div>
       </div>

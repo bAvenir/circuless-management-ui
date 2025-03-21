@@ -1,12 +1,12 @@
 <template>
   <div class="w-full h-full">
-    <Tabs value="0" class="w-full h-full flex flex-col">
+    <Tabs value="0">
       <TabList>
         <Tab value="0">Sent</Tab>
         <Tab value="1">Recieved</Tab>
       </TabList>
-      <TabPanels class="!px-0 lg:!px-[18px] grow w-full flex flex-col">
-        <TabPanel value="0" class="w-full grow">
+      <TabPanels class="!px-0 lg:!px-[18px]">
+        <TabPanel value="0">
           <div class="w-full h-full flex flex-col gap-4 pt-5">
             <div class="w-full flex items-center gap-4 justify-between">
               <IconField>
@@ -36,12 +36,12 @@
                     <Tag v-if="slotProps.data.status === 'PENDING'" severity="warn" value="Pending"></Tag>
                     <Tag v-if="slotProps.data.status === 'ACTIVE'" severity="sucess" value="Active"></Tag>
                   </div>
-                  <!-- <MasterUserActions
-                    :user="slotProps.data"
+                  <RealmPartnershipActions
+                    :partnership="slotProps.data"
                     :loading="loading"
                     @onSelect="(event: string) => emit('onSelect', event)"
                     @onDelete="(event: string) => emit('onDelete', event)"
-                  /> -->
+                  />
                 </template>
               </Column>
               <template #empty>
@@ -56,8 +56,6 @@
               :rowsPerPageOptions="[5, 10, 20]"
               :filters="filters"
               :globalFilterFields="['to.name']"
-              scrollable
-              scrollHeight="flex"
             >
               <Column field="id" header="Organisation" sortable>
                 <template #body="slotProps"> {{ slotProps.data.to.name }}</template>
@@ -86,7 +84,7 @@
           </div>
         </TabPanel>
         <TabPanel value="1">
-          <div class="w-full h-full flex flex-col gap-4 mt-5">
+          <div class="w-full h-full flex flex-col gap-4 pt-5">
             <div class="w-full flex items-center gap-4 justify-between">
               <IconField>
                 <InputText type="text" v-model="filters['global'].value" placeholder="Search partnerships..." class="w-80" />
@@ -171,22 +169,16 @@
 import { FilterMatchMode } from '@primevue/core/api'
 import { partnershipTypes } from '~/shared/types'
 
-const props = defineProps<{
+const { partnerships } = defineProps<{
   partnerships: partnershipTypes.GetMy
   loading: boolean
 }>()
 
 const emit = defineEmits(['onSelect', 'onDelete'])
 
-const { partnerships } = toRefs(props)
-
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 })
 </script>
 
-<style>
-.p-datatable-tbody {
-  @apply !overflow-y-auto;
-}
-</style>
+<style></style>

@@ -1,11 +1,13 @@
 <template>
   <div v-if="$viewport.isGreaterThan('tablet')" class="w-full h-full px-4">
     <div class="py-4 h-full flex items-center justify-between gap-4">
-      <Panel class="h-full w-56">
+      <Panel class="h-full w-56 flex flex-col">
         <template #header>
           <RealmOraganisationAdminPreview :organisation="my?.organisation" :loading="loading" />
         </template>
-        <RealmOraganisationAdminMenu :realm="realm" />
+        <div class="w-full h-[calc(100dvh-212px)] overflow-y-auto">
+          <RealmOraganisationAdminMenu :realm="realm" />
+        </div>
       </Panel>
       <div class="h-full grow">
         <NuxtPage />

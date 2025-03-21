@@ -1,12 +1,14 @@
 <template>
-  <div></div>
+  <div>
+    <Button icon="pi pi-ellipsis-h" severity="secondary" aria-label="Partnerships actions" />
+  </div>
 </template>
 
 <script lang="ts" setup>
 import type { userTypes } from '~/shared/types'
 
 defineProps<{
-  user: userTypes.GetRealm
+  // partnership: userTypes.GetRealm
   loading: boolean
 }>()
 

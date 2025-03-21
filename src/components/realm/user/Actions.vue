@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <Button icon="pi pi-ellipsis-h" severity="secondary" aria-label="Users actions" />
+  </div>
 </template>
 
 <script lang="ts" setup>
