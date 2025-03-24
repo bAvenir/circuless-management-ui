@@ -32,7 +32,7 @@
                     <div class="text-realm-text-300">Realm:</div>
                     <div>{{ slotProps.data.to.realm }}</div>
                   </div>
-                  <div class="mt-1 flex items-center gap-1">
+                  <div class="mt-1 flex items-center gap-1 pb-4">
                     <Tag v-if="slotProps.data.status === 'PENDING'" severity="warn" value="Pending"></Tag>
                     <Tag v-if="slotProps.data.status === 'ACTIVE'" severity="sucess" value="Active"></Tag>
                   </div>
@@ -69,12 +69,12 @@
               </Column>
               <Column field="id" header="Actions">
                 <template #body="slotProps">
-                  <!-- <MasterUserActions
-                    :user="slotProps.data"
+                  <RealmPartnershipActions
+                    :partnership="slotProps.data"
                     :loading="loading"
                     @onSelect="(event: string) => emit('onSelect', event)"
                     @onDelete="(event: string) => emit('onDelete', event)"
-                  /> -->
+                  />
                 </template>
               </Column>
               <template #empty>
@@ -109,16 +109,16 @@
                     <div class="text-realm-text-300">Realm:</div>
                     <div>{{ slotProps.data.from.realm }}</div>
                   </div>
-                  <div class="mt-1 flex items-center gap-1">
+                  <div class="mt-1 flex items-center gap-1 pb-4">
                     <Tag v-if="slotProps.data.status === 'PENDING'" severity="warn" value="Pending"></Tag>
                     <Tag v-if="slotProps.data.status === 'ACTIVE'" severity="sucess" value="Active"></Tag>
                   </div>
-                  <!-- <MasterUserActions
-                    :user="slotProps.data"
+                  <RealmPartnershipActions
+                    :partnership="slotProps.data"
                     :loading="loading"
                     @onSelect="(event: string) => emit('onSelect', event)"
                     @onDelete="(event: string) => emit('onDelete', event)"
-                  /> -->
+                  />
                 </template>
               </Column>
               <template #empty>
@@ -146,12 +146,12 @@
               </Column>
               <Column field="id" header="Actions">
                 <template #body="slotProps">
-                  <!-- <MasterUserActions
-                    :user="slotProps.data"
+                  <RealmPartnershipActions
+                    :partnership="slotProps.data"
                     :loading="loading"
                     @onSelect="(event: string) => emit('onSelect', event)"
                     @onDelete="(event: string) => emit('onDelete', event)"
-                  /> -->
+                  />
                 </template>
               </Column>
               <template #empty>
@@ -170,7 +170,7 @@ import { FilterMatchMode } from '@primevue/core/api'
 import { partnershipTypes } from '~/shared/types'
 
 const { partnerships } = defineProps<{
-  partnerships: partnershipTypes.GetMy
+  partnerships: partnershipTypes.GetAllMy
   loading: boolean
 }>()
 

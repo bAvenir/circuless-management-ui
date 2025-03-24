@@ -15,4 +15,6 @@ export const CreateBodySchema = Joi.object({
   toIds: Joi.array().items(Joi.string()).required(),
 }).required()
 
-export type GetMy = Prisma.PromiseReturnType<typeof api.partnership.realm.getMy>
+export type GetAllMy = Prisma.PromiseReturnType<typeof api.partnership.realm.getAllMy>
+export type GetMyIngress = Prisma.PromiseReturnType<typeof api.partnership.realm.getMyIngress>
+export type GetMyEgress = Prisma.PromiseReturnType<typeof api.partnership.realm.getMyEgress>

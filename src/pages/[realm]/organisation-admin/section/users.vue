@@ -3,7 +3,7 @@
     <Panel v-if="$viewport.isGreaterThan('tablet')" header="Organisation users" class="w-full h-full flex flex-col">
       <div class="w-full h-full flex flex-col items-end">
         <div class="w-fit">
-          <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
+          <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" severity="secondary" />
         </div>
         <div class="w-full h-[calc(100dvh-200px)] overflow-y-auto">
           <RealmOraganisationAdminUsers :my="my.organisation" :loading="loading" class="w-full" />
@@ -14,7 +14,7 @@
       <div class="w-full relative">
         <div class="font-medium">Organisation users</div>
         <div class="w-fit -top-[60px] right-0 absolute">
-          <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
+          <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" severity="secondary" />
         </div>
       </div>
       <RealmOraganisationAdminUsers :my="my.organisation" :loading="loading" />

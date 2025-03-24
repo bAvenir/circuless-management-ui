@@ -37,4 +37,56 @@ export const PartnershipQueries = {
         })) as unknown as Prisma.PartnershipGetPayload<T>[]
     )
   },
+
+  async getOrganisationIngress<T extends Prisma.PartnershipDefaultArgs>(id: string, organisationId: string, args?: T) {
+    return queryWrapper(
+      async () =>
+        (await prisma.partnership.findFirstOrThrow({
+          where: {
+            id,
+            toId: organisationId,
+          },
+          ...args,
+        })) as unknown as Prisma.PartnershipGetPayload<T>
+    )
+  },
+
+  async getOrganisationEgress<T extends Prisma.PartnershipDefaultArgs>(id: string, organisationId: string, args?: T) {
+    return queryWrapper(
+      async () =>
+        (await prisma.partnership.findFirstOrThrow({
+          where: {
+            id,
+            fromId: organisationId,
+          },
+          ...args,
+        })) as unknown as Prisma.PartnershipGetPayload<T>
+    )
+  },
+
+  async deleteOrganisationIngress<T extends Prisma.PartnershipDefaultArgs>(id: string, organisationId: string, args?: T) {
+    return queryWrapper(
+      async () =>
+        (await prisma.partnership.delete({
+          where: {
+            id,
+            toId: organisationId,
+          },
+          ...args,
+        })) as unknown as Prisma.PartnershipGetPayload<T>
+    )
+  },
+
+  async deleteOrganisationEgress<T extends Prisma.PartnershipDefaultArgs>(id: string, organisationId: string, args?: T) {
+    return queryWrapper(
+      async () =>
+        (await prisma.partnership.delete({
+          where: {
+            id,
+            fromId: organisationId,
+          },
+          ...args,
+        })) as unknown as Prisma.PartnershipGetPayload<T>
+    )
+  },
 }

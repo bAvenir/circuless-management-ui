@@ -2,7 +2,7 @@
   <div class="w-full h-full flex flex-col gap-4 items-end">
     <div class="w-fit">
       <NuxtLink to="/master/nodes/add">
-        <Button icon="pi pi-plus" label="Add node" />
+        <Button icon="pi pi-plus" label="Add node" severity="secondary" />
       </NuxtLink>
     </div>
     <div class="w-full grow">

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full flex flex-col gap-4 items-end">
     <div class="w-fit">
-      <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
+      <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" severity="secondary" />
     </div>
     <div class="w-full grow">
       <MasterUserTable :users="allUsers ?? []" :loading="loading">

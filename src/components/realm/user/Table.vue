@@ -25,7 +25,7 @@
             <div class="text-realm-text-300">Realm:</div>
             <div>{{ slotProps.data.realm }}</div>
           </div>
-          <MasterUserActions
+          <RealmUserActions
             :user="slotProps.data"
             :loading="loading"
             @onSelect="(event: string) => emit('onSelect', event)"
@@ -56,7 +56,7 @@
       </Column>
       <Column field="id" header="Actions">
         <template #body="slotProps">
-          <MasterUserActions
+          <RealmUserActions
             :user="slotProps.data"
             :loading="loading"
             @onSelect="(event: string) => emit('onSelect', event)"

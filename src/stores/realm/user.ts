@@ -75,5 +75,31 @@ export const useRealmUserStore = defineStore('realmUserStore', {
         this.loading = false
       }
     },
+
+    async deleteMyIngressPartnership(realm: Realm, id: string) {
+      try {
+        if (!this.my) throw new Error('User not loaded')
+        if (!this.my.organisation) throw new Error('User does not have an organisation')
+        this.loading = true
+        const partnership = await api.partnership.realm.deleteMyIngress(id, realm)
+        this.my.organisation.ingressPartnerships = this.my.organisation.ingressPartnerships.filter((p) => p.id !== partnership.id)
+        return partnership
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async deleteMyEgressPartnership(realm: Realm, id: string) {
+      try {
+        if (!this.my) throw new Error('User not loaded')
+        if (!this.my.organisation) throw new Error('User does not have an organisation')
+        this.loading = true
+        const partnership = await api.partnership.realm.deleteMyEgress(id, realm)
+        this.my.organisation.egressPartnerships = this.my.organisation.egressPartnerships.filter((p) => p.id !== partnership.id)
+        return partnership
+      } finally {
+        this.loading = false
+      }
+    },
   },
 })

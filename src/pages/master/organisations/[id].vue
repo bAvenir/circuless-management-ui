@@ -8,8 +8,8 @@
         <div>Organisation</div>
         <h1 class="mt-1">{{ organisation?.name }}</h1>
       </div>
-      <Button v-if="active?.route == tabs[0].route" icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
-      <Button v-if="active?.route == tabs[1].route" icon="pi pi-plus" label="Add node" />
+      <Button v-if="active?.route == tabs[0].route" icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" severity="secondary" />
+      <Button v-if="active?.route == tabs[1].route" icon="pi pi-plus" label="Add node"  severity="secondary"/>
     </div>
     <div class="mt-8 px-4">
       <Tabs :value="active?.route ?? tabs[0].route" @update:value="onTabChange">

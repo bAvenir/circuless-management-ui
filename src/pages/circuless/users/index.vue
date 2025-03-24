@@ -2,7 +2,7 @@
   <div class="w-full h-full container mx-auto pt-8">
     <div class="w-full h-full flex flex-col gap-4 items-end">
       <div class="w-fit">
-        <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" />
+        <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" severity="secondary" />
       </div>
       <div class="w-full grow">
         <RealmUserTable :users="all ?? []" :loading="loadingUser" />
@@ -17,7 +17,7 @@
           :loading="loadingUser || loadingCirculess"
           @onSave="onUserInvited"
           @onCancel="inviteUserVisible = false"
-        ></RealmUserInvite>
+        />
       </Dialog>
     </div>
   </div>
