@@ -18,7 +18,7 @@ const menu = ref()
 
 const { user, loading } = toRefs(props)
 
-const emit = defineEmits(['onSelect', 'onDelete'])
+const emit = defineEmits(['onSelect', 'onRemove'])
 
 const items = ref([
   // {
@@ -29,10 +29,10 @@ const items = ref([
   //   },
   // },
   {
-    label: 'Delete',
+    label: 'Remove',
     icon: 'pi pi-trash',
     command: () => {
-      confirmDelete()
+      confirmRemove()
     },
   },
 ])
@@ -41,9 +41,9 @@ const toggle = (event: Event) => {
   menu.value.toggle(event)
 }
 
-const confirmDelete = async () => {
+const confirmRemove = async () => {
   confirm.require({
-    message: 'Are you sure you want to delete this user?',
+    message: 'Are you sure you want to remove this user from organisation?',
     header: 'Danger zone',
     icon: 'pi pi-info-circle',
     rejectProps: {
@@ -52,11 +52,11 @@ const confirmDelete = async () => {
       outlined: true,
     },
     acceptProps: {
-      label: 'Delete',
+      label: 'Remove',
       severity: 'danger',
     },
     accept: async () => {
-      await deleteUser()
+      await removeUser()
     },
     reject: () => {
       return
@@ -66,13 +66,13 @@ const confirmDelete = async () => {
 
 const selectUser = () => {
   if (user.value) {
-    emit('onSelect', user.value)
+    emit('onSelect', user.value.id)
   }
 }
 
-const deleteUser = async () => {
+const removeUser = async () => {
   if (user.value) {
-    emit('onDelete', user.value)
+    emit('onRemove', user.value.id)
   }
 }
 </script>

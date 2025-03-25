@@ -54,10 +54,23 @@ export const useRealmUserStore = defineStore('realmUserStore', {
       }
     },
 
-    async invite(data: userTypes.InviteBody) {
+    async inviteUserToMyOrganisation(data: userTypes.InviteBody) {
       try {
         this.loading = true
         await api.user.realm.invite(data)
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async removeUsersFromMyOrganisation(data: organisationTypes.RemoveUserBodyRealm) {
+      try {
+        if (!this.my) throw new Error('User not loaded')
+        if (!this.my.organisation) throw new Error('User does not have an organisation')
+        this.loading = true
+        const organisation = await api.organisation.realm.removeUsersFromMy(this.my.organisation.realm, data)
+        this.my.organisation = organisation
+        return organisation
       } finally {
         this.loading = false
       }

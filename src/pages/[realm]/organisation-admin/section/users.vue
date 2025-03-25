@@ -17,7 +17,7 @@
           <Button icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" severity="secondary" />
         </div>
       </div>
-      <RealmOraganisationAdminUsers :my="my.organisation" :loading="loading" />
+      <RealmOraganisationAdminUsers :my="my.organisation" :loading="loading" @onRemove="onUserRemoved" />
     </div>
     <Dialog v-model:visible="inviteUserVisible" modal class="min-w-[375px] lg:min-w-[556px]" :draggable="false" :resizable="false">
       <template #header>
@@ -50,7 +50,7 @@ const inviteUserVisible = ref(false)
 
 const onUserInvited = async (data: userTypes.InviteBody) => {
   try {
-    await realmUserStore.invite(data)
+    await realmUserStore.inviteUserToMyOrganisation(data)
     toast.predefined.user.invited.success()
     inviteUserVisible.value = false
   } catch (error) {
@@ -59,9 +59,9 @@ const onUserInvited = async (data: userTypes.InviteBody) => {
   }
 }
 
-const onUserDeleted = async (userId: string) => {
+const onUserRemoved = async (userId: string) => {
   try {
-    // await masterUserStore.delete(userId)
+    await realmUserStore.removeUsersFromMyOrganisation({ userIds: [userId] })
     toast.predefined.user.deleted.success()
   } catch (error) {
     toast.predefined.user.deleted.error()

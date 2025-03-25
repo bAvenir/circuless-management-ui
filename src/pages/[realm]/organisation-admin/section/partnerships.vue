@@ -15,8 +15,10 @@
           <RealmOraganisationAdminPartnerships
             :my="myUser.organisation"
             :loading="loadingUser"
-            @onSelect="onPartnershipSelected"
-            @onDelete="onPartnershipDeleted"
+            @onIngressSelect="onIngressPartnershipSelected"
+            @onIngressDelete="onIngressPartnershipDeleted"
+            @onEgressSelect="onEgressPartnershipSelected"
+            @onEgressDelete="onEgressPartnershipDeleted"
           />
         </div>
       </div>
@@ -37,8 +39,10 @@
       <RealmOraganisationAdminPartnerships
         :my="myUser.organisation"
         :loading="loadingUser"
-        @onSelect="onPartnershipSelected"
-        @onDelete="onPartnershipDeleted"
+        @onIngressSelect="onIngressPartnershipSelected"
+        @onIngressDelete="onIngressPartnershipDeleted"
+        @onEgressSelect="onEgressPartnershipSelected"
+        @onEgressDelete="onEgressPartnershipDeleted"
       />
     </div>
     <Dialog v-model:visible="createPartnershipVisible" modal class="min-w-[375px] lg:min-w-[556px]" :draggable="false" :resizable="false">
@@ -85,21 +89,23 @@ const onPartnershipCreated = async (data: partnershipTypes.CreateBody) => {
   }
 }
 
-const onPartnershipSelected = async (partnership: partnershipTypes.GetMyIngress | partnershipTypes.GetMyEgress) => {
+const onIngressPartnershipSelected = async (id: string) => {}
+const onEgressPartnershipSelected = async (id: string) => {}
+
+const onIngressPartnershipDeleted = async (id: string) => {
+  try {
+    await realmUserStore.deleteMyIngressPartnership(realm.value, id)
+    toast.predefined.partnership.deleted.success()
+  } catch (error) {
+    toast.predefined.partnership.deleted.error()
+    throw error
+  }
 }
 
-const onPartnershipDeleted = async (partnership: partnershipTypes.GetMyIngress | partnershipTypes.GetMyEgress) => {
+const onEgressPartnershipDeleted = async (id: string) => {
   try {
-    const organisation = myUser.value?.organisation
-    if (!organisation) return
-    if (!partnership) return
-    if (partnership.from?.id === organisation.id) {
-      await realmUserStore.deleteMyEgressPartnership(realm.value, partnership.id)
-      toast.predefined.partnership.deleted.success()
-    } else if (partnership.to?.id === organisation.id) {
-      await realmUserStore.deleteMyIngressPartnership(realm.value, partnership.id)
-      toast.predefined.partnership.deleted.success()
-    }
+    await realmUserStore.deleteMyEgressPartnership(realm.value, id)
+    toast.predefined.partnership.deleted.success()
   } catch (error) {
     toast.predefined.partnership.deleted.error()
     throw error

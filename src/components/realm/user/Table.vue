@@ -21,7 +21,7 @@
         <template #body="slotProps">
           <h4>{{ slotProps.data.givenName }} {{ slotProps.data.familyName }}</h4>
           <div class="mt-1">{{ slotProps.data.email }}</div>
-          <div class="flex items-center gap-1">
+          <div class="flex items-center gap-1 pb-4">
             <div class="text-realm-text-300">Realm:</div>
             <div>{{ slotProps.data.realm }}</div>
           </div>
@@ -29,7 +29,7 @@
             :user="slotProps.data"
             :loading="loading"
             @onSelect="(event: string) => emit('onSelect', event)"
-            @onDelete="(event: string) => emit('onDelete', event)"
+            @onRemove="(event: string) => emit('onRemove', event)"
           />
         </template>
       </Column>
@@ -60,7 +60,7 @@
             :user="slotProps.data"
             :loading="loading"
             @onSelect="(event: string) => emit('onSelect', event)"
-            @onDelete="(event: string) => emit('onDelete', event)"
+            @onDelete="(event: string) => emit('onRemove', event)"
           />
         </template>
       </Column>
@@ -80,7 +80,7 @@ const props = defineProps<{
   loading: boolean
 }>()
 
-const emit = defineEmits(['onSelect', 'onDelete'])
+const emit = defineEmits(['onSelect', 'onRemove'])
 
 const { users } = toRefs(props)
 

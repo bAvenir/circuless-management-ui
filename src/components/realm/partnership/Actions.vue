@@ -66,13 +66,13 @@ const confirmDelete = async () => {
 
 const selectPartnership = () => {
   if (partnership.value) {
-    emit('onSelect', partnership.value)
+    emit('onSelect', partnership.value.id)
   }
 }
 
 const deletePartnership = async () => {
   if (partnership.value) {
-    emit('onDelete', partnership.value)
+    emit('onDelete', partnership.value.id)
   }
 }
 </script>

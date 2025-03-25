@@ -5,7 +5,7 @@
       :users="my.users"
       :loading="loading"
       @onSelect="(data) => emit('onSelect', data)"
-      @onDelete="(data) => emit('onDelete', data)"
+      @onRemove="(data) => emit('onRemove', data)"
     />
   </div>
 </template>
@@ -18,7 +18,7 @@ const props = defineProps<{
   loading: boolean
 }>()
 
-const emit = defineEmits(['onSelect', 'onDelete'])
+const emit = defineEmits(['onSelect', 'onRemove'])
 
 const { my } = toRefs(props)
 </script>

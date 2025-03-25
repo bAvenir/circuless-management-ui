@@ -39,8 +39,8 @@
                   <RealmPartnershipActions
                     :partnership="slotProps.data"
                     :loading="loading"
-                    @onSelect="(event: string) => emit('onSelect', event)"
-                    @onDelete="(event: string) => emit('onDelete', event)"
+                    @onSelect="(event: string) => emit('onIngressSelect', event)"
+                    @onDelete="(event: string) => emit('onIngressDelete', event)"
                   />
                 </template>
               </Column>
@@ -72,8 +72,8 @@
                   <RealmPartnershipActions
                     :partnership="slotProps.data"
                     :loading="loading"
-                    @onSelect="(event: string) => emit('onSelect', event)"
-                    @onDelete="(event: string) => emit('onDelete', event)"
+                    @onSelect="(event: string) => emit('onEgressSelect', event)"
+                    @onDelete="(event: string) => emit('onEgressDelete', event)"
                   />
                 </template>
               </Column>
@@ -116,8 +116,8 @@
                   <RealmPartnershipActions
                     :partnership="slotProps.data"
                     :loading="loading"
-                    @onSelect="(event: string) => emit('onSelect', event)"
-                    @onDelete="(event: string) => emit('onDelete', event)"
+                    @onSelect="(event: string) => emit('onIngressSelect', event)"
+                    @onDelete="(event: string) => emit('onIngressDelete', event)"
                   />
                 </template>
               </Column>
@@ -149,8 +149,8 @@
                   <RealmPartnershipActions
                     :partnership="slotProps.data"
                     :loading="loading"
-                    @onSelect="(event: string) => emit('onSelect', event)"
-                    @onDelete="(event: string) => emit('onDelete', event)"
+                    @onSelect="(event: string) => emit('onEgressSelect', event)"
+                    @onDelete="(event: string) => emit('onEgressDelete', event)"
                   />
                 </template>
               </Column>
@@ -174,7 +174,7 @@ const { partnerships } = defineProps<{
   loading: boolean
 }>()
 
-const emit = defineEmits(['onSelect', 'onDelete'])
+const emit = defineEmits(['onIngressSelect', 'onEgressSelect', 'onIngressDelete', 'onEgressDelete'])
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },

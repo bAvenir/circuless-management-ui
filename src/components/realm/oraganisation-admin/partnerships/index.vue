@@ -4,11 +4,13 @@
       v-if="my"
       :partnerships="{
         ingressPartnerships: my.ingressPartnerships,
-        egressPartnerships: my.egressPartnerships
+        egressPartnerships: my.egressPartnerships,
       }"
       :loading="loading"
-      @onSelect="(data) => emit('onSelect', data)"
-      @onDelete="(data) => emit('onDelete', data)"
+      @onIngressSelect="(data) => emit('onIngressSelect', data)"
+      @onEgressSelect="(data) => emit('onEgressSelect', data)"
+      @onIngressDelete="(data) => emit('onIngressDelete', data)"
+      @onEgressDelete="(data) => emit('onEgressDelete', data)"
     />
   </div>
 </template>
@@ -21,7 +23,7 @@ const props = defineProps<{
   loading: boolean
 }>()
 
-const emit = defineEmits(['onSelect', 'onDelete'])
+const emit = defineEmits(['onIngressSelect', 'onEgressSelect', 'onIngressDelete', 'onEgressDelete'])
 
 const { my } = toRefs(props)
 </script>

@@ -15,6 +15,10 @@ export interface UpdateBodyRealm {
 
 export interface UpdateBodyMaster extends UpdateBodyRealm {}
 
+export interface RemoveUserBodyRealm {
+  userIds: string[]
+}
+
 export const CreateBodyMasterSchema = Joi.object({
   name: Joi.string().required(),
   redirectUrl: Joi.string().required(),
@@ -26,6 +30,10 @@ export const CreateBodyMasterSchema = Joi.object({
 
 export const UpdateBodyRealmSchema = Joi.object({
   name: Joi.string().optional(),
+}).required()
+
+export const RemoveUserBodyRealmSchema = Joi.object({
+  userIds: Joi.array().items(Joi.string()).required(),
 }).required()
 
 export type GetMaster = Prisma.PromiseReturnType<typeof api.organisation.master.get>

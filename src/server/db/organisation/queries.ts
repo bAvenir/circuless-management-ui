@@ -85,6 +85,21 @@ export const OrganisationQueries = {
     )
   },
 
+  async removeUsersRealm<T extends Prisma.OrganisationDefaultArgs>(id: string, realm: Realm, data: organisationTypes.RemoveUserBodyRealm, args?: T) {
+    return queryWrapper(
+      async () =>
+        (await prisma.organisation.update({
+          where: { id, realm },
+          data: {
+            users: {
+              disconnect: data.userIds.map((id) => ({ id })),
+            },
+          },
+          ...args,
+        })) as unknown as Prisma.OrganisationGetPayload<T>
+    )
+  },
+
   async delete<T extends Prisma.OrganisationDefaultArgs>(id: string, args?: T) {
     return queryWrapper(
       async () =>

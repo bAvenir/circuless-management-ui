@@ -11,16 +11,6 @@ export const RealmOrganisationApi = {
     }).then((res) => res.data.value)
   },
 
-  async updateMy(realm: Realm, data: organisationTypes.UpdateBodyRealm) {
-    return await $fetch(`/api/realm/${realm}/organisation/my`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: data,
-    })
-  },
-
   async getAll(realm: Realm) {
     return await useFetch(`/api/realm/${realm}/organisation`, {
       method: 'GET',
@@ -38,5 +28,25 @@ export const RealmOrganisationApi = {
         'Content-Type': 'application/json',
       },
     }).then((res) => res.data.value)
+  },
+
+  async updateMy(realm: Realm, data: organisationTypes.UpdateBodyRealm) {
+    return await $fetch(`/api/realm/${realm}/organisation/my`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data,
+    })
+  },
+
+  async removeUsersFromMy(realm: Realm, data: organisationTypes.RemoveUserBodyRealm) {
+    return await $fetch(`/api/realm/${realm}/organisation/my/remove-users`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data,
+    })
   },
 }
