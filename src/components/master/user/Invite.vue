@@ -126,10 +126,6 @@ const resolver = (event: any) => {
 const onFormSubmit = async (event: any) => {
   if (event.valid) {
     const states = event.states!
-    console.log('states', states)
-    console.log('states.realm?.value', states.realm?.value)
-    console.log('states.organisation?.value', states.organisation?.value)
-    console.log('organisation.value?.realm', organisation.value?.realm)
     const data: userTypes.InviteBody = {
       email: states.email?.value,
       givenName: states.givenName?.value,

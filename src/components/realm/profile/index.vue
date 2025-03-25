@@ -34,40 +34,41 @@
 </template>
 
 <script lang="ts" setup>
-import type { Realm } from '@prisma/client'
-import { useRealmUserStore } from '~/stores/realm/user'
+import type { userTypes } from '~/shared/types'
 
-const { realm } = defineProps<{
-  realm: Realm
+const { my } = defineProps<{
+  my: userTypes.GetMy
+  loading: boolean
 }>()
 
 const { $oidc } = useNuxtApp()
 const router = useRouter()
-const realmUserStore = useRealmUserStore()
 
 const open = ref(false)
-const { my, loading } = storeToRefs(realmUserStore)
 
 const toggle = (event: any) => {
   open.value = !open.value
 }
 
 const logout = async () => {
-  await $oidc.logout(realm)
+  const realm = my?.realm
+  if (realm) await $oidc.logout(realm)
   router.push('/')
 }
 
 const goToNodeAdmin = () => {
-  router.push(`/${realm}/node-admin`)
+  const realm = my?.realm
+  if (realm) router.push(`/${realm}/node-admin`)
   open.value = false
 }
 
 const goToOrganisationAdmin = () => {
-  router.push(`/${realm}/organisation-admin`)
+  const realm = my?.realm
+  if (realm) router.push(`/${realm}/organisation-admin`)
   open.value = false
 }
 
-const name = computed(() => `${my.value?.givenName} ${my.value?.familyName?.at(0)}.`)
+const name = computed(() => `${my?.givenName} ${my?.familyName?.at(0)}.`)
 </script>
 
 <style></style>

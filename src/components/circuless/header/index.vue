@@ -3,14 +3,21 @@
     <CirculessHeaderLogo class="pl-4" />
     <div class="flex items-center gap-3 h-full">
       <NuxtLink v-if="$viewport.isGreaterThan('tablet')" to="/circuless/node-admin">
-        <Button label="Node management" icon="pi pi-cog"  severity="secondary" size="small" />
+        <Button label="Node management" icon="pi pi-cog" severity="secondary" size="small" />
       </NuxtLink>
-      <RealmProfile realm="circuless" class=" text-text" />
+      <RealmProfile :my="my" :loading="loading" class="text-text" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import type { userTypes } from '~/shared/types'
+
+const { my, loading } = defineProps<{
+  my: userTypes.GetMy
+  loading: boolean
+}>()
+
 const { $oidc } = useNuxtApp()
 const router = useRouter()
 

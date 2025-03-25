@@ -86,7 +86,6 @@ const onPartnershipCreated = async (data: partnershipTypes.CreateBody) => {
 }
 
 const onPartnershipSelected = async (partnership: partnershipTypes.GetMyIngress | partnershipTypes.GetMyEgress) => {
-  console.log(partnership)
 }
 
 const onPartnershipDeleted = async (partnership: partnershipTypes.GetMyIngress | partnershipTypes.GetMyEgress) => {
