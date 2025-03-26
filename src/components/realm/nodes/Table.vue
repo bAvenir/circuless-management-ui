@@ -8,10 +8,11 @@
         </IconField>
       </div>
     </div>
-    <div class="w-full grow pb-20">
+    <div v-if="nodes.length > 0" class="w-full grow pb-20">
       <div v-for="node of nodes" class="w-full">
         <div
           class="flex items-center gap-2 justify-between w-full border-b border-whitesmoke border-opacity-10 py-8 hover:bg-realm-secondary-800 cursor-pointer px-4"
+          @click="emit('onSelect', node.id)"
         >
           <RealmNodesPreview :node="node" class="text-white" />
           <div class="flex items-center gap-4 shrink-0">
@@ -21,6 +22,7 @@
         </div>
       </div>
     </div>
+    <div v-else class="flex flex-col text-lg text-white w-full lg:pr-16">No records found</div>
   </div>
 </template>
 
@@ -31,6 +33,8 @@ const { nodes, loading } = defineProps<{
   nodes: nodeTypes.WithStringDates[]
   loading: boolean
 }>()
+
+const emit = defineEmits(['onSelect', 'onDelete'])
 
 const search = ref('')
 </script>

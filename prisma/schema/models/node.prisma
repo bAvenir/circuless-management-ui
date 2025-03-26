@@ -21,7 +21,7 @@ model Node {
     wireguard   NodeWireguard?
     wireguardId String?
 
-    owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    owner   Organisation   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
     ownerId String
 
     createdAt DateTime @default(now())

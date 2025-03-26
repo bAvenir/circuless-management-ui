@@ -1,9 +1,11 @@
 <template>
   <div class="w-full h-full flex items-center justify-between">
-    <div v-if="$viewport.isGreaterThan('tablet')" class="grow flex items-center justify-center h-full bg-[url('/images/nodes.png')] bg-cover bg-center">
-    </div>
+    <div
+      v-if="$viewport.isGreaterThan('tablet')"
+      class="grow flex items-center justify-center h-full bg-[url('/images/nodes.png')] bg-cover bg-center"
+    ></div>
     <div class="w-full lg:w-[800px] bg-realm-secondary-950 h-full">
-      <RealmNodesTable :nodes="allMy ?? []" :loading="loading" />
+      <RealmNodesTable :nodes="allMy ?? []" :loading="loading" @onSelect="onNodeSelected" />
     </div>
   </div>
 </template>
@@ -15,10 +17,15 @@ import { useRealmNodeStore } from '~/stores/realm/node'
 const realmNodeStore = useRealmNodeStore()
 const { allMy, loading } = storeToRefs(realmNodeStore)
 const route = useRoute()
+const router = useRouter()
 
 const realm = ref(route.params.realm as Realm)
 
 await realmNodeStore.getAllMy(realm.value)
+
+const onNodeSelected = (nodeId: string) => {
+  router.push({ path: `/${realm.value}/node-admin/${nodeId}` })
+}
 </script>
 
 <style></style>

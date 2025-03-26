@@ -34,8 +34,9 @@ export const CreateBodyMasterSchema = Joi.object({
 }).required()
 
 export type GetMaster = Prisma.PromiseReturnType<typeof api.node.master.get>
-export type GetAllMyRealm = Prisma.PromiseReturnType<typeof api.node.realm.getAllMy>
+export type GetMyRealm = Prisma.PromiseReturnType<typeof api.node.realm.getMy>
 export type GetAllMaster = Prisma.PromiseReturnType<typeof api.node.master.getAll>
+export type GetAllMyRealm = Prisma.PromiseReturnType<typeof api.node.realm.getAllMy>
 
 // Workaround for issue https://github.com/prisma/prisma/discussions/5522
 export type WithStringDates = Omit<Prisma.NodeGetPayload<{}>, 'createdAt' | 'updatedAt'> & {
