@@ -1,18 +1,18 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 async function main() {
-  const user = await prisma.user.findFirst({
+  const organisation = await prisma.organisation.findFirst({
     where: {
       realm: 'circuless',
     },
   })
-  if (user) {
+  if (organisation) {
     await prisma.node.createMany({
-      data: [...Array(10).keys()].map((i) => ({
+      data: Array.from({ length: 10 }, (_, i) => ({
         name: `Test Node ${i}`,
         host: `www.test${i}.com`,
         access: 'direct',
-        ownerId: user.id,
+        ownerId: organisation.id,
         realm: 'circuless',
         version: '1.0.0',
       })),

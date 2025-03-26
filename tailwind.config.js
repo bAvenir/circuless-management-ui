@@ -56,6 +56,7 @@ export default {
       },
       fontSize: {
         regular: '14px',
+        xxs: '10px',
       },
     },
   },

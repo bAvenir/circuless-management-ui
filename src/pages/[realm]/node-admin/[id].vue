@@ -1,6 +1,15 @@
 <template>
-  <div>
-    {{ my?.name }}
+  <div v-if="$viewport.isGreaterThan('tablet')" class="w-full h-full flex">
+    <RealmNodeAdminMenu />
+    <div class="grow h-full p-4 bg-realm-primary-100">
+      {{ my?.name }}
+    </div>
+  </div>
+  <div v-else class="w-full h-full flex flex-col">
+    <div class="grow w-full p-4 bg-realm-primary-100">
+      {{ my?.name }}
+    </div>
+    <RealmNodeAdminMenu />
   </div>
 </template>
 
