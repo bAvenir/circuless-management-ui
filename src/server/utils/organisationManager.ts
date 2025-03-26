@@ -52,7 +52,6 @@ class OrganisationManager {
     const affected: Affected = { created: [], updated: [], deleted: [] }
     for (const realm of realms) {
       const allKcOrganisations = await keycloak.getOrganisations(event, realm)
-      console.log('allKcOrganisations', allKcOrganisations)
       const organisationsAffected: Affected = { created: [], updated: [], deleted: [] }
 
       for (const kcOrganisation of allKcOrganisations) {
