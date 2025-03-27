@@ -3,6 +3,9 @@ export default {
   content: ['./src/**/*.{js,vue,ts}'],
   theme: {
     extend: {
+      screens: {
+        'xs': '425px',
+      },
       colors: {
         realm: {
           primary: {

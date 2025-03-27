@@ -11,39 +11,41 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
+    "@bavenir/spade-node-js-client": "^1.2.7",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@pinia/nuxt": "^0.10.1",
     "@primeuix/themes": "^1.0.0",
-    "@primevue/forms": "^4.2.5",
-    "@prisma/client": "^6.4.1",
+    "@primevue/forms": "^4.3.3",
+    "@prisma/client": "^6.5.0",
     "@prisma/nuxt": "^0.3.0",
     "@types/lodash": "^4.17.16",
     "joi": "^17.13.3",
     "jose": "^5.10.0",
     "lodash": "^4.17.21",
-    "nuxt": "^3.15.4",
+    "nuxt": "^3.16.1",
     "nuxt-viewport": "^2.2.0",
-    "oidc-client-ts": "^3.1.0",
+    "oidc-client-ts": "^3.2.0",
     "pinia": "^3.0.1",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.5",
-    "prisma": "^6.4.1",
-    "tailwind-merge": "^3.0.1",
+    "prisma": "^6.5.0",
+    "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-primeui": "^0.4.0",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
-    "@nuxtjs/tailwindcss": "^6.13.1",
-    "@primevue/nuxt-module": "^4.2.5",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.2",
-    "typescript": "^5.7.3"
+    "@nuxtjs/tailwindcss": "^6.13.2",
+    "@primevue/nuxt-module": "^4.3.3",
+    "@types/node": "^22.13.14",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "typescript": "^5.8.2"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

@@ -7,3 +7,7 @@
   overflow: visible !important;
   overflow-x: visible !important;
 }
+
+.no-header-panel > .p-panel-header {
+  display: none;
+}
