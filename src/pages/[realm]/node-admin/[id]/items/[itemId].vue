@@ -1,6 +1,6 @@
 <template>
   <div v-if="$viewport.isGreaterThan('tablet')" class="w-full h-full flex">
-    <div class="h-full grow flex flex-col overflow-y-auto lg:max-w-[400px] pt-4 lg:pt-0">
+    <div class="h-full grow flex flex-col lg:max-w-[400px] pt-4 lg:pt-0">
       <RealmNodeAdminItemTable :items="myItems" @onSelect="onItemSelected" />
     </div>
     <Divider layout="vertical" />
