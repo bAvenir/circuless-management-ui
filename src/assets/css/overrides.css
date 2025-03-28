@@ -11,3 +11,14 @@
 .no-header-panel > .p-panel-header {
   display: none;
 }
+.grow-panel-content {
+  @apply flex flex-col overflow-y-auto;
+}
+
+.grow-panel-content > .p-panel-content-container {
+  @apply grow overflow-y-auto;
+}
+
+.grow-panel-content > .p-panel-content-container > .p-panel-content {
+  @apply h-full;
+}

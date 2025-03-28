@@ -1,12 +1,15 @@
 <template>
-  <div class="w-full h-full flex">
-    <div class="h-full grow flex flex-col overflow-y-auto lg:max-w-[400px] pt-4 px-4 lg:px-0 lg:pt-0">
+  <div v-if="$viewport.isGreaterThan('tablet')" class="w-full h-full flex">
+    <div class="h-full grow flex flex-col overflow-y-auto lg:max-w-[400px] pt-4 lg:pt-0">
       <RealmNodeAdminItemTable :items="myItems" @onSelect="onItemSelected" />
     </div>
-    <Divider v-if="$viewport.isGreaterThan('tablet')" layout="vertical" />
-    <div v-if="$viewport.isGreaterThan('tablet')" class="grow h-full rounded-md bg-slate-100 flex items-center justify-center text-slate-300">
-      No item selected
+    <Divider layout="vertical" />
+    <div class="grow h-full">
+      <NuxtPage />
     </div>
+  </div>
+  <div v-else class="w-full h-full">
+    <NuxtPage />
   </div>
 </template>
 

@@ -55,7 +55,8 @@ export default {
         text: '#333333',
         danger: '#EA5455',
         whitesmoke: '#f3f3f3',
-        grey: '#636363'
+        grey: '#636363',
+        lightBrown: '#ddb593',
       },
       fontSize: {
         regular: '14px',

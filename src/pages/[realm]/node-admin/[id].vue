@@ -2,11 +2,11 @@
   <div class="w-full h-full flex flex-col-reverse lg:flex-row">
     <RealmNodeAdminMenu :my="my" />
     <div v-if="$viewport.isGreaterThan('tablet')" class="grow h-full p-4 bg-realm-primary-100 flex flex-col overflow-x-hidden">
-      <Panel #default class="grow w-full no-header-panel pt-4 overflow-auto">
+      <Panel #default class="grow w-full no-header-panel pt-4 grow-panel-content">
         <NuxtPage />
       </Panel>
     </div>
-    <div v-else class="grow h-full p-4 bg-white overflow-y-auto">
+    <div v-else class="grow h-full bg-white overflow-y-auto">
       <NuxtPage />
     </div>
   </div>
