@@ -1,5 +1,5 @@
 import type { Realm } from '@prisma/client'
-import type { nodeTypes } from '~/shared/types'
+import type { nodeTypes, itemTypes } from '~/shared/types'
 import type { ItemTD } from '@bavenir/spade-node-js-client'
 
 export const useRealmNodeStore = defineStore('realmNodeStore', {
@@ -7,6 +7,7 @@ export const useRealmNodeStore = defineStore('realmNodeStore', {
     allMy: undefined as nodeTypes.GetAllMyRealm | undefined,
     my: undefined as nodeTypes.GetMyRealm | undefined,
     myItems: undefined as ItemTD[] | undefined,
+    myItem: undefined as itemTypes.ItemWithOrganisation | undefined,
     loading: false,
   }),
   actions: {
@@ -32,12 +33,27 @@ export const useRealmNodeStore = defineStore('realmNodeStore', {
       }
     },
 
-    async runMyDisovery() {
+    async getMyItems() {
       try {
         this.loading = true
         const items = await Promise.resolve(mockItems)
         this.myItems = items
         return items
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async getMyItem(id: string, realm: Realm) {
+      try {
+        this.loading = true
+        const item: itemTypes.ItemWithOrganisation | undefined = await Promise.resolve(mockItems.find((item) => item.id === id))
+        const orgId = item?.['SPADE:organisation']?.['@id']
+        if (orgId) {
+          item.organisation = await api.organisation.realm.get(orgId.replace('urn:organisation:', ''), realm)
+        }
+        this.myItem = item
+        return item
       } finally {
         this.loading = false
       }
@@ -84,7 +100,7 @@ const mockItems = [
     'dct:hasVersion': 'Version 1',
     'dct:licenseHolder': 'https://creativecommons.org',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -240,7 +256,7 @@ const mockItems = [
     },
     'schema:identifier': 'SHMU_99111',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -399,7 +415,7 @@ const mockItems = [
     },
     'schema:identifier': 'SHMU_11813',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -576,7 +592,7 @@ const mockItems = [
     },
     'schema:identifier': 'SHMU_99801',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -663,7 +679,7 @@ const mockItems = [
       Caption: 'Public',
     },
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -862,7 +878,7 @@ const mockItems = [
     },
     'schema:identifier': 'SHMU_99117',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -1061,7 +1077,7 @@ const mockItems = [
     },
     'schema:identifier': 'SHMU_99501',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -1260,7 +1276,7 @@ const mockItems = [
     },
     'schema:identifier': 'SHMU_99503',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -1316,7 +1332,7 @@ const mockItems = [
       Caption: 'Public',
     },
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -1409,7 +1425,7 @@ const mockItems = [
     },
     'schema:identifier': 'SHMU_99114',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -1460,7 +1476,7 @@ const mockItems = [
       Caption: 'Partners',
     },
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -1638,7 +1654,7 @@ const mockItems = [
     },
     'schema:identifier': 'SHMU_99112',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -1816,7 +1832,7 @@ const mockItems = [
     },
     'schema:identifier': 'SHMU_99502',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {
@@ -1865,7 +1881,7 @@ const mockItems = [
     'dct:hasVersion': 'v0.0.1',
     'dct:licenseHolder': 'Jorge Al',
     'SPADE:organisation': {
-      '@id': 'urn:organisation:f487a02f-6952-4b50-93af-a3c90c0bd044',
+      '@id': 'cm8oiwy0n002lupay2760llne',
     },
     securityDefinitions: {
       Bearer: {

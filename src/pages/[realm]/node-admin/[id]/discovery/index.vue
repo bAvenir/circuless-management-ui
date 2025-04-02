@@ -23,7 +23,7 @@ const search = ref('')
 const realm = ref(route.params.realm as Realm)
 const nodeId = ref(route.params.id as string)
 
-await realmNodeStore.runMyDisovery()
+await realmNodeStore.getMyItems()
 
 const onItemSelected = (itemId: string) => {
   router.push({ path: `/${realm.value}/node-admin/${nodeId.value}/discovery/${itemId}` })

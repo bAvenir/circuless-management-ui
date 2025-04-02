@@ -21,6 +21,10 @@ export default defineNuxtConfig({
       ignore: ['/master', '/circuless'],
     },
   },
+  experimental: {
+    appManifest: false,
+    asyncContext: true,
+  },
   modules: ['@prisma/nuxt', '@nuxtjs/tailwindcss', '@pinia/nuxt', '@primevue/nuxt-module', 'nuxt-viewport'],
   css: ['~/assets/css/main.css', '~/assets/css/overrides.css', 'primeicons/primeicons.css', '@fortawesome/fontawesome-svg-core/styles.css'],
   postcss: {

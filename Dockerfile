@@ -1,4 +1,4 @@
-FROM node:20-slim AS base
+FROM node:23-slim AS base
 RUN mkdir /app && chown -R node:node /app
 WORKDIR /app
 RUN apt update && apt install --yes openssl
