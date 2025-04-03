@@ -53,6 +53,7 @@ export default {
           lightGreen: '#cbd9bc',
         },
         text: '#333333',
+        success: '#277e26',
         danger: '#EA5455',
         whitesmoke: '#f3f3f3',
         grey: '#636363',

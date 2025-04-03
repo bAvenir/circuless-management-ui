@@ -41,11 +41,8 @@
       </div>
       <RealmNodeAdminMenuNavButton icon="fa fa-circle-nodes" :label="my?.name ?? ''" :path="path" />
     </div>
-    <Drawer v-model:visible="profileVisible" header="Node profile" position="bottom" style="height: auto">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </p>
+    <Drawer v-model:visible="profileVisible" header=" " position="bottom" style="height: 30rem" :pt="{'header': 'pb-0'}">
+      <RealmNodeAdminNode :my="my" />
     </Drawer>
   </div>
 </template>

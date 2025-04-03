@@ -45,7 +45,7 @@ const handleResize = debounce(() => {
   if ($viewport.isGreaterThan('tablet') && route.path === currentPath.value) {
     navigateTo(`${path}/section/settings`)
   }
-}, 200)
+}, 10)
 
 const currentPath = computed(() => router.currentRoute.value.path)
 </script>

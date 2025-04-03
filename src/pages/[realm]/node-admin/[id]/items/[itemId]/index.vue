@@ -50,7 +50,7 @@
               <div class="text-sm">Events (0)</div>
             </Tab>
           </TabList>
-          <TabPanels :pt="{'root': 'px-1'}">
+          <TabPanels :pt="{'root': 'px-0'}">
             <TabPanel value="0">
               <RealmNodeAdminItemPropsTable :item="myItem" />
             </TabPanel>

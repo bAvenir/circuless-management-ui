@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full py-5 px-4 flex items-center gap-4 max-w-[48rem]">
+  <div class="w-full py-5 px-5 flex items-center gap-4 max-w-[48rem]">
     <div class="grow flex flex-col gap-4">
       <div class="font-semibold text-realm-text-600">{{ property?.title }}</div>
       <div class="text-sm text-realm-text-300 flex flex-col gap-0.5">
