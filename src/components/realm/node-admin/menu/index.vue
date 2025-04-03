@@ -9,7 +9,7 @@
     <div class="w-full grow"></div>
     <RealmNodeAdminMenuNodeProfilePreview :my="my" />
   </div>
-  <div v-else class="w-full h-12 xs:h-16 bg-realm-secondary-950 flex justify-center">
+  <div v-else class="w-full h-12 xs:h-16 bg-realm-secondary-950 flex justify-center fixed lg:inherit bottom-0 left-0 z-50">
     <div class="grow h-full">
       <RealmNodeAdminMenuNodeProfilePreview :my="my" />
     </div>
@@ -21,6 +21,7 @@
     <div class="grow h-full"></div>
     <div v-if="$viewport.isGreaterThan('mobileWide')" class="w-10"></div>
   </div>
+  <div v-if="$viewport.isLessOrEquals('tablet')" class="w-full h-12 xs:h-16" />
 </template>
 
 <script lang="ts" setup>
