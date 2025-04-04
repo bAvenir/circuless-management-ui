@@ -1,7 +1,7 @@
 import type { Realm } from '@prisma/client'
 
 export const RealmNodeApi = {
-  async getMy(id:string, realm: Realm) {
+  async useGetMy(id:string, realm: Realm) {
     if (!isValidId(id)) throw new Error('Invalid id') 
     return await useFetch(`/api/realm/${realm}/node/my/${id}`, {
       method: 'GET',
@@ -11,7 +11,7 @@ export const RealmNodeApi = {
     }).then((res) => res.data.value)
   },
 
-  async getAllMy(realm: Realm) {
+  async useGetAllMy(realm: Realm) {
     return await useFetch(`/api/realm/${realm}/node/my`, {
       method: 'GET',
       headers: {

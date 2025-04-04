@@ -12,7 +12,7 @@ export const RealmPartnershipApi = {
     })
   },
 
-  async getAllMy(realm: Realm) {
+  async useGetAllMy(realm: Realm) {
     return await useFetch(`/api/realm/${realm}/partnership/my`, {
       method: 'GET',
       headers: {
@@ -21,7 +21,7 @@ export const RealmPartnershipApi = {
     }).then((res) => res.data.value)
   },
 
-  async getMyIngress(id: string, realm: Realm) {
+  async useGetMyIngress(id: string, realm: Realm) {
     if (!isValidId(id)) throw new Error('Invalid id')
     return await useFetch(`/api/realm/${realm}/partnership/my/${id}/ingress`, {
       method: 'GET',
@@ -31,7 +31,7 @@ export const RealmPartnershipApi = {
     }).then((res) => res.data.value)
   },
 
-  async getMyEgress(id: string, realm: Realm) {
+  async useGetMyEgress(id: string, realm: Realm) {
     if (!isValidId(id)) throw new Error('Invalid id')
     return await useFetch(`/api/realm/${realm}/partnership/my/${id}/egress`, {
       method: 'GET',

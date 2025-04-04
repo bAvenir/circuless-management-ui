@@ -11,7 +11,7 @@ export const MasterUserApi = {
     })
   },
 
-  async getAll() {
+  async useGetAll() {
     return await useFetch(`/api/master/user`, {
       method: 'GET',
       headers: {
@@ -20,7 +20,7 @@ export const MasterUserApi = {
     }).then((res) => res.data.value)
   },
 
-  async get(id: string) {
+  async useGet(id: string) {
     if (!isValidId(id)) throw new Error('Invalid id')
     return await useFetch(`/api/master/user/${id}`, {
       method: 'GET',

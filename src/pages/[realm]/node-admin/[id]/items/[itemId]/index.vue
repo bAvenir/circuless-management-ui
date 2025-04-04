@@ -76,7 +76,12 @@ const { myItem, loading } = storeToRefs(realmNodeStore)
 const realm = ref(route.params.realm as Realm)
 const itemId = ref(route.params.itemId as string)
 
-await realmNodeStore.getMyItem(itemId.value, realm.value)
+try {
+  await realmNodeStore.getMyItem(itemId.value, realm.value)
+} catch (error) {
+  console.error('Error fetching item:', error)
+}
+// await realmNodeStore.getMyItem(itemId.value, realm.value)
 
 const goToItems = () => {
   const nodeId = route.params.id as string

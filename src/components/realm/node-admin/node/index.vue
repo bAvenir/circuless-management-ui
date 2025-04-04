@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-6">
-    <div class="text-xl font-bold leading-none border-b border-slate-200 px-4 lg:px-0 pb-4 pt-4 lg:pt-0">
+    <div class="text-xl font-medium leading-none border-b border-slate-200 px-4 lg:px-0 pb-4 pt-4 lg:pt-0">
       <div class="flex items-center gap-2 h-[2.625rem]">
         <i class="pi pi-circle-fill text-success"></i>
         <div>{{ my?.name }} online</div>

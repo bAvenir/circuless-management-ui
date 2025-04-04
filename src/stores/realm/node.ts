@@ -14,7 +14,7 @@ export const useRealmNodeStore = defineStore('realmNodeStore', {
     async getMy(id: string, realm: Realm) {
       try {
         this.loading = true
-        const node = await api.node.realm.getMy(id, realm)
+        const node = await api.node.realm.useGetMy(id, realm)
         this.my = node
         return node
       } finally {
@@ -25,7 +25,7 @@ export const useRealmNodeStore = defineStore('realmNodeStore', {
     async getAllMy(realm: Realm) {
       try {
         this.loading = true
-        const nodes = await api.node.realm.getAllMy(realm)
+        const nodes = await api.node.realm.useGetAllMy(realm)
         this.allMy = nodes
         return nodes
       } finally {
@@ -50,7 +50,7 @@ export const useRealmNodeStore = defineStore('realmNodeStore', {
         const item: itemTypes.ItemWithOrganisation | undefined = await Promise.resolve(mockItems.find((item) => item.id === id))
         const orgId = item?.['SPADE:organisation']?.['@id']
         if (orgId) {
-          item.organisation = await api.organisation.realm.get(orgId.replace('urn:organisation:', ''), realm)
+          item.organisation = await api.organisation.realm.useGet(`${orgId}asd`.replace('urn:organisation:', ''), realm)
         }
         this.myItem = item
         return item

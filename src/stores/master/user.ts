@@ -19,7 +19,7 @@ export const useMasterUserStore = defineStore('masterUserStore', {
     async getAll() {
       try {
         this.loading = true
-        const users = await api.user.master.getAll()
+        const users = await api.user.master.useGetAll()
         this.allUsers = users ?? []
         return users
       } finally {
@@ -30,7 +30,7 @@ export const useMasterUserStore = defineStore('masterUserStore', {
     async get(id: string) {
       try {
         this.loading = true
-        const user = await api.user.master.get(id)
+        const user = await api.user.master.useGet(id)
         this.user = user
         return user
       } finally {

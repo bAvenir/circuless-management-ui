@@ -21,7 +21,7 @@ export const useMasterOrganisationStore = defineStore('masterOrganisationStore',
     async getAll() {
       try {
         this.loading = true
-        const organisations = await api.organisation.master.getAll()
+        const organisations = await api.organisation.master.useGetAll()
         this.allOrganisations = organisations ?? []
         return organisations
       } finally {
@@ -32,7 +32,7 @@ export const useMasterOrganisationStore = defineStore('masterOrganisationStore',
     async get(id: string) {
       try {
         this.loading = true
-        const organisation = await api.organisation.master.get(id)
+        const organisation = await api.organisation.master.useGet(id)
         this.organisation = organisation
         return organisation
       } finally {

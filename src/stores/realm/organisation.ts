@@ -10,7 +10,7 @@ export const useRealmOrganisationStore = defineStore('realmOrganisationStore', {
     async getAll(realm: Realm) {
       try {
         this.loading = true
-        const organisations = await api.organisation.realm.getAll(realm)
+        const organisations = await api.organisation.realm.useGetAll(realm)
         this.all = organisations ?? []
         return organisations
       } finally {

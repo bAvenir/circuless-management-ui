@@ -12,7 +12,7 @@ export const useRealmUserStore = defineStore('realmUserStore', {
     async getMy(realm: Realm) {
       try {
         this.loading = true
-        const user = await api.user.realm.getMy(realm)
+        const user = await api.user.realm.useGetMy(realm)
         this.my = user
         return user
       } finally {
@@ -23,7 +23,7 @@ export const useRealmUserStore = defineStore('realmUserStore', {
     async getAll(realm: Realm) {
       try {
         this.loading = true
-        const users = await api.user.realm.getAll(realm)
+        const users = await api.user.realm.useGetAll(realm)
         this.all = users ?? []
         return users
       } finally {
@@ -34,7 +34,7 @@ export const useRealmUserStore = defineStore('realmUserStore', {
     async get(realm: Realm, id: string) {
       try {
         this.loading = true
-        const user = await api.user.realm.get(id, realm)
+        const user = await api.user.realm.useGet(id, realm)
         this.user = user
         return user
       } finally {

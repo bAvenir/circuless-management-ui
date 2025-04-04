@@ -21,7 +21,7 @@ export const useMasterNodeStore = defineStore('masterNodeStore', {
     async getAll() {
       try {
         this.loading = true
-        const nodes = await api.node.master.getAll()
+        const nodes = await api.node.master.useGetAll()
         this.allNodes = nodes ?? []
         return nodes
       } finally {
@@ -32,7 +32,7 @@ export const useMasterNodeStore = defineStore('masterNodeStore', {
     async get(id: string) {
       try {
         this.loading = true
-        const node = await api.node.master.get(id)
+        const node = await api.node.master.useGet(id)
         this.node = node
         return node
       } finally {

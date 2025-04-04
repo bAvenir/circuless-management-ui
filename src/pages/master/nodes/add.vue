@@ -1,5 +1,5 @@
 <template>
-  <Error>
+  <div class="w-full">
     <div class="w-full">
       <NuxtLink to="/master/nodes">
         <Button label="Back" icon="pi pi-arrow-left" variant="link" />
@@ -37,7 +37,7 @@
         </Tabs>
       </div>
     </div>
-  </Error>
+  </div>
 </template>
 
 <script setup lang="ts">

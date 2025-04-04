@@ -2,7 +2,7 @@ import type { Realm } from '@prisma/client'
 import type { userTypes } from '~/shared/types'
 
 export const RealmUserApi = {
-  async getAll(realm: Realm) {
+  async useGetAll(realm: Realm) {
     return await useFetch(`/api/realm/${realm}/user`, {
       method: 'GET',
       headers: {
@@ -11,7 +11,7 @@ export const RealmUserApi = {
     }).then((res) => res.data.value)
   },
 
-  async get(id: string, realm: Realm) {
+  async useGet(id: string, realm: Realm) {
     if (!isValidId(id)) throw new Error('Invalid id')
     return await useFetch(`/api/realm/${realm}/user/${id}`, {
       method: 'GET',
@@ -21,7 +21,7 @@ export const RealmUserApi = {
     }).then((res) => res.data.value)
   },
 
-  async getMy(realm: Realm) {
+  async useGetMy(realm: Realm) {
     return await useFetch(`/api/realm/${realm}/user/my`, {
       method: 'GET',
       headers: {
