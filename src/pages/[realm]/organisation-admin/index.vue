@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full">
     <div class="py-8">
       <RealmOraganisationAdminPreview :organisation="my?.organisation" :loading="loading" />
     </div>

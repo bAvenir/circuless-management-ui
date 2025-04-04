@@ -49,8 +49,12 @@ export const useRealmNodeStore = defineStore('realmNodeStore', {
         this.loading = true
         const item: itemTypes.ItemWithOrganisation | undefined = await Promise.resolve(mockItems.find((item) => item.id === id))
         const orgId = item?.['SPADE:organisation']?.['@id']
-        if (orgId) {
-          item.organisation = await api.organisation.realm.useGet(`${orgId}asd`.replace('urn:organisation:', ''), realm)
+        if (orgId && import.meta.client) {
+          try {
+            item.organisation = await api.organisation.realm.get(orgId, realm)
+          } catch (e) {
+            console.warn('Failed to fetch organisation', e)
+          }
         }
         this.myItem = item
         return item

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full lg:flex lg:flex-col">
     <RealmHeader :my="my" :loading="loading" class="fixed lg:inherit top-0 left-0 w-full z-50" />
-    <div class="w-full lg:grow bg-whitesmoke bg-opacity-20 pt-14 lg:overflow-y-auto">
+    <div class="w-full h-full lg:h-auto lg:grow bg-whitesmoke bg-opacity-20 pt-14 lg:overflow-y-auto">
       <NuxtPage />
     </div>
   </div>
