@@ -2,67 +2,78 @@ import type { Realm } from '@prisma/client'
 import type { nodeTypes, itemTypes } from '~/shared/types'
 import type { ItemTD } from '@bavenir/spade-node-js-client'
 
-export const useRealmNodeStore = defineStore('realmNodeStore', {
-  state: () => ({
-    allMy: undefined as nodeTypes.GetAllMyRealm | undefined,
-    my: undefined as nodeTypes.GetMyRealm | undefined,
-    myItems: undefined as ItemTD[] | undefined,
-    myItem: undefined as itemTypes.ItemWithOrganisation | undefined,
-    loading: false,
-  }),
-  actions: {
-    async getMy(id: string, realm: Realm) {
-      try {
-        this.loading = true
-        const node = await api.node.realm.useGetMy(id, realm)
-        this.my = node
-        return node
-      } finally {
-        this.loading = false
-      }
-    },
+export const useRealmNodeStore = defineStore('realmNodeStore', () => {
+  const loading = ref(false)
 
-    async getAllMy(realm: Realm) {
-      try {
-        this.loading = true
-        const nodes = await api.node.realm.useGetAllMy(realm)
-        this.allMy = nodes
-        return nodes
-      } finally {
-        this.loading = false
-      }
-    },
+  const allMy = ref<nodeTypes.GetAllMyRealm>([])
+  const my = ref<nodeTypes.GetMyRealm | undefined>(undefined)
 
-    async getMyItems() {
-      try {
-        this.loading = true
-        const items = await Promise.resolve(mockItems)
-        this.myItems = items
-        return items
-      } finally {
-        this.loading = false
-      }
-    },
+  async function getAllMy(realm: Realm) {
+    try {
+      loading.value = true
+      const nodes = await api.node.realm.getAllMy(realm)
+      allMy.value = nodes
+      return nodes
+    } finally {
+      loading.value = false
+    }
+  }
 
-    async getMyItem(id: string, realm: Realm) {
-      try {
-        this.loading = true
-        const item: itemTypes.ItemWithOrganisation | undefined = await Promise.resolve(mockItems.find((item) => item.id === id))
-        const orgId = item?.['SPADE:organisation']?.['@id']
-        if (orgId && import.meta.client) {
-          try {
-            item.organisation = await api.organisation.realm.get(orgId, realm)
-          } catch (e) {
-            console.warn('Failed to fetch organisation', e)
-          }
+  async function getMy(id: string, realm: Realm) {
+    try {
+      loading.value = true
+      const node = await api.node.realm.getMy(id, realm)
+      my.value = node
+      return node
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const allMyItems = ref<ItemTD[] | undefined>(undefined)
+  const myItem = ref<itemTypes.ItemWithOrganisation | undefined>(undefined)
+
+  async function getMyItem(id: string, realm: Realm) {
+    try {
+      loading.value = true
+      const item: itemTypes.ItemWithOrganisation | undefined = await Promise.resolve(mockItems.find((item) => item.id === id))
+      const orgId = item?.['SPADE:organisation']?.['@id']
+      if (orgId) {
+        try {
+          item.organisation = await api.organisation.realm.get(orgId, realm)
+        } catch (e) {
+          console.warn('Failed to fetch organisation', e)
         }
-        this.myItem = item
-        return item
-      } finally {
-        this.loading = false
       }
-    },
-  },
+      myItem.value = item
+      return item
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function getMyItems() {
+    try {
+      loading.value = true
+      const items = await Promise.resolve(mockItems)
+      allMyItems.value = items
+      return items
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    loading,
+    my,
+    allMy,
+    myItem,
+    allMyItems,
+    getMy,
+    getAllMy,
+    getMyItem,
+    getMyItems,
+  }
 })
 
 const mockItems = [

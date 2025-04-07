@@ -1,7 +1,7 @@
 <template>
   <div v-if="$viewport.isGreaterThan('tablet')" class="w-full h-full flex">
     <div class="h-full grow flex flex-col lg:max-w-[400px] pt-4 lg:pt-0">
-      <RealmNodeAdminItemTable :items="myItems" @onSelect="onItemSelected" :selectedItemId="itemId" />
+      <RealmNodeAdminItemTable :items="allMyItems" @onSelect="onItemSelected" :selectedItemId="itemId" />
     </div>
     <Divider layout="vertical" />
     <div class="grow h-full">
@@ -25,7 +25,7 @@ definePageMeta({
 })
 
 const realmNodeStore = useRealmNodeStore()
-const { myItems, loading } = storeToRefs(realmNodeStore)
+const { allMyItems, loading } = storeToRefs(realmNodeStore)
 const route = useRoute()
 const router = useRouter()
 

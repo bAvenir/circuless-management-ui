@@ -2,32 +2,22 @@ import type { Realm } from '@prisma/client'
 import type { organisationTypes } from '~/shared/types'
 
 export const RealmOrganisationApi = {
-  async useGetMy(realm: Realm) {
-    return await useFetch(`/api/realm/${realm}/organisation/my`, {
+  async getMy(realm: Realm) {
+    return await $fetch(`/api/realm/${realm}/organisation/my`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
-  async useGetAll(realm: Realm) {
-    return await useFetch(`/api/realm/${realm}/organisation`, {
+  async getAll(realm: Realm) {
+    return await $fetch(`/api/realm/${realm}/organisation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
-  },
-
-  async useGet(id: string, realm: Realm) {
-    if (!isValidId(id)) throw new Error('Invalid id')
-    return await useFetch(`/api/realm/${realm}/organisation/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((res) => res.data.value)
+    })
   },
 
   async get(id: string, realm: Realm) {

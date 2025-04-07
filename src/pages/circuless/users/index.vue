@@ -46,8 +46,7 @@ const onUserInvited = async (data: userTypes.InviteBody) => {
     toast.predefined.user.invited.success()
     inviteUserVisible.value = false
   } catch (error) {
-    toast.predefined.user.invited.error()
-    throw error
+    toast.predefined.user.invited.error(error)
   }
 }
 
@@ -56,8 +55,7 @@ const onUserDeleted = async (userId: string) => {
     // await masterUserStore.delete(userId)
     toast.predefined.user.deleted.success()
   } catch (error) {
-    toast.predefined.user.deleted.error()
-    throw error
+    toast.predefined.user.deleted.error(error)
   }
 }
 

@@ -1,84 +1,95 @@
 import type { organisationTypes, userTypes } from '~/shared/types'
 
-export const useMasterOrganisationStore = defineStore('masterOrganisationStore', {
-  state: () => ({
-    allOrganisations: [] as organisationTypes.GetAllMaster,
-    organisation: undefined as organisationTypes.GetMaster | undefined,
-    loading: false,
-  }),
-  actions: {
-    async create(data: organisationTypes.CreateBodyMaster) {
-      try {
-        this.loading = true
-        const organisation = await api.organisation.master.create(data)
-        this.allOrganisations?.push(organisation)
-        return organisation
-      } finally {
-        this.loading = false
-      }
-    },
+export const useMasterOrganisationStore = defineStore('masterOrganisationStore', () => {
+  const loading = ref(false)
 
-    async getAll() {
-      try {
-        this.loading = true
-        const organisations = await api.organisation.master.useGetAll()
-        this.allOrganisations = organisations ?? []
-        return organisations
-      } finally {
-        this.loading = false
-      }
-    },
+  const all = ref<organisationTypes.GetAllMaster>([])
+  const one = ref<organisationTypes.GetMaster | undefined>(undefined)
 
-    async get(id: string) {
-      try {
-        this.loading = true
-        const organisation = await api.organisation.master.useGet(id)
-        this.organisation = organisation
-        return organisation
-      } finally {
-        this.loading = false
-      }
-    },
+  async function create(data: organisationTypes.CreateBodyMaster) {
+    try {
+      loading.value = true
+      const organisation = await api.organisation.master.create(data)
+      all.value.push(organisation)
+      return organisation
+    } finally {
+      loading.value = false
+    }
+  }
 
-    async delete(id: string) {
-      try {
-        this.loading = true
-        await api.organisation.master.delete(id)
-        this.allOrganisations = this.allOrganisations?.filter((o) => o.id !== id) ?? []
-        this.organisation = this.organisation?.id === id ? undefined : this.organisation
-      } finally {
-        this.loading = false
-      }
-    },
+  async function getAll() {
+    try {
+      loading.value = true
+      const organisations = await api.organisation.master.getAll()
+      all.value = organisations ?? []
+      return organisations
+    } finally {
+      loading.value = false
+    }
+  }
 
-    async inviteUser(data: userTypes.InviteBody) {
-      try {
-        this.loading = true
-        await api.user.master.invite(data)
-      } finally {
-        this.loading = false
-      }
-    },
+  async function get(id: string) {
+    try {
+      loading.value = true
+      const organisation = await api.organisation.master.get(id)
+      one.value = organisation
+      return organisation
+    } finally {
+      loading.value = false
+    }
+  }
 
-    async sync() {
-      try {
-        this.loading = true
-        const affected = await api.organisation.master.sync()
+  async function deleteOrg(id: string) {
+    try {
+      loading.value = true
+      const organisation = await api.organisation.master.delete(id)
+      all.value = all.value?.filter((o) => o.id !== id) ?? []
+      one.value = one.value?.id === id ? undefined : one.value
+      return organisation
+    } finally {
+      loading.value = false
+    }
+  }
 
-        this.allOrganisations = this.allOrganisations?.concat(affected.created) ?? []
-        this.allOrganisations = this.allOrganisations?.map((u) => affected.updated.find((d) => d.id === u.id) ?? u) ?? []
-        this.allOrganisations = this.allOrganisations?.filter((u) => !affected.deleted.find((d) => d.id === u.id)) ?? []
+  async function inviteUser(data: userTypes.InviteBody) {
+    try {
+      loading.value = true
+      await api.user.master.invite(data)
+    } finally {
+      loading.value = false
+    }
+  }
 
-        const deleteOrganisation = affected.deleted.find((d) => d.id === this.organisation?.id)
-        const updateOrganisation = affected.updated.find((d) => d.id === this.organisation?.id)
+  async function sync() {
+    try {
+      loading.value = true
+      const affected = await api.organisation.master.sync()
 
-        if (updateOrganisation) this.organisation = updateOrganisation
-        if (deleteOrganisation) this.organisation = undefined
+      all.value = all.value.concat(affected.created) ?? []
+      all.value = all.value.map((u) => affected.updated.find((d) => d.id === u.id) ?? u) ?? []
+      all.value = all.value.filter((u) => !affected.deleted.find((d) => d.id === u.id)) ?? []
 
-        return affected
-      } finally {
-        this.loading = false
-      }
-    },
-  },
+      const deleteOrganisation = affected.deleted.find((d) => d.id === one.value?.id)
+      const updateOrganisation = affected.updated.find((d) => d.id === one.value?.id)
+
+      if (updateOrganisation) one.value = updateOrganisation
+      if (deleteOrganisation) one.value = undefined
+
+      return affected
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    loading,
+    all,
+    one,
+    create,
+    getAll,
+    get,
+    deleteOrg,
+    inviteUser,
+    sync,
+  }
 })

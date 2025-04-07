@@ -27,8 +27,7 @@ const onOrganisationUpdated = async (data: organisationTypes.UpdateBodyRealm) =>
     await realmUserStore.updateMyOrganisation(realm.value, data)
     toast.predefined.organisation.updated.success()
   } catch (error) {
-    toast.predefined.organisation.updated.error()
-    throw error
+    toast.predefined.organisation.updated.error(error)
   }
 }
 </script>

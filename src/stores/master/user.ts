@@ -1,62 +1,70 @@
 import type { userTypes } from '~/shared/types'
 
-export const useMasterUserStore = defineStore('masterUserStore', {
-  state: () => ({
-    allUsers: [] as userTypes.GetAllMaster,
-    user: undefined as userTypes.GetMaster | undefined,
-    loading: false,
-  }),
-  actions: {
-    async invite(data: userTypes.InviteBody) {
-      try {
-        this.loading = true
-        await api.user.master.invite(data)
-      } finally {
-        this.loading = false
-      }
-    },
+export const useMasterUserStore = defineStore('masterUserStore', () => {
+  const loading = ref(false)
 
-    async getAll() {
-      try {
-        this.loading = true
-        const users = await api.user.master.useGetAll()
-        this.allUsers = users ?? []
-        return users
-      } finally {
-        this.loading = false
-      }
-    },
+  const all = ref<userTypes.GetAllMaster>([])
+  const one = ref<userTypes.GetMaster | undefined>(undefined)
 
-    async get(id: string) {
-      try {
-        this.loading = true
-        const user = await api.user.master.useGet(id)
-        this.user = user
-        return user
-      } finally {
-        this.loading = false
-      }
-    },
+  async function invite(data: userTypes.InviteBody) {
+    try {
+      loading.value = true
+      await api.user.master.invite(data)
+    } finally {
+      loading.value = false
+    }
+  }
 
-    async sync() {
-      try {
-        this.loading = true
-        const affected = await api.user.master.sync()
+  async function getAll() {
+    try {
+      loading.value = true
+      const users = await api.user.master.getAll()
+      all.value = users ?? []
+      return users
+    } finally {
+      loading.value = false
+    }
+  }
 
-        this.allUsers = this.allUsers?.concat(affected.created) ?? []
-        this.allUsers = this.allUsers?.map((u) => affected.updated.find((d) => d.id === u.id) ?? u) ?? []
-        this.allUsers = this.allUsers?.filter((u) => !affected.deleted.find((d) => d.id === u.id)) ?? []
+  async function get(id: string) {
+    try {
+      loading.value = true
+      const user = await api.user.master.get(id)
+      one.value = user
+      return user
+    } finally {
+      loading.value = false
+    }
+  }
 
-        const deleteUser = affected.deleted.find((d) => d.id === this.user?.id)
-        const updateUser = affected.updated.find((d) => d.id === this.user?.id)
+  async function sync() {
+    try {
+      loading.value = true
+      const affected = await api.user.master.sync()
 
-        if (updateUser) this.user = updateUser
-        if (deleteUser) this.user = undefined
+      all.value = all.value?.concat(affected.created) ?? []
+      all.value = all.value?.map((u) => affected.updated.find((d) => d.id === u.id) ?? u) ?? []
+      all.value = all.value?.filter((u) => !affected.deleted.find((d) => d.id === u.id)) ?? []
 
-        return affected
-      } finally {
-        this.loading = false
-      }
-    },
-  },
+      const deleteUser = affected.deleted.find((d) => d.id === one.value?.id)
+      const updateUser = affected.updated.find((d) => d.id === one.value?.id)
+
+      if (updateUser) one.value = updateUser
+      if (deleteUser) one.value = undefined
+
+      return affected
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    loading,
+    all,
+    one,
+    invite,
+    getAll,
+    get,
+    sync,
+  }
 })

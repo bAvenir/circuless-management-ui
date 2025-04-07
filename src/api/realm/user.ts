@@ -2,32 +2,32 @@ import type { Realm } from '@prisma/client'
 import type { userTypes } from '~/shared/types'
 
 export const RealmUserApi = {
-  async useGetAll(realm: Realm) {
-    return await useFetch(`/api/realm/${realm}/user`, {
+  async getAll(realm: Realm) {
+    return await $fetch(`/api/realm/${realm}/user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
-  async useGet(id: string, realm: Realm) {
+  async get(id: string, realm: Realm) {
     if (!isValidId(id)) throw new Error('Invalid id')
-    return await useFetch(`/api/realm/${realm}/user/${id}`, {
+    return await $fetch(`/api/realm/${realm}/user/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
-  async useGetMy(realm: Realm) {
-    return await useFetch(`/api/realm/${realm}/user/my`, {
+  async getMy(realm: Realm) {
+    return await $fetch(`/api/realm/${realm}/user/my`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
   async invite(data: userTypes.InviteBody) {

@@ -1,43 +1,50 @@
 import type { nodeTypes } from '~/shared/types'
 
-export const useMasterNodeStore = defineStore('masterNodeStore', {
-  state: () => ({
-    allNodes: [] as nodeTypes.GetAllMaster,
-    node: undefined as nodeTypes.GetMaster | undefined,
-    loading: false,
-  }),
-  actions: {
-    async create(data: nodeTypes.CreateBodyMaster) {
-      try {
-        this.loading = true
-        const node = await api.node.master.create(data)
-        this.allNodes?.push(node)
-        return node
-      } finally {
-        this.loading = false
-      }
-    },
+export const useMasterNodeStore = defineStore('masterNodeStore', () => {
+  const loading = ref(false)
 
-    async getAll() {
-      try {
-        this.loading = true
-        const nodes = await api.node.master.useGetAll()
-        this.allNodes = nodes ?? []
-        return nodes
-      } finally {
-        this.loading = false
-      }
-    },
+  const allMy = ref<nodeTypes.GetAllMaster>([])
+  const my = ref<nodeTypes.GetMaster | undefined>(undefined)
 
-    async get(id: string) {
-      try {
-        this.loading = true
-        const node = await api.node.master.useGet(id)
-        this.node = node
-        return node
-      } finally {
-        this.loading = false
-      }
-    },
-  },
+  async function create(data: nodeTypes.CreateBodyMaster) {
+    try {
+      loading.value = true
+      const node = await api.node.master.create(data)
+      allMy.value.push(node)
+      return node
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function getAll() {
+    try {
+      loading.value = true
+      const nodes = await api.node.master.getAll()
+      allMy.value = nodes ?? []
+      return nodes
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function get(id: string) {
+    try {
+      loading.value = true
+      const node = await api.node.master.get(id)
+      my.value = node
+      return node
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    loading,
+    allMy,
+    my,
+    create,
+    getAll,
+    get,
+  }
 })

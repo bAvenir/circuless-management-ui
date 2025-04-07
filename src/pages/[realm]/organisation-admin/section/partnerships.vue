@@ -84,8 +84,7 @@ const onPartnershipCreated = async (data: partnershipTypes.CreateBody) => {
     toast.predefined.partnership.created.success()
     createPartnershipVisible.value = false
   } catch (error) {
-    toast.predefined.partnership.created.error()
-    throw error
+    toast.predefined.partnership.created.error(error)
   }
 }
 
@@ -97,8 +96,7 @@ const onIngressPartnershipDeleted = async (id: string) => {
     await realmUserStore.deleteMyIngressPartnership(realm.value, id)
     toast.predefined.partnership.deleted.success()
   } catch (error) {
-    toast.predefined.partnership.deleted.error()
-    throw error
+    toast.predefined.partnership.deleted.error(error)
   }
 }
 
@@ -107,8 +105,7 @@ const onEgressPartnershipDeleted = async (id: string) => {
     await realmUserStore.deleteMyEgressPartnership(realm.value, id)
     toast.predefined.partnership.deleted.success()
   } catch (error) {
-    toast.predefined.partnership.deleted.error()
-    throw error
+    toast.predefined.partnership.deleted.error(error)
   }
 }
 </script>

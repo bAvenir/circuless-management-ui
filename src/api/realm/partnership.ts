@@ -12,33 +12,33 @@ export const RealmPartnershipApi = {
     })
   },
 
-  async useGetAllMy(realm: Realm) {
-    return await useFetch(`/api/realm/${realm}/partnership/my`, {
+  async getAllMy(realm: Realm) {
+    return await $fetch(`/api/realm/${realm}/partnership/my`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
-  async useGetMyIngress(id: string, realm: Realm) {
+  async getMyIngress(id: string, realm: Realm) {
     if (!isValidId(id)) throw new Error('Invalid id')
-    return await useFetch(`/api/realm/${realm}/partnership/my/${id}/ingress`, {
+    return await $fetch(`/api/realm/${realm}/partnership/my/${id}/ingress`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
-  async useGetMyEgress(id: string, realm: Realm) {
+  async getMyEgress(id: string, realm: Realm) {
     if (!isValidId(id)) throw new Error('Invalid id')
-    return await useFetch(`/api/realm/${realm}/partnership/my/${id}/egress`, {
+    return await $fetch(`/api/realm/${realm}/partnership/my/${id}/egress`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
   async deleteMyIngress(id: string, realm: Realm) {

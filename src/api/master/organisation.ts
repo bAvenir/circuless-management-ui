@@ -11,23 +11,23 @@ export const MasterOrganisationApi = {
     })
   },
 
-  async useGetAll() {
-    return await useFetch('/api/master/organisation', {
+  async getAll() {
+    return await $fetch('/api/master/organisation', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
-  async useGet(id: string) {
+  async get(id: string) {
     if (!isValidId(id)) throw new Error('Invalid id')
-    return await useFetch(`/api/master/organisation/${id}`, {
+    return await $fetch(`/api/master/organisation/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
   async delete(id: string) {

@@ -11,23 +11,23 @@ export const MasterUserApi = {
     })
   },
 
-  async useGetAll() {
-    return await useFetch(`/api/master/user`, {
+  async getAll() {
+    return await $fetch(`/api/master/user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
-  async useGet(id: string) {
+  async get(id: string) {
     if (!isValidId(id)) throw new Error('Invalid id')
-    return await useFetch(`/api/master/user/${id}`, {
+    return await $fetch(`/api/master/user/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
   async sync() {

@@ -27,8 +27,7 @@ const onNodeDeleted = async (nodeId: string) => {
     // await masterNodeStore.delete(nodeId)
     toast.predefined.node.deleted.success()
   } catch (error) {
-    toast.predefined.node.deleted.error()
-    throw error
+    toast.predefined.node.deleted.error(error)
   }
 }
 

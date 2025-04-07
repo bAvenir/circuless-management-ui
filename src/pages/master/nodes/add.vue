@@ -56,8 +56,7 @@ const onNodeCreated = async (data: nodeTypes.CreateBodyMaster) => {
     toast.predefined.node.created.success()
     onCancel()
   } catch (error) {
-    toast.predefined.node.created.error()
-    throw error
+    toast.predefined.node.created.error(error)
   }
 }
 

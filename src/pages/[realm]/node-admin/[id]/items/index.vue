@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full flex">
     <div class="h-full grow flex flex-col lg:max-w-[400px] pt-4 lg:pt-0">
-      <RealmNodeAdminItemTable :items="myItems" @onSelect="onItemSelected" :selectedItemId="itemId" />
+      <RealmNodeAdminItemTable :items="allMyItems" @onSelect="onItemSelected" :selectedItemId="itemId" />
     </div>
     <Divider v-if="$viewport.isGreaterThan('tablet')" layout="vertical" />
     <div v-if="$viewport.isGreaterThan('tablet')" class="grow h-full rounded-md bg-slate-100 flex items-center justify-center text-slate-300">
@@ -15,7 +15,7 @@ import type { Realm } from '@prisma/client'
 import { useRealmNodeStore } from '~/stores/realm/node'
 
 const realmNodeStore = useRealmNodeStore()
-const { myItems, loading } = storeToRefs(realmNodeStore)
+const { allMyItems, loading } = storeToRefs(realmNodeStore)
 const route = useRoute()
 const router = useRouter()
 

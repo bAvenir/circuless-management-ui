@@ -40,8 +40,8 @@ const masterOrganisationStore = useMasterOrganisationStore()
 const toast = useToastService()
 const router = useRouter()
 
-const { allUsers, loading } = storeToRefs(masterUserStore)
-const { allOrganisations } = storeToRefs(masterOrganisationStore)
+const { all: allUsers, loading } = storeToRefs(masterUserStore)
+const { all: allOrganisations } = storeToRefs(masterOrganisationStore)
 
 const inviteUserVisible = ref(false)
 const syncedUsersVisible = ref(false)
@@ -57,8 +57,7 @@ const syncUsers = async () => {
     toast.predefined.user.synced.success()
     syncedUsersVisible.value = true
   } catch (error) {
-    toast.predefined.user.synced.error()
-    throw error
+    toast.predefined.user.synced.error(error)
   }
 }
 
@@ -68,8 +67,7 @@ const onUserInvited = async (data: userTypes.InviteBody) => {
     toast.predefined.user.invited.success()
     inviteUserVisible.value = false
   } catch (error) {
-    toast.predefined.user.invited.error()
-    throw error
+    toast.predefined.user.invited.error(error)
   }
 }
 
@@ -78,8 +76,7 @@ const onUserDeleted = async (userId: string) => {
     // await masterUserStore.delete(userId)
     toast.predefined.user.deleted.success()
   } catch (error) {
-    toast.predefined.user.deleted.error()
-    throw error
+    toast.predefined.user.deleted.error(error)
   }
 }
 

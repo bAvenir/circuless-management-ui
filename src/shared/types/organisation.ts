@@ -36,9 +36,9 @@ export const RemoveUserBodyRealmSchema = Joi.object({
   userIds: Joi.array().items(Joi.string()).required(),
 }).required()
 
-export type GetMaster = Prisma.PromiseReturnType<typeof api.organisation.master.useGet>
-export type GetMyRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.useGetMy>
-export type GetAllMaster = Prisma.PromiseReturnType<typeof api.organisation.master.useGetAll>
-export type GetAllRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.useGetAll>
-export type GetRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.useGet>
+export type GetMaster = Prisma.PromiseReturnType<typeof api.organisation.master.get>
+export type GetMyRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.getMy>
+export type GetAllMaster = Prisma.PromiseReturnType<typeof api.organisation.master.getAll>
+export type GetAllRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.getAll>
+export type GetRealm = Prisma.PromiseReturnType<typeof api.organisation.realm.get>
 export type Sync = Prisma.PromiseReturnType<typeof api.organisation.master.sync>

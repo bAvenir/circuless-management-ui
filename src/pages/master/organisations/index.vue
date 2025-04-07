@@ -57,8 +57,7 @@ const syncOrganisations = async () => {
     toast.predefined.organisation.synced.success()
     syncedOrganisationsVisible.value = true
   } catch (error) {
-    toast.predefined.organisation.synced.error()
-    throw error
+    toast.predefined.organisation.synced.error(error)
   }
 }
 
@@ -68,8 +67,7 @@ const onOrganisationCreated = async (data: organisationTypes.CreateBodyMaster) =
     toast.predefined.organisation.created.success()
     createOrganisationVisible.value = false
   } catch (error) {
-    toast.predefined.organisation.created.error()
-    throw error
+    toast.predefined.organisation.created.error(error)
   }
 }
 
@@ -78,8 +76,7 @@ const onOrganisationDeleted = async (organisationId: string) => {
     await masterOrganisationStore.delete(organisationId)
     toast.predefined.organisation.deleted.success()
   } catch (error) {
-    toast.predefined.organisation.deleted.error()
-    throw error
+    toast.predefined.organisation.deleted.error(error)
   }
 }
 

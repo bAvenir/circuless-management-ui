@@ -11,22 +11,22 @@ export const MasterNodeApi = {
     })
   },
 
-  async useGetAll() {
-    return await useFetch('/api/master/node', {
+  async getAll() {
+    return await $fetch('/api/master/node', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 
-  async useGet(id: string) {
+  async get(id: string) {
     if (!isValidId(id)) throw new Error('Invalid id')
-    return await useFetch(`/api/master/node/${id}`, {
+    return await $fetch(`/api/master/node/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => res.data.value)
+    })
   },
 }
