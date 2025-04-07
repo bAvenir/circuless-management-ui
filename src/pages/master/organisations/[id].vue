@@ -6,7 +6,7 @@
     <div class="px-4 mt-3 w-full flex items-center justify-between gap-4">
       <div>
         <div>Organisation</div>
-        <h1 class="mt-1">{{ organisation?.name }}</h1>
+        <h1 class="mt-1">{{ one?.name }}</h1>
       </div>
       <Button v-if="active?.route == tabs[0].route" icon="pi pi-plus" label="Add user" @click="inviteUserVisible = true" severity="secondary" />
       <Button v-if="active?.route == tabs[1].route" icon="pi pi-plus" label="Add node"  severity="secondary"/>
@@ -26,8 +26,8 @@
         <h5 class="pl-1">Invite user</h5>
       </template>
       <MasterUserInvite
-        v-if="organisation"
-        :organisation="organisation"
+        v-if="one"
+        :organisation="one"
         :loading="loading"
         @onSave="onUserInvited"
         @onCancel="inviteUserVisible = false"
@@ -47,12 +47,12 @@ const confirm = useConfirm()
 const masterOrganisationStore = useMasterOrganisationStore()
 
 const id = ref(route.params.id as string)
-const { organisation, loading } = storeToRefs(masterOrganisationStore)
+const { one, loading } = storeToRefs(masterOrganisationStore)
 const inviteUserVisible = ref(false)
 
-await masterOrganisationStore.get(id.value)
-
-// const avaliableProducts = ref(await api.product.master.getAll())
+await callOnce(async () => {
+  await masterOrganisationStore.get(id.value)
+})
 
 const tabs = ref([
   { label: 'Users', route: `/master/organisations/${id.value}/users` },

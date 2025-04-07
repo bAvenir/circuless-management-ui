@@ -33,12 +33,14 @@ const circulessUserStore = useCirculessUserStore()
 const toast = useToastService()
 const router = useRouter()
 
-const { user, all, loading: loadingUser } = storeToRefs(realmUserStore)
+const { one: user, all, loading: loadingUser } = storeToRefs(realmUserStore)
 const { loading: loadingCirculess } = storeToRefs(circulessUserStore)
 
 const inviteUserVisible = ref(false)
 
-await realmUserStore.getAll('circuless')
+await callOnce(async () => {
+  await realmUserStore.getAll('circuless')
+})
 
 const onUserInvited = async (data: userTypes.InviteBody) => {
   try {

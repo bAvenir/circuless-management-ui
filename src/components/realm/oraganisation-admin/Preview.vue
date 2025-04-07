@@ -10,7 +10,7 @@
 import { organisationTypes } from '~/shared/types'
 
 const { organisation, loading } = defineProps<{
-  organisation?: organisationTypes.GetMyRealm
+  organisation?: organisationTypes.GetMyRealm | null
   loading: boolean
 }>()
 </script>

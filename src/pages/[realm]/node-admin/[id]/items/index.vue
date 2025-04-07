@@ -23,7 +23,9 @@ const realm = ref(route.params.realm as Realm)
 const nodeId = ref(route.params.id as string)
 const itemId = ref(route.params.itemId as string)
 
-await realmNodeStore.getMyItems()
+await callOnce(async () => {
+  await realmNodeStore.getMyItems()
+})
 
 const onItemSelected = (id: string) => {
   itemId.value = id

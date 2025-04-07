@@ -50,7 +50,7 @@ type Errors = {
 }
 
 const { my, loading } = defineProps<{
-  my: organisationTypes.GetMyRealm
+  my?: organisationTypes.GetMyRealm | null
   loading: boolean
 }>()
 

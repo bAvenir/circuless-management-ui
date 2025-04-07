@@ -5,7 +5,7 @@
     </div>
     <div class="w-full grow">
       <MasterOrganisationTable
-        :organisations="allOrganisations ?? []"
+        :organisations="all ?? []"
         :loading="loading"
         @onSelect="onOrganisationSelected"
         @onDelete="onOrganisationDeleted"
@@ -42,14 +42,16 @@ const masterOrganisationStore = useMasterOrganisationStore()
 const toast = useToastService()
 const router = useRouter()
 
-const { allOrganisations, loading } = storeToRefs(masterOrganisationStore)
+const { all, loading } = storeToRefs(masterOrganisationStore)
 
 const createOrganisationVisible = ref(false)
 const syncedOrganisationsVisible = ref(false)
 
 const affectedOrganisations = ref<organisationTypes.Sync>({ created: [], updated: [], deleted: [] })
 
-await masterOrganisationStore.getAll()
+await callOnce(async () => {
+  await masterOrganisationStore.getAll()
+})
 
 const syncOrganisations = async () => {
   try {
@@ -73,7 +75,7 @@ const onOrganisationCreated = async (data: organisationTypes.CreateBodyMaster) =
 
 const onOrganisationDeleted = async (organisationId: string) => {
   try {
-    await masterOrganisationStore.delete(organisationId)
+    await masterOrganisationStore.deleteOrg(organisationId)
     toast.predefined.organisation.deleted.success()
   } catch (error) {
     toast.predefined.organisation.deleted.error(error)

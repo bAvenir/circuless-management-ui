@@ -84,7 +84,7 @@ class Keycloak {
         grant_type: 'authorization_code',
         client_id,
         client_secret,
-        redirect_uri: `${appUrl}/api/realm/${realm}/auth/loginCallback`,
+        redirect_uri: realm === 'master' ? `${appUrl}/api/master/auth/loginCallback` : `${appUrl}/api/realm/${realm}/auth/loginCallback`,
         code,
       })
 
@@ -101,12 +101,14 @@ class Keycloak {
     const refreshExpires = new Date(Date.now() + tokens.refresh_expires_in * 1000)
 
     setCookie(event, `${realm}_access_token`, tokens.access_token, {
+      // domain: appUrl,
       expires: accessExpires,
       httpOnly: true,
       secure: true,
     })
 
     setCookie(event, `${realm}_refresh_token`, tokens.refresh_token, {
+      // domain: appUrl,
       expires: refreshExpires,
       httpOnly: true,
       secure: true,
@@ -161,6 +163,7 @@ class Keycloak {
     const endpoint = config.public.OIDC.ENDPOINT
     const { client_id } = this.realms[realm]
     const client_secret = this.realmSecrets[realm]
+    const appUrl = config.public.APP_URL
 
     const tokens = await keycloakApiWrapper(async () => {
       const url = `${endpoint}/realms/${realm}/protocol/openid-connect/token`
@@ -184,12 +187,14 @@ class Keycloak {
     const refreshExpires = new Date(Date.now() + tokens.refresh_expires_in * 1000)
 
     setCookie(event, `${realm}_access_token`, tokens.access_token, {
+      // domain: appUrl,
       expires: accessExpires,
       httpOnly: true,
       secure: true,
     })
 
     setCookie(event, `${realm}_refresh_token`, tokens.refresh_token, {
+      // domain: appUrl,
       expires: refreshExpires,
       httpOnly: true,
       secure: true,

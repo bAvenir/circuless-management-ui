@@ -1,13 +1,11 @@
 import { Realm } from '@prisma/client'
-import { miscTypes } from '~/shared/types'
 
 export default defineEventHandler(async (event) => {
   return await apiWrapper(
     event,
-    async ({ params }) => {
-      const realm = params!.realm as Realm
+    async () => {
       try {
-        await keycloak.checkAccess(event, realm)
+        await keycloak.checkAccess(event, Realm.master)
       } catch (error) {
         if (error instanceof CustomError && error.statusCode === HttpStatusCode.UNAUTHORIZED) {
           return false
@@ -17,9 +15,6 @@ export default defineEventHandler(async (event) => {
       return true
     },
     {
-      schemas: {
-        params: miscTypes.ClientRealmsParamSchema,
-      },
       protected: false,
     }
   )

@@ -6,7 +6,7 @@
       </NuxtLink>
     </div>
     <div class="w-full grow">
-      <MasterNodeTable :nodes="allNodes ?? []" :loading="loading" />
+      <MasterNodeTable :nodes="allMy ?? []" :loading="loading" />
     </div>
   </div>
 </template>
@@ -18,9 +18,11 @@ const masterNodeStore = useMasterNodeStore()
 const toast = useToastService()
 const router = useRouter()
 
-const { allNodes, loading } = storeToRefs(masterNodeStore)
+const { allMy, loading } = storeToRefs(masterNodeStore)
 
-await masterNodeStore.getAll()
+await callOnce(async () => {
+  await masterNodeStore.getAll()
+})
 
 const onNodeDeleted = async (nodeId: string) => {
   try {

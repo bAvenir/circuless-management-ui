@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full pt-8">
-    <MasterUserTable :users="organisation?.users ?? []" :loading="loading" />
+    <MasterUserTable :users="one?.users ?? []" :loading="loading" />
   </div>
 </template>
 
@@ -11,7 +11,7 @@ const masterOrganisationStore = useMasterOrganisationStore()
 const toast = useToastService()
 const router = useRouter()
 
-const { organisation, loading } = storeToRefs(masterOrganisationStore)
+const { one, loading } = storeToRefs(masterOrganisationStore)
 
 const onUserDeleted = async (orderId: string) => {
   // try {

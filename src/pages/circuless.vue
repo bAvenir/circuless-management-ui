@@ -19,5 +19,7 @@ definePageMeta({
 const realmUserStore = useRealmUserStore()
 const { my, loading } = storeToRefs(realmUserStore)
 
-await realmUserStore.getMy('circuless' as Realm)
+await callOnce(async () => {
+  await realmUserStore.getMy('circuless' as Realm)
+})
 </script>

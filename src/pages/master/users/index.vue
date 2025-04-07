@@ -48,8 +48,10 @@ const syncedUsersVisible = ref(false)
 
 const affectedUsers = ref<userTypes.Sync>({ created: [], updated: [], deleted: [] })
 
-await masterUserStore.getAll()
-await masterOrganisationStore.getAll()
+await callOnce(async () => {
+  await masterUserStore.getAll()
+  await masterOrganisationStore.getAll()
+})
 
 const syncUsers = async () => {
   try {

@@ -14,7 +14,7 @@
 import { organisationTypes } from '~/shared/types'
 
 const props = defineProps<{
-  my: organisationTypes.GetMyRealm
+  my?: organisationTypes.GetMyRealm | null
   loading: boolean
 }>()
 

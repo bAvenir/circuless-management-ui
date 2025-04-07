@@ -76,7 +76,9 @@ const { my: myUser, loading: loadingUser } = storeToRefs(realmUserStore)
 const { all: allOrganisations, loading: loadingOrganisation } = storeToRefs(realmOrganisationStore)
 const createPartnershipVisible = ref(false)
 
-await realmOrganisationStore.getAll(realm.value)
+await callOnce(async () => {
+  await realmOrganisationStore.getAll(realm.value)
+})
 
 const onPartnershipCreated = async (data: partnershipTypes.CreateBody) => {
   try {

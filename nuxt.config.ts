@@ -16,6 +16,11 @@ export default defineNuxtConfig({
   srcDir: 'src/',
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  routeRules: {
+    '/': { prerender: true },
+    '/master/**': { ssr: false },
+    '/circuless/**': { ssr: false },
+  },
   nitro: {
     prerender: {
       ignore: ['/master', '/circuless'],

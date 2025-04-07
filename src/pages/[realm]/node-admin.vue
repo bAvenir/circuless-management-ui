@@ -30,5 +30,7 @@ const route = useRoute()
 const realm = ref(route.params.realm as Realm)
 const { my, loading } = storeToRefs(realmUserStore)
 
-await realmUserStore.getMy(realm.value)
+await callOnce(async () => {
+  await realmUserStore.getMy(realm.value)
+})
 </script>

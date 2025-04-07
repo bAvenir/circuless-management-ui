@@ -36,7 +36,9 @@ const route = useRoute()
 const realm = ref(route.params.realm as Realm)
 const id = ref(route.params.id as string)
 
-await realmNodeStore.getMy(id.value, realm.value)
+await callOnce(async () => {
+  await realmNodeStore.getMy(id.value, realm.value)
+})
 </script>
 
 <style></style>

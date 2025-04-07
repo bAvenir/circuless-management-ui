@@ -1,3 +1,4 @@
+import { MasterAuthApi } from '~/api/master/auth'
 import { RealmAuthApi } from '~/api/realm/auth'
 import { RealmUserApi } from '~/api/realm/user'
 import { MasterOrganisationApi } from '~/api/master/organisation'
@@ -9,6 +10,7 @@ import { RealmNodeApi } from '~/api/realm/node'
 
 class Api {
   auth = {
+    master: MasterAuthApi,
     realm: RealmAuthApi
   }
   user = {
