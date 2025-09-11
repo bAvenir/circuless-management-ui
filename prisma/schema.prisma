@@ -3,7 +3,7 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["prismaSchemaFolder", "relationJoins"]
+  previewFeatures = [ "relationJoins"]
   binaryTargets   = ["native", "linux-arm64-openssl-3.0.x"]
 }
 
