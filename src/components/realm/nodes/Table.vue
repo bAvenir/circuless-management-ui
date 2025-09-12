@@ -1,11 +1,18 @@
 <template>
   <div class="w-full h-full flex flex-col pl-0 pt-4 lg:pl-16 lg:pt-20 overflow-y-auto">
-    <div class="w-fit pl-4 lg:pl-0">
-      <div class="pb-4">
-        <IconField>
-          <InputIcon class="pi pi-search" />
-          <InputText type="text" v-model="search" placeholder="Search node..." />
-        </IconField>
+    <div class="w-full pl-4 pb-4 lg:pl-0 flex items-center justify-between gap-4">
+      <IconField>
+        <InputIcon class="pi pi-search" />
+        <InputText type="text" v-model="search" placeholder="Search node..." />
+      </IconField>
+      <div class="pr-4">
+        <Button 
+          label="Add Node" 
+          icon="pi pi-plus" 
+          severity="secondary" 
+          :loading="loading" 
+          @click="showAddDialog = true"
+        />
       </div>
     </div>
     <div v-if="nodes.length > 0" class="w-full grow pb-20">
@@ -23,20 +30,36 @@
       </div>
     </div>
     <div v-else class="flex flex-col text-lg text-white w-full lg:pr-16">No records found</div>
+
+    <!-- Add Node Dialog -->
+    <RealmNodesAdd 
+      v-model:visible="showAddDialog" 
+      @node-added="handleNodeAdded"
+      :realm="realm"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
+import type { Realm } from '@prisma/client';
 import { nodeTypes } from '~/shared/types'
 
 const { nodes, loading } = defineProps<{
+  realm: Realm
   nodes: nodeTypes.WithStringDates[]
   loading: boolean
 }>()
 
-const emit = defineEmits(['onSelect', 'onDelete'])
+const emit = defineEmits(['onSelect', 'onDelete', 'onNodeAdded'])
 
 const search = ref('')
+const showAddDialog = ref(false)
+
+const handleNodeAdded = (nodeData: any) => {
+  emit('onNodeAdded', nodeData)
+}
 </script>
+
+<style></style>
 
 <style></style>

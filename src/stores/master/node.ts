@@ -6,11 +6,11 @@ export const useMasterNodeStore = defineStore('masterNodeStore', () => {
   const allMy = ref<nodeTypes.GetAllMaster>([])
   const my = ref<nodeTypes.GetMaster | undefined>(undefined)
 
-  async function create(data: nodeTypes.CreateBodyMaster) {
+  async function create(data: nodeTypes.CreateBody) {
     try {
       loading.value = true
       const node = await api.node.master.create(data)
-      allMy.value.push(node)
+      allMy.value.push(node.node)
       return node
     } finally {
       loading.value = false

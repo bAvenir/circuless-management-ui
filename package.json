@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "collaboration-catalogue",
   "private": true,
   "type": "module",
   "scripts": {
@@ -20,9 +20,11 @@
     "@prisma/client": "^6.5.0",
     "@prisma/nuxt": "^0.3.0",
     "@types/lodash": "^4.17.16",
+    "@types/node-forge": "^1.3.14",
     "joi": "^17.13.3",
     "jose": "^5.10.0",
     "lodash": "^4.17.21",
+    "node-forge": "^1.3.1",
     "nuxt": "^3.16.1",
     "nuxt-viewport": "^2.2.0",
     "oidc-client-ts": "^3.2.0",

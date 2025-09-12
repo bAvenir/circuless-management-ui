@@ -3,7 +3,7 @@ import prisma from '~/lib/prisma'
 import { nodeTypes } from '~/shared/types'
 
 export const NodeQueries = {
-  async create<T extends Prisma.NodeDefaultArgs>(data: nodeTypes.CreateBodyMaster, args?: T) {
+  async create<T extends Prisma.NodeDefaultArgs>(data: nodeTypes.CreateBody, args?: T) {
     return queryWrapper(
       async () =>
         (await prisma.node.create({

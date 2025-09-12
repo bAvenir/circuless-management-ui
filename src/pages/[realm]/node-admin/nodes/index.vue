@@ -5,7 +5,7 @@
       class="grow flex items-center justify-center h-full bg-[url('/images/nodes.png')] bg-cover bg-center"
     ></div>
     <div class="w-full min-h-[calc(100dvh-3.5rem)] lg:h-full lg:w-[800px] bg-realm-secondary-950">
-      <RealmNodesTable :nodes="allMy ?? []" :loading="loading" @onSelect="onNodeSelected" />
+      <RealmNodesTable :realm="realm" :nodes="allMy ?? []" :loading="loading" @onSelect="onNodeSelected" />
     </div>
   </div>
 </template>

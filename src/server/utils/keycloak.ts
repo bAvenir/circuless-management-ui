@@ -40,6 +40,23 @@ export interface MemberRepresentation {
   lastName?: string
 }
 
+export interface ClientRepresentation {
+  id?: string
+  clientId?: string
+  name?: string
+  enabled?: boolean
+  description?: string
+  publicClient?: boolean
+  standardFlowEnabled?: boolean
+  implicitFlowEnabled?: boolean
+  serviceAccountsEnabled?: boolean
+  directAccessGrantsEnabled?: boolean
+  authorizationServicesEnabled?: boolean
+  clientAuthenticatorType?: string
+  protocol?: string
+  attributes?: Record<string, string>
+}
+
 const config = useRuntimeConfig()
 
 class Keycloak {
@@ -446,6 +463,80 @@ class Keycloak {
       const access_token = accessToken ?? event.context.tokens?.access_token
 
       return await $fetch<MemberRepresentation[]>(url, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    })
+  }
+
+  async createClient(event: H3Event<EventHandlerRequest>, client: ClientRepresentation, realm: Realm, accessToken?: string) {
+    const endpoint = config.public.OIDC.ENDPOINT
+
+    return await keycloakApiWrapper(async () => {
+      const url = `${endpoint}/admin/realms/${realm}/clients`
+      const access_token = accessToken ?? event.context.tokens?.access_token
+
+      const response = await $fetch<void>(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: client,
+      })
+
+      // Get the created client by clientId to return the full object with ID
+      const clients = await this.getClients(event, realm, accessToken)
+      const createdClient = clients.find((c) => c.clientId === client.clientId)
+
+      if (!createdClient) {
+        throw new KeycloakError('Failed to retrieve created client', HttpStatusCode.INTERNAL_SERVER_ERROR)
+      }
+
+      return createdClient
+    })
+  }
+
+  async getClients(event: H3Event<EventHandlerRequest>, realm: Realm, accessToken?: string) {
+    const endpoint = config.public.OIDC.ENDPOINT
+
+    return await keycloakApiWrapper(async () => {
+      const url = `${endpoint}/admin/realms/${realm}/clients`
+      const access_token = accessToken ?? event.context.tokens?.access_token
+
+      return await $fetch<ClientRepresentation[]>(url, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    })
+  }
+
+  async getClientById(event: H3Event<EventHandlerRequest>, id: string, realm: Realm, accessToken?: string) {
+    const endpoint = config.public.OIDC.ENDPOINT
+
+    return await keycloakApiWrapper(async () => {
+      const url = `${endpoint}/admin/realms/${realm}/clients/${id}`
+      const access_token = accessToken ?? event.context.tokens?.access_token
+
+      return await $fetch<ClientRepresentation>(url, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    })
+  }
+
+  async deleteClient(event: H3Event<EventHandlerRequest>, id: string, realm: Realm, accessToken?: string) {
+    const endpoint = config.public.OIDC.ENDPOINT
+
+    return await keycloakApiWrapper(async () => {
+      const url = `${endpoint}/admin/realms/${realm}/clients/${id}`
+      const access_token = accessToken ?? event.context.tokens?.access_token
+
+      await $fetch<void>(url, {
+        method: 'DELETE',
         headers: {
           Authorization: `Bearer ${access_token}`,
         },

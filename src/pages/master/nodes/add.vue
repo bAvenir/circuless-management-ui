@@ -50,7 +50,7 @@ const router = useRouter()
 
 const { loading } = storeToRefs(masterNodeStore)
 
-const onNodeCreated = async (data: nodeTypes.CreateBodyMaster) => {
+const onNodeCreated = async (data: nodeTypes.CreateBody) => {
   try {
     await masterNodeStore.create(data)
     toast.predefined.node.created.success()

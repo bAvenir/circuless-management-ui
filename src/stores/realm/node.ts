@@ -8,6 +8,17 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
   const allMy = ref<nodeTypes.GetAllMyRealm>([])
   const my = ref<nodeTypes.GetMyRealm | undefined>(undefined)
 
+  async function create(realm: Realm, data: nodeTypes.CreateBodyRealm) {
+    try {
+      loading.value = true
+      const node = await api.node.realm.create(realm, data)
+      allMy.value.push(node.node)
+      return node
+    } finally {
+      loading.value = false
+    }
+  }
+
   async function getAllMy(realm: Realm) {
     try {
       loading.value = true
@@ -69,6 +80,7 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
     allMy,
     myItem,
     allMyItems,
+    create,
     getMy,
     getAllMy,
     getMyItem,

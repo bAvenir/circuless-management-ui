@@ -3,6 +3,7 @@ enum ErrorType {
   ApplicationError = 'ApplicationError',
   DatabaseError = 'DatabaseError',
   KeycloakError = 'KeycloakError',
+  PKIError = 'PKIError',
 }
 
 export class CustomError extends Error {
@@ -44,5 +45,12 @@ export class KeycloakError extends CustomError {
   constructor(message: string, statusCode: number, data?: any) {
     super(ErrorType.KeycloakError, message, statusCode, data)
     Object.setPrototypeOf(this, KeycloakError.prototype)
+  }
+}
+
+export class PKIError extends CustomError {
+  constructor(message: string, statusCode: number, data?: any) {
+    super(ErrorType.PKIError, message, statusCode, data)
+    Object.setPrototypeOf(this, PKIError.prototype)
   }
 }

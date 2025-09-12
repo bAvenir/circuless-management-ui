@@ -1,7 +1,7 @@
 import type { nodeTypes } from '~/shared/types'
 
 export const MasterNodeApi = {
-  async create(data: nodeTypes.CreateBodyMaster) {
+  async create(data: nodeTypes.CreateBody) {
     return await $fetch('/api/master/node', {
       method: 'POST',
       headers: {

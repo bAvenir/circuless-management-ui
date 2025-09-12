@@ -54,6 +54,11 @@ export default defineNuxtConfig({
     OIDC: {
       REALM_SECRETS: JSON.parse(process.env.NUXT_OIDC_REALM_SECRETS ?? '{}') as RealmSecrets,
     },
+    PKI: {
+      URL: process.env.NUXT_PKI_URL ?? '',
+      USER: process.env.NUXT_PKI_USER ?? '',
+      PASSWORD: process.env.NUXT_PKI_PASSWORD ?? '',
+    },
     public: {
       APP_URL: process.env.NUXT_PUBLIC_APP_URL ?? '',
       OIDC: {

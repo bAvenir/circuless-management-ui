@@ -3,25 +3,30 @@ enum NodeAccess {
     wireguard
 }
 
+enum NodeStatus {
+    approved
+    pending
+}
+
 enum NodeRole {
     discovery
     registry
 }
 
 model Node {
-    id     String     @id @default(cuid())
-    name   String
-    host   String
-    access NodeAccess @default(direct)
-    csr    String?    @unique
-    role   NodeRole[] @default([])
+    id      String     @id @default(cuid())
+    name    String
+    host    String
+    access  NodeAccess @default(direct)
+    status  NodeStatus @default(pending)
+    roles    NodeRole[] @default([])
     version String?
-    realm  Realm
+    realm   Realm
 
     wireguard   NodeWireguard?
     wireguardId String?
 
-    owner   Organisation   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    owner   Organisation @relation(fields: [ownerId], references: [id], onDelete: Cascade)
     ownerId String
 
     createdAt DateTime @default(now())

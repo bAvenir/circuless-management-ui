@@ -5,7 +5,7 @@ import { clientRealms } from './misc'
 export const nodeAccess = Object.values(NodeAccess)
 export const nodeRole = Object.values(NodeRole)
 
-export interface CreateBodyMaster {
+export interface CreateBody {
   name: string
   host: string
   access: NodeAccess
@@ -14,7 +14,12 @@ export interface CreateBodyMaster {
   realm: Realm
 }
 
-export const CreateBodyMasterSchema = Joi.object({
+export interface CreateBodyRealm {
+  name: string
+  host: string
+}
+
+export const CreateBodySchema = Joi.object({
   name: Joi.string().required(),
   host: Joi.string().required(),
   access: Joi.string()
@@ -31,6 +36,11 @@ export const CreateBodyMasterSchema = Joi.object({
   realm: Joi.string()
     .valid(...clientRealms)
     .required(),
+}).required()
+
+export const CreateBodyRealmSchema = Joi.object({
+  name: Joi.string().required(),
+  host: Joi.string().required(),
 }).required()
 
 export type GetMaster = Prisma.PromiseReturnType<typeof api.node.master.get>

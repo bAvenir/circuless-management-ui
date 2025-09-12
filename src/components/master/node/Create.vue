@@ -145,7 +145,7 @@ const resolver = (event: any) => {
 const onFormSubmit = async (event: any) => {
   if (event.valid) {
     const states = event.states!
-    const data: nodeTypes.CreateBodyMaster = {
+    const data: nodeTypes.CreateBody = {
       name: states.name?.value,
       host: states.host?.value,
       access: states.access?.value,
