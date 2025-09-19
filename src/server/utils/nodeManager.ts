@@ -39,8 +39,8 @@ class NodeManager {
         authorizationServicesEnabled: false,
         clientAuthenticatorType: 'client-x509',
         attributes: {
-          'x509.subjectdn': `CN=${clientId}`,
-          'x509.allow.regex.pattern.comparison': 'false',
+          'x509.subjectdn': `.*CN=${clientId}*`,
+          'x509.allow.regex.pattern.comparison': 'true',
         },
         protocol: 'openid-connect',
       }
@@ -57,8 +57,8 @@ class NodeManager {
       const certId = `${node.owner?.id || 'system'}-${node.id}`
 
       // Step 4: Generate CSR and create certificate
-      const { csr, privateKey } = _generateCSR(data.name, data.host, node.owner?.id || 'system', certId)
-      
+      const { csr, privateKey } = _generateCSR(`node_${data.name}`, data.host, node.owner?.id || 'system', certId)
+
       const certificate = await pki.signCertificateRequest({
         csr,
         organisationId: node.owner?.id || 'system', // Use owner organisation ID
@@ -109,7 +109,7 @@ class NodeManager {
     const certId = `${node.owner?.id || 'system'}-${node.id}`
 
     // Generate new CSR and certificate
-    const { csr, privateKey } = _generateCSR(node.name, node.host, node.owner?.id || 'system', certId)
+    const { csr, privateKey } = _generateCSR(`node_${node.name}`, node.host, node.owner?.id || 'system', certId)
 
     const certificate = await pki.signCertificateRequest({
       csr,
@@ -127,7 +127,7 @@ class NodeManager {
 
 // Private functions
 
-function _generateCSR(name: string, host: string, organisationId: string, certificateId: string): { csr: string; privateKey: string } {
+function _generateCSR(clientId: string, host: string, organisationId: string, certificateId: string): { csr: string; privateKey: string } {
   // Generate a key pair
   const keyPair = forge.pki.rsa.generateKeyPair(2048)
 
@@ -138,7 +138,7 @@ function _generateCSR(name: string, host: string, organisationId: string, certif
   csr.subject.attributes = [
     {
       type: forge.pki.oids.commonName,
-      value: name,
+      value: clientId,
     },
     {
       type: forge.pki.oids.organizationName,
@@ -165,7 +165,6 @@ function _generateCSR(name: string, host: string, organisationId: string, certif
       value: certificateId, // Use the full certificate ID that matches the API endpoint
     },
   ]
-
 
   // Set the public key
   csr.publicKey = keyPair.publicKey

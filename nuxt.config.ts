@@ -17,9 +17,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   routeRules: {
-    '/': { prerender: true },
-    '/master/**': { ssr: false },
-    '/circuless/**': { ssr: false },
+    '/**': { prerender: true, ssr: false },
+    '/master/**': { prerender: false, ssr: false },
+    '/circuless/**': { prerender: false, ssr: false },
   },
   nitro: {
     prerender: {

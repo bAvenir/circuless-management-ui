@@ -5,5 +5,5 @@ import { config } from 'dotenv'
 config()
 
 export default defineConfig({
-  schema: "prisma"
+  schema: "prisma",
 })

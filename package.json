@@ -2,6 +2,7 @@
   "name": "collaboration-catalogue",
   "private": true,
   "type": "module",
+  "version": "0.1.0",
   "scripts": {
     "build": "nuxt typecheck & nuxt build",
     "dev": "nuxt dev",
@@ -48,8 +49,5 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "typescript": "^5.8.2"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
   }
 }

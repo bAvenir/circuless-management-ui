@@ -35,6 +35,7 @@ class Oidc {
   private _createUserManager(realm: string, client_id: string): UserManager {
     const authority = this.config.public.OIDC.ENDPOINT
     const appUrl = this.config.public.APP_URL
+
     return new UserManager({
       authority: `${authority}/realms/${realm}`,
       client_id,
