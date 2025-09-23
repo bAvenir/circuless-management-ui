@@ -32,13 +32,15 @@ export interface InviteRepresentation {
   lastName?: string
 }
 
-export interface MemberRepresentation {
+export interface UserRepresentation {
   id?: string
   username: string
   email: string
   firstName?: string
   lastName?: string
 }
+
+export interface MemberRepresentation extends UserRepresentation {}
 
 export interface ClientRepresentation {
   id?: string
@@ -412,7 +414,7 @@ class Keycloak {
     })
   }
 
-  async inviteUser(event: H3Event<EventHandlerRequest>, invite: InviteRepresentation, kcOrganisationId: string, realm: Realm, accessToken?: string) {
+  async inviteUserToOrganisation(event: H3Event<EventHandlerRequest>, invite: InviteRepresentation, kcOrganisationId: string, realm: Realm, accessToken?: string) {
     const endpoint = config.public.OIDC.ENDPOINT
 
     if (realm === 'master') {
@@ -436,6 +438,27 @@ class Keycloak {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: data,
+      })
+    })
+  }
+
+  async addUserToOrganisation(event: H3Event<EventHandlerRequest>, userId: string, kcOrganisationId: string, realm: Realm, accessToken?: string) {
+    const endpoint = config.public.OIDC.ENDPOINT
+
+    if (realm === 'master') {
+      throw new ApplicationError('Cannot add user to organisation in master realm', HttpStatusCode.BAD_REQUEST)
+    }
+
+    await keycloakApiWrapper(async () => {
+      const url = `${endpoint}/admin/realms/${realm}/organizations/${kcOrganisationId}/members`
+      const access_token = accessToken ?? event.context.tokens?.access_token
+
+      await $fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        body: userId,
       })
     })
   }
@@ -521,6 +544,21 @@ class Keycloak {
       const access_token = accessToken ?? event.context.tokens?.access_token
 
       return await $fetch<ClientRepresentation>(url, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    })
+  }
+
+  async getClientServiceAccount(event: H3Event<EventHandlerRequest>, clientId: string, realm: Realm, accessToken?: string) {
+    const endpoint = config.public.OIDC.ENDPOINT
+
+    return await keycloakApiWrapper(async () => {
+      const url = `${endpoint}/admin/realms/${realm}/clients/${clientId}/service-account-user`
+      const access_token = accessToken ?? event.context.tokens?.access_token
+
+      return await $fetch<UserRepresentation>(url, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },

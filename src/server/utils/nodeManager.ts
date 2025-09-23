@@ -49,14 +49,22 @@ class NodeManager {
       const kcClient = await keycloak.createClient(event, kcClientData, data.realm, access_token)
       cleanup.kcClientId = kcClient.id!
 
-      // Step 2: Create node in database
+      // Step 2: Add client service account user to organisation
+      const clientServiceAccount = await keycloak.getClientServiceAccount(event, kcClient.id!, data.realm, access_token)
+      if (!clientServiceAccount || !clientServiceAccount.id) {
+        throw new ApplicationError('Failed to retrieve client service account user', HttpStatusCode.INTERNAL_SERVER_ERROR)
+      }
+      const organisation = await db.organisation.queries.get(data.ownerId)
+      await keycloak.addUserToOrganisation(event, clientServiceAccount.id, organisation.kcId, data.realm, access_token)
+
+      // Step 3: Create node in database
       const node = await db.node.queries.create(data, db.node.args.all)
       cleanup.nodeId = node.id
 
-      // Step 3: Generate certificate ID that matches x500UniqueIdentifier
+      // Step 4: Generate certificate ID that matches x500UniqueIdentifier
       const certId = `${node.owner?.id || 'system'}-${node.id}`
 
-      // Step 4: Generate CSR and create certificate
+      // Step 5: Generate CSR and create certificate
       const { csr, privateKey } = _generateCSR(`node_${data.name}`, data.host, node.owner?.id || 'system', certId)
 
       const certificate = await pki.signCertificateRequest({

@@ -1,4 +1,4 @@
-import { NodeAccess, NodeRole, Prisma, Realm } from '@prisma/client'
+import { NodeAccess, NodeRole, NodeStatus, Prisma, Realm } from '@prisma/client'
 import Joi from 'joi'
 import { clientRealms } from './misc'
 
@@ -12,6 +12,16 @@ export interface CreateBody {
   roles: NodeRole[]
   ownerId: string
   realm: Realm
+}
+
+export interface UpdateBody {
+  name?: string
+  host?: string
+  access?: NodeAccess
+  roles?: NodeRole[]
+  ownerId?: string
+  realm?: Realm
+  status?: NodeStatus
 }
 
 export interface CreateBodyRealm {

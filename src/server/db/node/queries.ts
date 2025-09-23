@@ -89,6 +89,17 @@ export const NodeQueries = {
     )
   },
 
+  async update<T extends Prisma.NodeDefaultArgs>(id: string, data: nodeTypes.UpdateBody, args?: T) {
+    return queryWrapper(
+      async () =>
+        (await prisma.node.update({
+          where: { id },
+          data,
+          ...args,
+        })) as unknown as Prisma.NodeGetPayload<T>
+    )
+  },
+
   async delete<T extends Prisma.NodeDefaultArgs>(id: string, args?: T) {
     return queryWrapper(
       async () =>

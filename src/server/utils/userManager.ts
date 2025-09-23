@@ -31,7 +31,7 @@ class UserManager {
     }
     // This is a workaround for the Keycloak API, which requires a token from the master realm util RBAC allows organisation management
     const { access_token } = await keycloak.getMasterToken(event)
-    await keycloak.inviteUser(event, invite, data.kcOrganisationId, data.realm, access_token)
+    await keycloak.inviteUserToOrganisation(event, invite, data.kcOrganisationId, data.realm, access_token)
   }
 
   syncWithKc = async (event: H3Event<EventHandlerRequest>) => {
