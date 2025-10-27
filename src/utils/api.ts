@@ -7,6 +7,7 @@ import { RealmOrganisationApi } from '~/api/realm/organisation'
 import { RealmPartnershipApi } from '~/api/realm/partnership'
 import { MasterNodeApi } from '~/api/master/node'
 import { RealmNodeApi } from '~/api/realm/node'
+import { CirculessMarketplaceApi } from '~/api/circuless/marketplace'
 
 class Api {
   auth = {
@@ -27,6 +28,9 @@ class Api {
   node = {
     master: MasterNodeApi,
     realm: RealmNodeApi
+  }
+  marketplace = {
+    circuless: CirculessMarketplaceApi,
   }
 }
 

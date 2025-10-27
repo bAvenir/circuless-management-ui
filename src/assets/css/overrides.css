@@ -22,3 +22,13 @@
 .grow-panel-content > .p-panel-content-container > .p-panel-content {
   @apply h-full;
 }
+
+/* Circuless specific overrides */
+
+.circuless-dataview > .p-dataview-header {
+  @apply border-b-0 px-0 bg-transparent;
+}
+
+.circuless-dataview > .p-dataview-content {
+  @apply bg-transparent;
+}

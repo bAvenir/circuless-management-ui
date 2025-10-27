@@ -7,7 +7,7 @@
           <NuxtLink to="/master/users" class="w-full">
             <Button class="w-full">Master</Button>
           </NuxtLink>
-          <NuxtLink to="/circuless/users" class="w-full">
+          <NuxtLink to="/circuless/marketplace" class="w-full">
             <Button class="w-full">Circuless</Button>
           </NuxtLink>
         </div>
