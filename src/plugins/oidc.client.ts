@@ -1,55 +1,95 @@
-import type { Realm } from '@prisma/client'
-import type { RuntimeConfig } from 'nuxt/schema'
-import { UserManager } from 'oidc-client-ts'
-
-type Managers = Record<Realm, UserManager>
+import { defineNuxtPlugin, navigateTo } from "nuxt/app";
+import type { miscTypes } from "~/shared/types";
 
 class Oidc {
-  config!: RuntimeConfig
-  managers!: Managers
+    async login(realm: miscTypes.RealmTypes, redirectUri?: string) {
+        switch (realm) {
+            case "master":
+                await navigateTo(
+                    `/api/master/auth/login${
+                        redirectUri ? `?redirectUri=${redirectUri}` : ""
+                    }`,
+                    {
+                        external: true,
+                    }
+                );
+                break;
 
-  constructor() {
-    if (import.meta.client) {
-      this.config = useRuntimeConfig()
-      this.managers = {} as Managers
-      this._initManagers()
+            case "circuless":
+                await navigateTo(
+                    `/api/circuless/auth/login${
+                        redirectUri ? `?redirectUri=${redirectUri}` : ""
+                    }`,
+                    {
+                        external: true,
+                    }
+                );
+                break;
+            default:
+                await navigateTo(
+                    `/api/realm/${realm}/auth/login${
+                        redirectUri ? `?redirectUri=${redirectUri}` : ""
+                    }`,
+                    {
+                        external: true,
+                    }
+                );
+                break;
+        }
     }
-  }
 
-  async login(realm: Realm) {
-    await this.managers[realm].signinRedirect()
-  }
+    async register(
+        realm: miscTypes.RealmTypes,
+        email?: string,
+        redirectUri?: string
+    ) {
+        await navigateTo(
+            `/api/realm/${realm}/auth/register${
+                redirectUri ? `?redirectUri=${redirectUri}` : ""
+            }`,
+            {
+                external: true,
+            }
+        );
+    }
 
-  async logout(realm: Realm, to?: string) {
-    await this.managers[realm].signoutRedirect()
-  }
-
-  private _initManagers() {
-    const realms = this.config.public.OIDC.REALMS
-
-    Object.entries(realms).forEach(([key, value]) => {
-      this.managers[key as Realm] = this._createUserManager(value.realm, value.client_id)
-    })
-  }
-
-  private _createUserManager(realm: string, client_id: string): UserManager {
-    const authority = this.config.public.OIDC.ENDPOINT
-    const appUrl = this.config.public.APP_URL
-
-    return new UserManager({
-      authority: `${authority}/realms/${realm}`,
-      client_id,
-      redirect_uri: realm === 'master' ? `${appUrl}/api/master/auth/loginCallback` : `${appUrl}/api/realm/${realm}/auth/loginCallback`,
-      post_logout_redirect_uri: realm === 'master' ? `${appUrl}/api/master/auth/logoutCallback` : `${appUrl}/api/realm/${realm}/auth/logoutCallback`,
-      response_type: 'code',
-      response_mode: 'query',
-      scope: 'openid profile email organization',
-      disablePKCE: true,
-    })
-  }
+    async logout(realm: miscTypes.RealmTypes, redirectUri?: string) {
+        switch (realm) {
+            case "master":
+                await navigateTo(
+                    `/api/master/auth/logout${
+                        redirectUri ? `?redirectUri=${redirectUri}` : ""
+                    }`,
+                    {
+                        external: true,
+                    }
+                );
+                break;
+            case "circuless":
+                await navigateTo(
+                    `/api/circuless/auth/login${
+                        redirectUri ? `?redirectUri=${redirectUri}` : ""
+                    }`,
+                    {
+                        external: true,
+                    }
+                );
+                break;
+            default:
+                await navigateTo(
+                    `/api/realm/${realm}/auth/logout${
+                        redirectUri ? `?redirectUri=${redirectUri}` : ""
+                    }`,
+                    {
+                        external: true,
+                    }
+                );
+                break;
+        }
+    }
 }
 
 export default defineNuxtPlugin(() => {
-  const oidc = new Oidc()
-  return { provide: { oidc } }
-})
+    const oidc = new Oidc();
+    return { provide: { oidc } };
+});
