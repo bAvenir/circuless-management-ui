@@ -13,7 +13,7 @@ import { useRealmUserStore } from '~/stores/realm/user'
 
 definePageMeta({
   middleware: ['circuless-auth'],
-  redirect: '/circuless/users',
+  redirect: '/circuless',
 })
 
 const realmUserStore = useRealmUserStore()

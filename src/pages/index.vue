@@ -4,10 +4,10 @@
       <template #title> Realms </template>
       <template #content>
         <div class="flex flex-col gap-2 w-full">
-          <NuxtLink to="/master/users" class="w-full">
+          <NuxtLink to="/master" class="w-full">
             <Button class="w-full">Master</Button>
           </NuxtLink>
-          <NuxtLink to="/circuless/users" class="w-full">
+          <NuxtLink to="/circuless" class="w-full">
             <Button class="w-full">Circuless</Button>
           </NuxtLink>
         </div>
