@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const access = await api.auth.realm.checkAccess(Realm.circuless);
 
     if (!access) {
-        if (import.meta.client) await $oidc.login(Realm.circuless);
+        if (import.meta.client) await $oidc.login(Realm.circuless, to.fullPath);
         return abortNavigation(`No access to ${Realm.circuless} realm`);
     }
 });

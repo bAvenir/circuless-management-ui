@@ -7,9 +7,9 @@ export default defineEventHandler(async (event) => {
   return await apiWrapper(
     event,
     async ({ query }) => {
-      const authRedirectUrl = await keycloak.login(event, query!.code as string, query!.state as string, 'master')
-      if (authRedirectUrl) {
-        await sendRedirect(event, authRedirectUrl.toString())
+      const redirectUrl = await keycloak.login(event, query!.code as string, query!.state as string, 'master')
+      if (redirectUrl) {
+        await sendRedirect(event, redirectUrl.toString())
         return
       }
       await sendRedirect(event, `${config.public.APP_URL}/master`)
