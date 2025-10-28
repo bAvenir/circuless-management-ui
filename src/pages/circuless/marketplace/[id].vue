@@ -1,7 +1,9 @@
 <template>
   <div class="container mx-auto px-4 py-8">
-    <!-- Breadcrumb -->
-    <Breadcrumb :model="breadcrumbItems" class="mb-6" />
+    <!-- Back Button -->
+    <NuxtLink to="/circuless/marketplace">
+      <Button label="Back to Datasets" icon="pi pi-arrow-left" class="mb-6" outlined severity="secondary" />
+    </NuxtLink>
 
     <div v-if="one" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Main Content -->
@@ -248,7 +250,7 @@ data = response.json()</code></pre>
                   v-for="related in relatedDatasets"
                   :key="related.id"
                   class="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer transition-colors"
-                  @click="navigateTo(`/circuless/datasets/${related.id}`)"
+                  @click="navigateTo(`/circuless/marketplace/${related.id}`)"
                 >
                   <h4 class="text-sm font-medium text-gray-900 mb-1">{{ related.title }}</h4>
                   <p class="text-xs text-gray-600">{{ related.organization }}</p>
@@ -283,9 +285,6 @@ const { all, one, loading } = storeToRefs(circulessMarketplaceStore)
 await callOnce(async () => {
   await circulessMarketplaceStore.get(id.value)
 })
-
-// Breadcrumb
-const breadcrumbItems = ref([{ label: 'Circuless', route: '/circuless' }, { label: 'Datasets', route: '/circuless' }, { label: 'Dataset Detail' }])
 
 // Sample data structure for the current dataset
 const dataStructure = [
