@@ -1,3 +1,5 @@
+import { Realm } from "@prisma/client"
+
 export default defineEventHandler(async (event) => {
   return await apiWrapper(
     event,
@@ -119,7 +121,7 @@ export default defineEventHandler(async (event) => {
       })
     },
     {
-      protected: false,
+      protected: Realm.circuless,
     }
   )
 })

@@ -1,3 +1,4 @@
+import { Realm } from '@prisma/client'
 import { miscTypes } from '~/shared/types'
 
 export default defineEventHandler(async (event) => {
@@ -22,7 +23,7 @@ export default defineEventHandler(async (event) => {
       })
     },
     {
-      protected: false,
+      protected: Realm.circuless,
       schemas: {
         params: miscTypes.IdParamSchema,
       },

@@ -14,17 +14,7 @@ class Oidc {
                     }
                 );
                 break;
-
-            case "circuless":
-                await navigateTo(
-                    `/api/circuless/auth/login${
-                        redirectUri ? `?redirectUri=${redirectUri}` : ""
-                    }`,
-                    {
-                        external: true,
-                    }
-                );
-                break;
+                
             default:
                 await navigateTo(
                     `/api/realm/${realm}/auth/login${
@@ -36,21 +26,6 @@ class Oidc {
                 );
                 break;
         }
-    }
-
-    async register(
-        realm: miscTypes.RealmTypes,
-        email?: string,
-        redirectUri?: string
-    ) {
-        await navigateTo(
-            `/api/realm/${realm}/auth/register${
-                redirectUri ? `?redirectUri=${redirectUri}` : ""
-            }`,
-            {
-                external: true,
-            }
-        );
     }
 
     async logout(realm: miscTypes.RealmTypes, redirectUri?: string) {
@@ -65,16 +40,7 @@ class Oidc {
                     }
                 );
                 break;
-            case "circuless":
-                await navigateTo(
-                    `/api/circuless/auth/login${
-                        redirectUri ? `?redirectUri=${redirectUri}` : ""
-                    }`,
-                    {
-                        external: true,
-                    }
-                );
-                break;
+
             default:
                 await navigateTo(
                     `/api/realm/${realm}/auth/logout${
