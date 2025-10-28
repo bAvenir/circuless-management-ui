@@ -1,13 +1,14 @@
-import { authTypes } from "~/shared/types";
+import { authTypes, miscTypes } from "~/shared/types";
 
 export default defineEventHandler(async (event) => {
     return await apiWrapper(
         event,
-        async ({ query }) => {
+        async ({ params, query }) => {
+            const realm = params!.realm as miscTypes.RealmTypes;
             const redirectUri = query?.redirectUri as string | undefined;
             const authRedirectUrl = await keycloak.getRedirectUrl(
                 event,
-                "master",
+                realm,
                 false,
                 redirectUri
             );
@@ -15,6 +16,7 @@ export default defineEventHandler(async (event) => {
         },
         {
             schemas: {
+                params: miscTypes.ClientRealmsParamSchema,
                 query: authTypes.AuthQuerySchema,
             },
             protected: false,

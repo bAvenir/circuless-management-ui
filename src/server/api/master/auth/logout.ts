@@ -1,24 +1,25 @@
+import { Realm } from '@prisma/client'
 import { authTypes } from '~/shared/types'
 
 const config = useRuntimeConfig()
 
 export default defineEventHandler(async (event) => {
-  console.log('LOGIN CALLBACK HIT')
   return await apiWrapper(
     event,
     async ({ query }) => {
-      const authRedirectUrl = await keycloak.login(event, query!.code as string, query!.state as string, 'master')
+      const redirectUri = query?.redirectUri as string | undefined
+      const authRedirectUrl = keycloak.logout(event, 'master', redirectUri)
       if (authRedirectUrl) {
         await sendRedirect(event, authRedirectUrl.toString())
         return
       }
-      await sendRedirect(event, `${config.public.APP_URL}/master`)
+      await sendRedirect(event, `${config.public.APP_URL}/`)
     },
     {
+      protected: Realm.master,
       schemas: {
-        query: authTypes.KeycloakAuthCodeQuerySchema,
+        query: authTypes.AuthQuerySchema,
       },
-      protected: false,
     }
   )
 })

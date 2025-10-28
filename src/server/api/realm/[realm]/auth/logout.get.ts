@@ -7,18 +7,19 @@ export default defineEventHandler(async (event) => {
     event,
     async ({ params, query }) => {
       const realm = params!.realm as miscTypes.RealmTypes
-      const authRedirectUrl = await keycloak.login(event, query!.code as string, query!.state as string, realm)
+      const redirectUri = query?.redirectUri as string | undefined
+      const authRedirectUrl = await keycloak.logout(event, realm, redirectUri)
       if (authRedirectUrl) {
-        await sendRedirect(event, authRedirectUrl.toString())
-        return
+        return await sendRedirect(event, authRedirectUrl.toString())
       }
-      await sendRedirect(event, `${config.public.APP_URL}/${realm}`)
+      return await sendRedirect(event, `${config.public.APP_URL}`)
     },
     {
       schemas: {
         params: miscTypes.ClientRealmsParamSchema,
-        query: authTypes.KeycloakAuthCodeQuerySchema,
+        query: authTypes.AuthQuerySchema,
       },
+      protected: true,
     }
   )
 })

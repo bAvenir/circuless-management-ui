@@ -165,9 +165,42 @@ class Keycloak {
 
         return redirectUrl;
     }
-    logout(event: H3Event<EventHandlerRequest>, realm: Realm) {
-        deleteCookie(event, `${realm}_access_token`);
-        deleteCookie(event, `${realm}_refresh_token`);
+
+    async logout(event: H3Event<EventHandlerRequest>, realm: miscTypes.RealmTypes, redirectUri?: string) {
+        const endpoint = config.public.OIDC.ENDPOINT;
+        const { client_id } = config.public.OIDC.REALMS[realm];
+        const client_secret = config.OIDC.REALM_SECRETS[realm];
+        const appUrl = config.public.APP_URL;
+
+        const { refreshToken: refresh_token } = sessionStore.destroySession(event, realm)
+
+        let redirectUrl: URL | undefined = undefined
+
+        if (redirectUri) {
+          redirectUrl = new URL(redirectUri)
+          if (redirectUrl.origin !== appUrl) {
+            throw new ApplicationError('Invalid redirect URI', HttpStatusCode.BAD_REQUEST)
+          }
+        }
+
+        await keycloakApiWrapper(async () => {
+          const url = `${endpoint}/realms/${realm}/protocol/openid-connect/logout`
+          const data = new URLSearchParams({
+            client_id,
+            refresh_token,
+            client_secret,
+          })
+
+          return await $fetch<authTypes.TokenResponse>(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data,
+          })
+        })
+
+        return redirectUrl
     }
 
     async verifyToken(token: string, realm: Realm) {

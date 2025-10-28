@@ -13,7 +13,7 @@ type ApiData = {
 
 type Options = {
     schemas?: { params?: Joi.Schema; query?: Joi.Schema; body?: Joi.Schema };
-    protected?: boolean;
+    protected?: boolean | Realm;
 };
 
 export async function apiWrapper<T>(
@@ -29,11 +29,10 @@ export async function apiWrapper<T>(
                 ? undefined
                 : await readBody(event);
 
-        if (options?.protected) {
-            await validateAuthorization(
-                event,
-                (params.realm as Realm | undefined) || "master"
-            );
+        if (options?.protected === undefined || options.protected === true) {
+            await validateAuthorization(event, (params.realm as Realm | undefined) || 'master')
+        } else if (options.protected) {
+            await validateAuthorization(event, options.protected)
         }
 
         validateRequest(params, query, body, options?.schemas);
