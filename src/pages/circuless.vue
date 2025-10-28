@@ -11,7 +11,7 @@
 import { useRealmUserStore } from '~/stores/realm/user'
 
 definePageMeta({
-  // middleware: ['circuless-auth'],
+  middleware: ['circuless-auth'],
   redirect: '/circuless/marketplace',
 })
 
@@ -19,6 +19,6 @@ const realmUserStore = useRealmUserStore()
 const { my, loading } = storeToRefs(realmUserStore)
 
 await callOnce(async () => {
-  // await realmUserStore.getMy('circuless')
+  await realmUserStore.getMy('circuless')
 })
 </script>
