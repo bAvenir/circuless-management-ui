@@ -145,7 +145,7 @@ class Keycloak {
                 client_id,
                 client_secret,
                 redirect_uri:
-                    realm === Realm.master || realm === Realm.circuless
+                    realm === Realm.master
                         ? `${appUrl}/api/${realm}/auth/loginCallback`
                         : `${appUrl}/api/realm/${realm}/auth/loginCallback`,
                 code,
@@ -414,7 +414,7 @@ class Keycloak {
         url.searchParams.set("state", state);
         url.searchParams.set(
             "redirect_uri",
-            realm === Realm.master || realm === Realm.circuless
+            realm === Realm.master
                 ? `${appUrl}/api/${realm}/auth/loginCallback`
                 : `${appUrl}/api/realm/${realm}/auth/loginCallback`
         );

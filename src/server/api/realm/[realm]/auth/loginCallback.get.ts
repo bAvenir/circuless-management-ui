@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
         params: miscTypes.ClientRealmsParamSchema,
         query: authTypes.KeycloakAuthCodeQuerySchema,
       },
+      protected: false,
     }
   )
 })
