@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     event,
     async ({ query }) => {
       const redirectUri = query?.redirectUri as string | undefined
-      const redirectUrl = keycloak.logout(event, 'master', redirectUri)
+      const redirectUrl = await keycloak.logout(event, 'master', redirectUri)
       if (redirectUrl) {
         await sendRedirect(event, redirectUrl.toString())
         return
