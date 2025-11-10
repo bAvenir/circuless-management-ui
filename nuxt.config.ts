@@ -24,6 +24,11 @@ export default defineNuxtConfig({
   experimental: {
     appManifest: false,
   },
+  nitro: {
+    experimental: {
+      openAPI: true
+    }
+  },
   modules: ['@prisma/nuxt', '@nuxtjs/tailwindcss', '@pinia/nuxt', '@primevue/nuxt-module', 'nuxt-viewport'],
   css: ['~/assets/css/main.css', '~/assets/css/overrides.css', 'primeicons/primeicons.css', '@fortawesome/fontawesome-svg-core/styles.css'],
   postcss: {
