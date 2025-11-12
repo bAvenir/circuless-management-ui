@@ -1,5 +1,12 @@
 import { Realm } from '@prisma/client'
 
+defineRouteMeta({
+  openAPI: {
+    tags: ['Node'],
+    description: 'Perform a handshake to verify the validity of token issued by identity provider to node using mtls certificate.',
+  },
+})
+
 export default defineEventHandler(async (event) => {
   try {
     const authHeader = getHeader(event, 'authorization')

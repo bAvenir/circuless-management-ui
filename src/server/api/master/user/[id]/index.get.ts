@@ -1,16 +1,31 @@
 import { miscTypes } from '~/shared/types'
 
-export default defineEventHandler(async (event) => {
-  return await apiWrapper(
-    event,
-    async ({ params }) => {
-      return await db.user.queries.get(params!.id, db.user.args.all)
+defineRouteMeta({
+    openAPI: {
+        tags: ['Master User'],
+        description:
+            'Retrieve detailed information about a specific user by its ID.',
+        parameters: [
+            {
+                in: 'path',
+                name: 'id',
+                schema: { type: 'string', format: 'uuid' },
+            },
+        ],
     },
-    {
-      schemas: {
-        params: miscTypes.IdParamSchema,
-      },
-      protected: true,
-    }
-  )
+})
+
+export default defineEventHandler(async (event) => {
+    return await apiWrapper(
+        event,
+        async ({ params }) => {
+            return await db.user.queries.get(params!.id, db.user.args.all)
+        },
+        {
+            schemas: {
+                params: miscTypes.IdParamSchema,
+            },
+            protected: true,
+        }
+    )
 })

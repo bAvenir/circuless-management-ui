@@ -59,7 +59,7 @@ const tabs = ref([
   { label: 'Nodes', route: `/master/organisations/${id.value}/nodes` },
 ])
 
-const onUserInvited = async (data: userTypes.InviteBody) => {
+const onUserInvited = async (data: userTypes.InviteBodyMaster) => {
   try {
     await masterOrganisationStore.inviteUser(data)
     toast.predefined.user.invited.success()

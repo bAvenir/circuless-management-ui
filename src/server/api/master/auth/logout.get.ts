@@ -1,18 +1,14 @@
-import { authTypes, miscTypes } from '~/shared/types'
+import { Realm } from '@prisma/client'
+import { authTypes } from '~/shared/types'
 
 const config = useRuntimeConfig()
 
 defineRouteMeta({
     openAPI: {
-        tags: ['Realm Auth'],
+        tags: ['Master Auth'],
         description:
-            'Initiate logout process with identity provider for the specified realm.',
+            'Initiate logout process with identity provider for the Master realm.',
         parameters: [
-            {
-                in: 'path',
-                name: 'realm',
-                schema: { type: 'string', enum: ['circuless'] },
-            },
             {
                 in: 'query',
                 name: 'redirectUri',
@@ -27,22 +23,24 @@ defineRouteMeta({
 export default defineEventHandler(async (event) => {
     return await apiWrapper(
         event,
-        async ({ params, query }) => {
-            const realm = params!.realm as miscTypes.RealmTypes
+        async ({ query }) => {
             const redirectUri = query?.redirectUri as string | undefined
-            const redirectUrl = await keycloak.logout(event, realm, redirectUri)
+            const redirectUrl = await keycloak.logout(
+                event,
+                'master',
+                redirectUri
+            )
             if (redirectUrl) {
                 await sendRedirect(event, redirectUrl.toString())
                 return
             }
-            await sendRedirect(event, `${config.public.APP_URL}`)
+            await sendRedirect(event, `${config.public.APP_URL}/`)
         },
         {
+            protected: Realm.master,
             schemas: {
-                params: miscTypes.ClientRealmsParamSchema,
                 query: authTypes.AuthQuerySchema,
             },
-            protected: true,
         }
     )
 })

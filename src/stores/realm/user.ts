@@ -52,10 +52,10 @@ export const useRealmUserStore = defineStore('realmUserStore', () => {
     }
   }
 
-  async function inviteUserToMyOrganisation(data: userTypes.InviteBody) {
+  async function inviteUserToMyOrganisation(realm: Realm, data: userTypes.InviteBodyRealm) {
     try {
       loading.value = true
-      await api.user.realm.invite(data)
+      await api.user.realm.invite(realm, data)
     } finally {
       loading.value = false
     }

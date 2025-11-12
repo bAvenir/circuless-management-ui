@@ -1,7 +1,7 @@
 import type { userTypes } from '~/shared/types'
 
 export const MasterUserApi = {
-  async invite(data: userTypes.InviteBody) {
+  async invite(data: userTypes.InviteBodyMaster) {
     return await $fetch(`/api/master/user/invite`, {
       method: 'POST',
       headers: {

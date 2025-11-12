@@ -6,7 +6,7 @@ export const useMasterUserStore = defineStore('masterUserStore', () => {
   const all = ref<userTypes.GetAllMaster>([])
   const one = ref<userTypes.GetMaster | undefined>(undefined)
 
-  async function invite(data: userTypes.InviteBody) {
+  async function invite(data: userTypes.InviteBodyMaster) {
     try {
       loading.value = true
       await api.user.master.invite(data)

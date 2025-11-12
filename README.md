@@ -1,53 +1,51 @@
-# Nuxt Minimal Starter
+# Circuless Collaboration Catalogue
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Nuxt 3 application with Nitro OpenAPI integration and Joi schema validation.
 
 ## Setup
 
-Make sure to install dependencies:
-
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+## Development
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## OpenAPI Schema Generation
 
-Build the application for production:
+Generate OpenAPI schemas from Joi validation schemas:
 
 ```bash
-# npm
-npm run build
+npm run generate:schemas
+```
 
-# pnpm
-pnpm build
+This creates copy-pasteable schemas in `src/server/schemas/generated.txt`. Copy the schema objects into `defineRouteMeta` for OpenAPI documentation.
+
+**Example:**
+```typescript
+defineRouteMeta({
+  openAPI: {
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: { /* paste generated schema here */ }
+        }
+      }
+    }
+  }
+})
+```
+
+**Note:** Due to Nitro macro limitations, schemas must be manually copied - dynamic variabes don't work in `defineRouteMeta`. GitHub issue: https://github.com/nitrojs/nitro/issues/2974
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production  
+- `npm run generate:schemas` - Generate OpenAPI schemas from Joi
 
 # yarn
 yarn build

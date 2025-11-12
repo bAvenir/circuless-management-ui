@@ -1,12 +1,10 @@
 import { authTypes, miscTypes } from '~/shared/types'
 
-const config = useRuntimeConfig()
-
 defineRouteMeta({
     openAPI: {
         tags: ['Realm Auth'],
         description:
-            'Initiate logout process with identity provider for the specified realm.',
+            'Initiate login process with identity provider for the specified realm.',
         parameters: [
             {
                 in: 'path',
@@ -18,7 +16,7 @@ defineRouteMeta({
                 name: 'redirectUri',
                 schema: { type: 'string' },
                 required: false,
-                description: 'The URI to redirect to after logout.',
+                description: 'The URI to redirect to after login.',
             },
         ],
     },
@@ -30,19 +28,20 @@ export default defineEventHandler(async (event) => {
         async ({ params, query }) => {
             const realm = params!.realm as miscTypes.RealmTypes
             const redirectUri = query?.redirectUri as string | undefined
-            const redirectUrl = await keycloak.logout(event, realm, redirectUri)
-            if (redirectUrl) {
-                await sendRedirect(event, redirectUrl.toString())
-                return
-            }
-            await sendRedirect(event, `${config.public.APP_URL}`)
+            const authRedirectUrl = await keycloak.getRedirectUrl(
+                event,
+                realm,
+                false,
+                redirectUri
+            )
+            await sendRedirect(event, authRedirectUrl.toString())
         },
         {
             schemas: {
                 params: miscTypes.ClientRealmsParamSchema,
                 query: authTypes.AuthQuerySchema,
             },
-            protected: true,
+            protected: false,
         }
     )
 })

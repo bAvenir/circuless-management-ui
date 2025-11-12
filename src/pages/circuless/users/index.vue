@@ -12,7 +12,6 @@
           <h5 class="pl-1">Invite user</h5>
         </template>
         <RealmUserInvite
-          realm="circuless"
           :kcOrganisationId="user?.organisation?.kcId"
           :loading="loadingUser || loadingCirculess"
           @onSave="onUserInvited"
@@ -42,7 +41,7 @@ await callOnce(async () => {
   await realmUserStore.getAll('circuless')
 })
 
-const onUserInvited = async (data: userTypes.InviteBody) => {
+const onUserInvited = async (data: userTypes.InviteBodyRealm) => {
   try {
     await circulessUserStore.invite(data)
     toast.predefined.user.invited.success()

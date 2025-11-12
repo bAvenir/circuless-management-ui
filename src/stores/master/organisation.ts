@@ -51,7 +51,7 @@ export const useMasterOrganisationStore = defineStore('masterOrganisationStore',
     }
   }
 
-  async function inviteUser(data: userTypes.InviteBody) {
+  async function inviteUser(data: userTypes.InviteBodyMaster) {
     try {
       loading.value = true
       await api.user.master.invite(data)

@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Realm } from '@prisma/client'
 import type { userTypes } from '~/shared/types'
 
 type Error = {
@@ -39,7 +38,6 @@ type Errors = {
 }
 
 const props = defineProps<{
-  realm: Realm
   kcOrganisationId?: string
   loading: boolean
 }>()
@@ -77,11 +75,10 @@ const resolver = (event: any) => {
 const onFormSubmit = async (event: any) => {
   if (event.valid && props.kcOrganisationId) {
     const states = event.states!
-    const data: userTypes.InviteBody = {
+    const data: userTypes.InviteBodyRealm = {
       email: states.email?.value,
       givenName: states.givenName?.value,
       familyName: states.familyName?.value,
-      realm: props.realm,
       kcOrganisationId: props.kcOrganisationId,
     }
     emit('onSave', data)

@@ -30,8 +30,8 @@ export const RealmUserApi = {
     })
   },
 
-  async invite(data: userTypes.InviteBody) {
-    return await $fetch(`/api/realm/${data.realm}/user/invite`, {
+  async invite(realm: Realm, data: userTypes.InviteBodyRealm) {
+    return await $fetch(`/api/realm/${realm}/user/invite`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

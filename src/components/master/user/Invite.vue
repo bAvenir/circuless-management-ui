@@ -126,7 +126,7 @@ const resolver = (event: any) => {
 const onFormSubmit = async (event: any) => {
   if (event.valid) {
     const states = event.states!
-    const data: userTypes.InviteBody = {
+    const data: userTypes.InviteBodyMaster = {
       email: states.email?.value,
       givenName: states.givenName?.value,
       familyName: states.familyName?.value,
