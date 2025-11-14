@@ -1,17 +1,36 @@
 # Circuless Collaboration Catalogue
 
-Nuxt 3 application with Nitro OpenAPI integration and Joi schema validation.
+Circuless Collaboration Catalogue is a Nuxt 3 application with Nitro OpenAPI integration and Joi schema validation. It provides a comprehensive platform for managing collaboration catalogues in the Circuless ecosystem, enabling users to register nodes, manage partnerships, and handle organization data with Prisma ORM and PostgreSQL.
 
-## Setup
+## Getting Started
+
+This is a Nuxt 3 application with TypeScript support. Follow the standard process:
+
+1. Install dependencies:
+    ```bash
+    npm install
+    ```
+
+2. Provide the necessary configuration in your environment variables and database setup.
+
+3. Start the development server:
+    ```bash
+    npm run dev
+    ```
+
+> **Note:** Make sure to configure your database connection and environment variables before starting the application.
+
+## Database Setup
+
+The application uses Prisma ORM with PostgreSQL. Run database migrations:
 
 ```bash
-npm install
+npx prisma migrate dev
 ```
 
-## Development
-
+Seed the database (optional):
 ```bash
-npm run dev
+npx prisma db seed
 ```
 
 ## OpenAPI Schema Generation
@@ -39,35 +58,56 @@ defineRouteMeta({
 })
 ```
 
-**Note:** Due to Nitro macro limitations, schemas must be manually copied - dynamic variabes don't work in `defineRouteMeta`. GitHub issue: https://github.com/nitrojs/nitro/issues/2974
+**Note:** Due to Nitro macro limitations, schemas must be manually copied - dynamic variables don't work in `defineRouteMeta`. GitHub issue: https://github.com/nitrojs/nitro/issues/2974
 
-## Scripts
+## Deploy
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production  
-- `npm run generate:schemas` - Generate OpenAPI schemas from Joi
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
+Build the application for production and deploy using Docker:
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+./buildAndPublish.sh
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Or use Docker Compose for local deployment:
+
+```bash
+docker-compose up -d
+```
+
+> **Note:** Application container will be restarted automatically.
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production with type checking
+- `npm run generate` - Generate static site
+- `npm run preview` - Preview production build locally
+- `npm run typecheck` - Run TypeScript type checking
+- `npm run generate:schemas` - Generate OpenAPI schemas from Joi
+- `npm run generate:openapi` - Generate OpenAPI documentation
+
+## Project Structure
+
+- `/src/api/` - API routes organized by realm (circuless, master, realm-specific)
+- `/src/components/` - Vue components organized by feature
+- `/src/pages/` - File-based routing pages
+- `/src/server/` - Nitro server-side functionality
+- `/prisma/` - Database schema and migrations
+- `/lib/` - Shared utilities and configurations
+
+## Contributing
+
+ToDo
+
+## Who do I talk to?
+
+Developed by bAvenir:
+* Matej Kokol - [matej.kokol@bavenir.eu](mailto:matej.kokol@bavenir.eu)
+* Jorge Almela - [jorge.almela@bavenir.eu](mailto:jorge.almela@bavenir.eu)
+* Peter Drahovsky - [peter.drahovsky@bavenir.eu](mailto:peter.drahovsky@bavenir.eu)
+
+## License
+
+Copyright (C) 2024 bAvenir
+
+All rights reserved.
