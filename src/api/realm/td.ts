@@ -20,7 +20,7 @@ export type ThingDescriptionProperty = Record<string, any>
 export const TDsManagement = {
     async postTD(realm: Realm, id: string, TD: ThingDescription) {
         const instructions = await $fetch(
-            `/api/${realm}/node-admin/${id}/items`,
+            `/api/realm/${realm}/node-admin/${id}/items`,
             {
                 method: 'POST' as any,
                 body: TD,
@@ -33,13 +33,13 @@ export const TDsManagement = {
     },
 
     async getAllTDs(realm: Realm, id: string) {
-        return $fetch<ThingDescription[]>(`/api/${realm}/node/my/${id}/items`, {
+        return $fetch<ThingDescription[]>(`/api/realm/${realm}/node/my/${id}/items`, {
             method: 'GET',
         })
     },
     async getTDDetails(realm: Realm, id: string, itemID: string) {
         return $fetch<ThingDescription>(
-            `/api/${realm}/node/my/${id}/items/${itemID}`,
+            `/api/realm/${realm}/node/my/${id}/items/${itemID}`,
             {
                 method: 'GET',
             }

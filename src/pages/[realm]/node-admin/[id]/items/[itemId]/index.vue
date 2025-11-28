@@ -62,11 +62,14 @@
 <script lang="ts" setup>
 const route = useRoute()
 import type { Realm } from '@prisma/client'
+import { ConfirmPopupStyle } from 'primevue'
 import { useRealmNodeStore } from '~/stores/realm/node'
 
 const realmNodeStore = useRealmNodeStore()
 const router = useRouter()
 const { myItem, loading } = storeToRefs(realmNodeStore)
+
+console.log('my item:', myItem.value)
 
 const realm = ref(route.params.realm as Realm)
 const itemId = ref(route.params.itemId as string)
@@ -77,7 +80,7 @@ await callOnce(async () => {
 
 const goToItems = () => {
   const nodeId = route.params.id as string
-  router.push({ path: `/${realm.value}/node-admin/${nodeId}/items` })
+  router.push({ path:`/${realm.value}/node-admin/${nodeId}/items`})
 }
 </script>
 

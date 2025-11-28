@@ -27,15 +27,17 @@ return await apiWrapper(
                 params!.realm as Realm,
                 db.node.args.all
             )
-            return await fetch(`${node.host}/api/v1/things`, {
+            const query = await $fetch<string>(`${node.host}/api/v1/things`, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
     });
+          return query
         },
         {
             protected: true,
+
             schemas: {
-                params: miscTypes.IdParamSchema,
+                params: miscTypes.ClientRealmsParamSchema.concat(miscTypes.IdParamSchema),
+
             },
         }
     )
