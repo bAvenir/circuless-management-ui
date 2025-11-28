@@ -25,8 +25,8 @@ await callOnce(async () => {
   await realmNodeStore.getAllMy(realm.value)
 })
 
-const onNodeSelected = (nodeId: string) => {
-  router.push({ path: `/${realm.value}/node-admin/${nodeId}` })
+const onNodeSelected = (nodeID: string) => {
+  router.push({ path:`/${realm.value}/node-admin/${nodeID}`})
 }
 </script>
 

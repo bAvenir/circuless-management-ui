@@ -23,7 +23,7 @@ const realm = ref(route.params.realm as Realm)
 const nodeId = ref(route.params.id as string)
 
 const onAdapterSelected = (adapterId: string) => {
-  router.push({ path: `/${realm.value}/node-admin/${nodeId.value}/adapters/${adapterId}` })
+  router.push({ path: `/${realm.value}/node-admin/${nodeId.value}/adapters/${adapterId}`})
 }
 </script>
 

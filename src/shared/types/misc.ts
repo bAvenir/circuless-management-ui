@@ -13,12 +13,20 @@ export interface IdParam {
     id: string;
 }
 
+export interface TDIdParam {
+    td_id: string;
+}
+
 export interface RealmParam {
     realm: RealmTypes;
 }
 
 export const IdParamSchema = Joi.object({
     id: Joi.string().required(),
+}).required();
+
+export const TDIdParamSchema = Joi.object({
+    td_id: Joi.string().required(),
 }).required();
 
 export const AllRealmsParamSchema = Joi.object({

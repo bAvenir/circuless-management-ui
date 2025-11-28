@@ -60,7 +60,7 @@ const id = useRoute().params.id as string
 const profileVisible = ref(false)
 
 const goToNodes = () => {
-  navigateTo(`/${my?.realm}/node-admin/nodes`)
+  navigateTo(`/${my?.realm}/node-admin`)
 }
 
 const path = `/${realm}/node-admin/${id}/profile`

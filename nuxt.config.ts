@@ -1,26 +1,27 @@
-import type { Realm } from '@prisma/client'
-import pkg from './package.json'
+import type { Realm } from "@prisma/client";
+import pkg from "./package.json";
+import Aura from "@primeuix/themes/aura";
 
 interface Realms {
     [key: string]: {
-        client_id: string
-        realm: Realm
-    }
+        client_id: string;
+        realm: Realm;
+    };
 }
 
 interface RealmSecrets {
-    [key: string]: string
+    [key: string]: string;
 }
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    srcDir: 'src/',
-    compatibilityDate: '2024-11-01',
+    srcDir: "src/",
+    compatibilityDate: "2024-11-01",
     devtools: { enabled: true },
     routeRules: {
-        '/**': { prerender: true, ssr: false },
-        '/master/**': { prerender: false, ssr: false },
-        '/circuless/**': { prerender: false, ssr: false },
+        "/**": { prerender: true, ssr: false },
+        "/master/**": { prerender: false, ssr: false },
+        "/circuless/**": { prerender: false, ssr: false },
     },
     experimental: {
         appManifest: false,
@@ -31,26 +32,26 @@ export default defineNuxtConfig({
         },
         openAPI: {
             meta: {
-                title: 'Collaboration Catalogue API',
+                title: "Collaboration Catalogue API",
                 version: pkg.version,
                 description:
-                    'API documentation for the Collaboration Catalogue application.',
+                    "API documentation for the Collaboration Catalogue application.",
             },
-            production: 'runtime',
+            production: "runtime",
         },
     },
     modules: [
-        '@prisma/nuxt',
-        '@nuxtjs/tailwindcss',
-        '@pinia/nuxt',
-        '@primevue/nuxt-module',
-        'nuxt-viewport',
+        "@prisma/nuxt",
+        "@nuxtjs/tailwindcss",
+        "@pinia/nuxt",
+        "@primevue/nuxt-module",
+        "nuxt-viewport",
     ],
     css: [
-        '~/assets/css/main.css',
-        '~/assets/css/overrides.css',
-        'primeicons/primeicons.css',
-        '@fortawesome/fontawesome-svg-core/styles.css',
+        "~/assets/css/main.css",
+        "~/assets/css/overrides.css",
+        "primeicons/primeicons.css",
+        "@fortawesome/fontawesome-svg-core/styles.css",
     ],
     postcss: {
         plugins: {
@@ -59,37 +60,42 @@ export default defineNuxtConfig({
         },
     },
     primevue: {
-        importTheme: { from: '@/themes/mytheme.js' },
+        importTheme: { from: "@/themes/mytheme.js" },
+        options: {
+            theme: {
+                preset: Aura,
+            },
+        },
     },
     vite: {
         // Prisma Client JS is not compatible with the browser, so we need to alias it.
         // Issue: https://github.com/prisma/prisma/issues/12504
         resolve: {
             alias: {
-                '.prisma/client/index-browser':
-                    './node_modules/.prisma/client/index-browser.js',
+                ".prisma/client/index-browser":
+                    "./node_modules/.prisma/client/index-browser.js",
             },
         },
     },
     runtimeConfig: {
         OIDC: {
             REALM_SECRETS: JSON.parse(
-                process.env.NUXT_OIDC_REALM_SECRETS ?? '{}'
+                process.env.NUXT_OIDC_REALM_SECRETS ?? "{}"
             ) as RealmSecrets,
         },
         PKI: {
-            URL: process.env.NUXT_PKI_URL ?? '',
-            USER: process.env.NUXT_PKI_USER ?? '',
-            PASSWORD: process.env.NUXT_PKI_PASSWORD ?? '',
+            URL: process.env.NUXT_PKI_URL ?? "",
+            USER: process.env.NUXT_PKI_USER ?? "",
+            PASSWORD: process.env.NUXT_PKI_PASSWORD ?? "",
         },
         public: {
-            APP_URL: process.env.NUXT_PUBLIC_APP_URL ?? '',
+            APP_URL: process.env.NUXT_PUBLIC_APP_URL ?? "",
             OIDC: {
-                ENDPOINT: process.env.NUXT_PUBLIC_OIDC_ENDPOINT ?? '',
+                ENDPOINT: process.env.NUXT_PUBLIC_OIDC_ENDPOINT ?? "",
                 REALMS: JSON.parse(
-                    process.env.NUXT_PUBLIC_OIDC_REALMS ?? '{}'
+                    process.env.NUXT_PUBLIC_OIDC_REALMS ?? "{}"
                 ) as Realms,
             },
         },
     },
-})
+});

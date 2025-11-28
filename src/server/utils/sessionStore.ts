@@ -44,9 +44,7 @@ class SessionStore {
         realm: miscTypes.RealmTypes
     ) {
         const cookies = parseCookies(event);
-        console.log(cookies, "cookies");
         const sessionId = cookies[`${realm}_session_id`];
-        console.log("MYSessionId:", sessionId);
 
         if (!sessionId) throw new Error("Session ID not found");
         if (!this.sessions.has(sessionId)) throw new Error("Session not found");

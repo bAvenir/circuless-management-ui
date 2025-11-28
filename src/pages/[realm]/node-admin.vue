@@ -11,19 +11,6 @@
 import type { Realm } from '@prisma/client'
 import { useRealmUserStore } from '~/stores/realm/user'
 
-definePageMeta({
-  middleware: [
-    'realm-auth',
-    function (to, from) {
-      const realm = to.params.realm as Realm
-      const path = `/${realm}/node-admin`
-      if (to.path === path) {
-        return navigateTo(`${path}/nodes`)
-      }
-    },
-  ],
-})
-
 const realmUserStore = useRealmUserStore()
 const route = useRoute()
 

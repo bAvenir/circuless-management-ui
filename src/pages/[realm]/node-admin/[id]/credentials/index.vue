@@ -23,7 +23,7 @@ const realm = ref(route.params.realm as Realm)
 const nodeId = ref(route.params.id as string)
 
 const onCredentialSelected = (credentialId: string) => {
-  router.push({ path: `/${realm.value}/node-admin/${nodeId.value}/credentials/${credentialId}` })
+  router.push({ path:`/${realm.value}/node-admin/${nodeId.value}/credentials/${credentialId}`})
 }
 </script>
 

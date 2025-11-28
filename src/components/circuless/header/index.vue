@@ -1,10 +1,12 @@
 <template>
   <div class="w-full h-14 bg-circuless-lightGreen flex items-center justify-between">
     <CirculessHeaderLogo class="pl-4" />
-    <div class="flex items-center gap-3 h-full">
-      <NuxtLink v-if="$viewport.isGreaterThan('tablet')" to="/circuless/node-admin">
-        <Button label="Node management" icon="pi pi-cog" severity="secondary" size="small" />
-      </NuxtLink>
+    <div class="flex items-center gap-10 h-full">
+      <div class="flex items-center justify-end gap-5">
+        <NuxtLink v-if="$viewport.isGreaterThan('tablet')" to="/circuless/node-admin">
+          <Button label="Node Management" icon="pi pi-cog" severity="secondary" size="small" />
+        </NuxtLink>
+      </div>
       <RealmProfile :my="my" :loading="loading" class="text-text" />
     </div>
   </div>

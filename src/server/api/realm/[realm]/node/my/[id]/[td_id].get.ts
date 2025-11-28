@@ -1,0 +1,47 @@
+import { Realm } from "@prisma/client";
+import { miscTypes } from "~/shared/types";
+
+defineRouteMeta({
+    openAPI: {
+        tags: ["Circuless Discovery"],
+        description: "Get Thing Description in Discovery section of specific item",
+        requestBody: {
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                    },
+                },
+            },
+            required: true,
+        },
+    },
+});
+export default defineEventHandler(async (event) => {
+return await apiWrapper(
+        event,
+        async ({ user, params }) => {
+            const node = await db.node.queries.getUserRealm(
+                params!.id,
+                user!.id,
+                params!.realm as Realm,
+                db.node.args.all
+            )
+            return await $fetch<A>(`${node.host}/api/v1/things/${params!.td_id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    });
+        },
+        {
+            protected: true,
+            schemas: {
+                params: miscTypes.IdParamSchema.concat(miscTypes.TDIdParamSchema),
+            },
+        }
+    )
+});
+
+
+interface A {
+   s: string
+}

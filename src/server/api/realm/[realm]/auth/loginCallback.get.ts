@@ -48,6 +48,7 @@ defineRouteMeta({
 })
 
 export default defineEventHandler(async (event) => {
+    console.log('HEEEY')
     return await apiWrapper(
         event,
         async ({ params, query }) => {

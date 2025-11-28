@@ -111,6 +111,25 @@ const circulessMarketplaceStore = useCirculessMarketplaceStore()
 
 const { all, loading } = storeToRefs(circulessMarketplaceStore)
 
+// POST TDS
+
+const validTD = {
+  title: "My Thing",
+  version: { instance: "1.0.0" },
+  description: "A sample Thing Description for testing",
+
+  security: "nosec",
+  securityDefinitions: {
+    nosec: { scheme: "nosec" }
+  },
+
+  "@context": "https://www.w3.org/2022/wot/td/v1.1",
+
+  properties: {},
+  actions: {},
+  events: {}
+};
+
 // Sorting
 const sortField = ref('lastUpdated')
 const sortOrder = ref(-1)

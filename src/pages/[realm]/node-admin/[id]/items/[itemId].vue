@@ -1,7 +1,7 @@
 <template>
   <div v-if="$viewport.isGreaterThan('tablet')" class="w-full h-full flex">
     <div class="h-full grow flex flex-col lg:max-w-[400px] pt-4 lg:pt-0">
-      <RealmNodeAdminItemTable :items="allMyItems" @onSelect="onItemSelected" :selectedItemId="itemId" />
+      <RealmNodeAdminItemTable :items="typedItems" @onSelect="onItemSelected" :selectedItemId="itemID" />
     </div>
     <Divider layout="vertical" />
     <div class="grow h-full">
@@ -30,16 +30,19 @@ const route = useRoute()
 const router = useRouter()
 
 const realm = ref(route.params.realm as Realm)
-const nodeId = ref(route.params.id as string)
-const itemId = ref(route.params.itemId as string)
+const nodeID = ref(route.params.id as string)
+const itemID = ref(route.params.itemId as string)
+
+
+const typedItems = computed(() => (allMyItems.value ?? []) as unknown as any[])
 
 await callOnce(async () => {
-  await realmNodeStore.getMyItems()
+  await realmNodeStore.getMyItems(realm.value, nodeID.value)
 })
 
 const onItemSelected = (id: string) => {
-  itemId.value = id
-  router.push({ path: `/${realm.value}/node-admin/${nodeId.value}/items/${id}` })
+  itemID.value = id
+  router.push({ path:`/${realm.value}/node-admin/${nodeID.value}/items/${id}`})
 }
 </script>
 

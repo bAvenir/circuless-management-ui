@@ -16,7 +16,7 @@ definePageMeta({
       const { $viewport } = useNuxtApp()
       const realm = to.params.realm as Realm
       const id = to.params.id as string
-      const path = `/${realm}/node-admin/${id}`
+      const path = `/${realm}/node-management/${id}`
       if ($viewport.isGreaterThan('tablet') && to.path === `${path}/profile`) {
         return navigateTo(`${path}/items`)
       }

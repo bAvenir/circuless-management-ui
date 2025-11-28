@@ -3,7 +3,7 @@
     <div v-if="$viewport.isGreaterThan('tablet')"></div>
     <div class="flex items-center gap-3 h-full justify-between lg:justify-start w-full lg:w-fit pl-4 lg:pl-0">
       <NuxtLink v-if="my?.realm" :to="`/${my.realm}`">
-        <Button :label="`${realmName} dashboard`" size="small" />
+      <Button  class="!bg-blue-700 hover:!bg-cyan-500/20 !text-cyan-300 !border !border-cyan-500/30 rounded-lg shadow-none" :label="`${realmName} dashboard`" size="small" />
       </NuxtLink>
       <RealmProfile :my="my" :loading="loading" class="text-text" />
     </div>
