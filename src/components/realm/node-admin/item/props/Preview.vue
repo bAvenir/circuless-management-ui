@@ -29,10 +29,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropertyTD } from '@bavenir/spade-node-js-client'
+import type { ThingDescriptionProperty } from '~/api/realm/td';
 
 const { property } = defineProps<{
-  property?: PropertyTD
+  property?: ThingDescriptionProperty
 }>()
 </script>
 

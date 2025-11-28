@@ -4,7 +4,6 @@ import * as userTypes from './user'
 import * as organisationTypes from './organisation'
 import * as partnershipTypes from './partnership'
 import * as nodeTypes from './node'
-import * as itemTypes from './item'
 import * as marketplaceTypes from './marketplace'
 
-export { authTypes, userTypes, organisationTypes, partnershipTypes, nodeTypes, itemTypes, marketplaceTypes, miscTypes }
+export { authTypes, userTypes, organisationTypes, partnershipTypes, nodeTypes, marketplaceTypes, miscTypes }

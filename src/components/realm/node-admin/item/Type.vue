@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { ItemTD } from '@bavenir/spade-node-js-client'
+import type { ThingDescription } from '~/api/realm/td';
 import { getItemMetaData } from '~/utils'
 
 const { item } = defineProps<{
-  item?: ItemTD
+  item?: ThingDescription
 }>()
 
 const metaData = getItemMetaData(item)

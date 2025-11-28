@@ -9,7 +9,7 @@
           <font-awesome-icon icon="fa fa-cube" />
         </div>
         <div class="flex flex-col">
-          <div class="text-lg font-medium">{{ myItem?.title }}</div>
+          <div class="text-lg font-medium">{{ myItem?.td?.title }}</div>
           <RealmNodeAdminItemType :item="myItem" class="text-realm-text-300 text-sm" />
         </div>
       </div>
@@ -18,15 +18,10 @@
           <div class="text-realm-text-300">oid:</div>
           <div>{{ myItem?.oid }}</div>
         </div>
-        <div class="flex items-center gap-1">
-          <i class="pi pi-users text-realm-text-300"></i>
-          <div class="text-realm-text-300">Owner:</div>
-          <div>{{ myItem?.organisation?.name }}</div>
-        </div>
       </div>
       <div class="text-sm mt-10 max-w-96 flex flex-col gap-1 px-4 lg:px-0">
         <div class="text-realm-text-300">Description:</div>
-        <div>{{ myItem?.description }}</div>
+        <div>{{ myItem?.td?.description }}</div>
       </div>
       <div class="mt-10 flex gap-4 px-4 lg:px-0">
         <Button severity="secondary" size="small">
@@ -44,7 +39,7 @@
         <Tabs value="0">
           <TabList>
             <Tab value="0">
-              <div class="text-sm">Properties ({{ Object.keys(myItem?.properties ?? {}).length }})</div>
+              <div class="text-sm">Properties ({{ Object.keys(myItem?.td?.properties ?? {}).length }})</div>
             </Tab>
             <Tab value="1">
               <div class="text-sm">Events (0)</div>
@@ -77,7 +72,7 @@ const realm = ref(route.params.realm as Realm)
 const itemId = ref(route.params.itemId as string)
 
 await callOnce(async () => {
-  await realmNodeStore.getMyItem(itemId.value, realm.value)
+  await realmNodeStore.getMyItem(itemId.value)
 })
 
 const goToItems = () => {
