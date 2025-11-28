@@ -14,7 +14,7 @@ export const RealmNodeApi = {
   },
 
   async getMy(id:string, realm: Realm) {
-    if (!isValidId(id)) throw new Error('Invalid id') 
+    if (!isValidId(id)) throw new Error('Invalid id')
     return await $fetch(`/api/realm/${realm}/node/my/${id}`, {
       method: 'GET',
       headers: {

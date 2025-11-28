@@ -27,9 +27,8 @@ return await apiWrapper(
                 params!.realm as Realm,
                 db.node.args.all
             )
-            return await $fetch<A>(`${node.host}/api/v1/things/${params!.td_id}`, {
+            return await $fetch<string>(`${node.host}/api/v1/things/${params!.td_id}`, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
     });
         },
         {
@@ -40,8 +39,3 @@ return await apiWrapper(
         }
     )
 });
-
-
-interface A {
-   s: string
-}

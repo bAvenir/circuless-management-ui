@@ -32,7 +32,7 @@ await callOnce(async () => {
 
 const onItemSelected = (id: string) => {
   itemId.value = id
- router.push({ path: `/${realm.value}/node-admin/${nodeId.value}/items/${id}` })
+ router.push({ path: `/${realm.value}/node-admin/${nodeId.value}/items/${id}`})
 }
 </script>
 

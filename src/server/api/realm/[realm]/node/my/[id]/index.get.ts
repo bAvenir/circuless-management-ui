@@ -5,7 +5,7 @@ defineRouteMeta({
     openAPI: {
         tags: ['Realm Node'],
         description:
-            'Get a specific node by ID that the user has access to in the specified realm.',
+            'Get single node of the user has access to in the specified realm.',
         parameters: [
             {
                 in: 'path',
@@ -15,7 +15,7 @@ defineRouteMeta({
             {
                 in: 'path',
                 name: 'id',
-                schema: { type: 'string', format: 'uuid' },
+                schema: { type: 'string' },
             },
         ],
     },
@@ -25,8 +25,9 @@ export default defineEventHandler(async (event) => {
     return await apiWrapper(
         event,
         async ({ user, params }) => {
+         const id = params!.id
             return await db.node.queries.getUserRealm(
-                params!.id,
+               id,
                 user!.id,
                 params!.realm as Realm,
                 db.node.args.all
@@ -35,9 +36,7 @@ export default defineEventHandler(async (event) => {
         {
             protected: true,
             schemas: {
-                params: miscTypes.ClientRealmsParamSchema.concat(
-                    miscTypes.IdParamSchema
-                ),
+                params: miscTypes.IdParamSchema.concat(miscTypes.ClientRealmsParamSchema),
             },
         }
     )
