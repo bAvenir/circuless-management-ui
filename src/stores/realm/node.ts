@@ -18,7 +18,6 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
     try {
       loading.value = true
       const node = await api.node.realm.create(realm, data)
-      console.log('node:', node)
       allMy.value.push(node.node)
       return node
     } finally {
@@ -31,7 +30,6 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
       loading.value = true
       const nodes = await api.node.realm.getAllMy(realm)
       allMy.value = nodes
-      console.log('nodes:', nodes)
       return nodes
     } finally {
       loading.value = false
@@ -43,7 +41,6 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
       loading.value = true
       const node = await api.node.realm.getMy(id, realm)
       my.value = node
-      console.log('node:', node)
       return node
     } finally {
       loading.value = false
@@ -60,8 +57,6 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
       const items = await TDsManagement.getAllTDs(realm, nodeId)
 
       allMyItems.value = items
-      console.log('items', items)
-
       return items
     } finally {
       loading.value = false
@@ -80,7 +75,6 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
         currentNodeId.value,
         itemId
       )
-      console.log('item:',item)
       myItem.value = item
       return item
     } finally {

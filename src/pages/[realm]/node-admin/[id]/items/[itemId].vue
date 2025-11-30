@@ -1,7 +1,7 @@
 <template>
   <div v-if="$viewport.isGreaterThan('tablet')" class="w-full h-full flex">
     <div class="h-full grow flex flex-col lg:max-w-[400px] pt-4 lg:pt-0">
-      <RealmNodeAdminItemTable :items="typedItems" @onSelect="onItemSelected" :selectedItemId="itemID" />
+      <RealmNodeAdminItemTable :items="typedItems" @onSelect="onItemSelected" :selectedItemId="String(itemID)" />
     </div>
     <Divider layout="vertical" />
     <div class="grow h-full">
@@ -30,8 +30,8 @@ const route = useRoute()
 const router = useRouter()
 
 const realm = ref(route.params.realm as Realm)
-const nodeID = ref(route.params.id as string)
-const itemID = ref(route.params.itemId as string)
+const nodeID = ref(String(route.params.id as string))
+const itemID = ref(String(route.params.itemId as string))
 
 
 const typedItems = computed(() => (allMyItems.value ?? []) as unknown as any[])

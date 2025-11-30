@@ -1,26 +1,19 @@
 import { Realm } from "@prisma/client";
 import { miscTypes } from "~/shared/types";
+import { AllRealmsParamSchema, IdParamSchema, TDIdParamSchema } from "~/shared/types/misc";
 
 defineRouteMeta({
     openAPI: {
         tags: ["Circuless Discovery"],
         description: "Get Thing Description in Discovery section of specific item",
-        requestBody: {
-            content: {
-                "application/json": {
-                    schema: {
-                        type: "object",
-                    },
-                },
-            },
-            required: true,
-        },
+
     },
 });
 export default defineEventHandler(async (event) => {
 return await apiWrapper(
         event,
         async ({ user, params }) => {
+             console.log("CALLBACK RAN — params:", params);
             const node = await db.node.queries.getUserRealm(
                 params!.id,
                 user!.id,
@@ -33,9 +26,11 @@ return await apiWrapper(
         },
         {
             protected: true,
-            schemas: {
-                params: miscTypes.IdParamSchema.concat(miscTypes.TDIdParamSchema),
-            },
+          schemas: {
+    params: AllRealmsParamSchema
+      .concat(IdParamSchema)
+      .concat(TDIdParamSchema),
+},
         }
     )
 });

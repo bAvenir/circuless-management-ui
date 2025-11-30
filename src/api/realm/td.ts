@@ -32,14 +32,14 @@ export const TDsManagement = {
         return instructions
     },
 
-    async getAllTDs(realm: Realm, id: string) {
-        return $fetch<ThingDescription[]>(`/api/realm/${realm}/node/my/${id}/items`, {
+    async getAllTDs(realm: Realm, nodeId: string) {
+        return $fetch<ThingDescription[]>(`/api/realm/${realm}/node/my/${nodeId}/items`, {
             method: 'GET',
         })
     },
-    async getTDDetails(realm: Realm, id: string, itemID: string) {
+    async getTDDetails(realm: Realm, nodeId: string, itemID: string) {
         return $fetch<ThingDescription>(
-            `/api/realm/${realm}/node/my/${id}/items/${itemID}`,
+            `/api/realm/${realm}/node/my/${nodeId}/items/${itemID}`,
             {
                 method: 'GET',
             }

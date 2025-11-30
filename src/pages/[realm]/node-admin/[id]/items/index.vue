@@ -27,8 +27,11 @@ const itemId = ref(route.params.itemId as string)
 const typedItems = computed(() => (allMyItems.value ?? []) as unknown as any[])
 
 await callOnce(async () => {
-  await realmNodeStore.getMyItems(realm.value, nodeId.value)
+  const a = await realmNodeStore.getMyItems(realm.value, nodeId.value)
+  console.log('a:', a)
+  return a
 })
+
 
 const onItemSelected = (id: string) => {
   itemId.value = id
