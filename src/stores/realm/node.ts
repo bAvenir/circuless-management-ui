@@ -10,6 +10,7 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
 
   const allMyItems = ref<ThingDescription[] | undefined>(undefined)
   const myItem = ref<ThingDescription | undefined>(undefined)
+  const tdData = ref<ThingDescription | undefined>(undefined)
 
   const currentRealm = ref<Realm | null>(null)
   const currentNodeId = ref<string | null>(null)
@@ -63,9 +64,12 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
     }
   }
 
-  async function getMyItem(itemId: string) {
+  async function getMyItem(realm: Realm, nodeId: string, itemId: string) {
     try {
       loading.value = true
+
+       currentRealm.value = realm
+        currentNodeId.value = nodeId
 
       if (!currentRealm.value || !currentNodeId.value) {
         throw new Error('Realm or Node ID not set before calling getMyItem()')
@@ -82,6 +86,63 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
     }
   }
 
+  async function deleteMyItem(realm: Realm, nodeId: string, itemId: string) {
+  loading.value = true
+
+   currentRealm.value = realm
+   currentNodeId.value = nodeId
+
+  try {
+    if (!currentRealm.value || !currentNodeId.value) {
+      throw new Error('Realm or Node ID not set before calling deleteMyItem()')
+    }
+
+    await TDsManagement.deleteTD(
+      currentRealm.value,
+      currentNodeId.value,
+      itemId
+    )
+
+    return true
+
+  } catch (err) {
+    console.error('Failed to delete item:', err)
+    throw err
+  } finally {
+    loading.value = false
+  }
+
+}
+
+  async function updateMyItem(realm: Realm, nodeId: string, itemId: string, updateData: any) {
+  loading.value = true
+
+  currentRealm.value = realm
+  currentNodeId.value = nodeId
+
+  try {
+    if (!currentRealm.value || !currentNodeId.value) {
+      throw new Error('Realm or Node ID not set before calling updateMyItem()')
+    }
+
+    await TDsManagement.updateTD(
+      currentRealm.value,
+      currentNodeId.value,
+      itemId,
+      updateData
+
+    )
+
+    return true
+
+  } catch (err) {
+    console.error('Failed to update item:', err)
+    throw err
+  } finally {
+    loading.value = false
+  }
+}
+
   return {
     loading,
     allMy,
@@ -93,5 +154,7 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
     getMy,
     getMyItems,
     getMyItem,
+    deleteMyItem,
+    updateMyItem
   }
 })

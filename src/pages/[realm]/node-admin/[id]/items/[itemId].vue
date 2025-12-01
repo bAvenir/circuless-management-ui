@@ -38,6 +38,7 @@ const typedItems = computed(() => (allMyItems.value ?? []) as unknown as any[])
 
 await callOnce(async () => {
   await realmNodeStore.getMyItems(realm.value, nodeID.value)
+
 })
 
 const onItemSelected = (id: string) => {

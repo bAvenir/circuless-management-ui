@@ -37,6 +37,7 @@ export const TDsManagement = {
             method: 'GET',
         })
     },
+
     async getTDDetails(realm: Realm, nodeId: string, itemID: string) {
         return $fetch<ThingDescription>(
             `/api/realm/${realm}/node/my/${nodeId}/items/${itemID}`,
@@ -45,4 +46,23 @@ export const TDsManagement = {
             }
         )
     },
+
+    async deleteTD(realm: Realm, nodeId: string, itemID: string) {
+        return $fetch(
+            `/api/realm/${realm}/node/my/${nodeId}/items/${itemID}`,
+            {
+                method: 'DELETE' as any,
+            }
+        )
+    },
+
+   async updateTD(realm: Realm, nodeId: string, itemID: string, data: any) {
+        return $fetch(
+            `/api/realm/${realm}/node/my/${nodeId}/items/${itemID}`,
+            {
+                method: 'PATCH' as any,
+                body: data,
+            }
+        )
+    }
 }

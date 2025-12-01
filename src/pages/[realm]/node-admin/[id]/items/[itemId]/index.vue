@@ -67,23 +67,98 @@
           <i class="pi pi-code"></i>
           Show TD
         </button>
+        <Button label="Delete TD" severity="danger" icon="pi pi-trash" @click="openDeleteModal" />
+        <Button label="Update TD" severity="secondary" icon="pi pi-pencil" @click="openUpdateTDModal" />
       </div>
     </div>
   </div>
-  <Dialog
-  v-model:visible="showTDModal"
-  modal
-  maximizable
-  header="Thing Description"
-  :style="{ width: '90vw', maxWidth: '900px' }"
-  class="rounded-lg overflow-hidden"
->
-  <div class="bg-[#06233b] text-green-300 p-4 h-[70vh] overflow-y-auto rounded-lg">
-    <pre class="whitespace-pre-wrap break-all">
+  <Dialog v-model:visible="showTDJSONModal" modal maximizable header="Thing Description"
+    :style="{ width: '90vw', maxWidth: '900px' }" class="rounded-lg overflow-hidden">
+    <div class="bg-[#06233b] text-green-300 p-4 h-[70vh] overflow-y-auto rounded-lg">
+      <pre class="whitespace-pre-wrap break-all">
 {{ JSON.stringify(myItem?.td, null, 2) }}
     </pre>
+    </div>
+  </Dialog>
+    <Dialog v-model:visible="showDeleteModal" modal header="Delete Thing Description" :style="{ width: '500px' }"
+      class="rounded-lg">
+      <p class="text-red-500 font-medium mb-4">
+        This action is permanent and cannot be undone.
+      </p>
+
+      <p class="mb-2">
+        To confirm, type the name of the Thing Description:
+      </p>
+
+      <div class="font-semibold mb-4 text-gray-700">
+        "{{ myItem?.td?.title }}"
+      </div>
+
+      <InputText v-model="deleteInput" class="w-full" placeholder="Type the name exactly" />
+
+      <div class="flex justify-end gap-3 mt-5">
+        <Button label="Cancel" outlined @click="showDeleteModal = false" />
+
+        <Button label="Delete Permanently" severity="danger" :disabled="deleteInput !== myItem?.td?.title"
+          @click="openTDDeleteModal" />
+      </div>
+    </Dialog>
+  <Dialog
+  v-model:visible="showUpdateModal"
+  modal
+  header="Update Thing Description"
+  :style="{ width: '80vw', maxWidth: '900px' }"
+  class="rounded-lg"
+>
+  <div class="flex flex-col gap-6">
+
+    <p class="text-gray-700">
+      Edit the fields of the Thing Description.
+    </p>
+
+    <!-- TITLE -->
+    <div>
+      <label class="font-medium text-sm text-gray-600">Title</label>
+      <InputText v-model="formTD.title" class="w-full mt-1" />
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div>
+      <label class="font-medium text-sm text-gray-600">Description</label>
+      <Textarea v-model="formTD.description" class="w-full mt-1" autoResize rows="3" />
+    </div>
+
+    <!-- @type -->
+    <div>
+      <label class="font-medium text-sm text-gray-600">@type</label>
+      <InputText v-model="formTD['@type']" class="w-full mt-1" />
+    </div>
+
+    <!-- PROPERTIES JSON  -->
+    <div>
+      <label class="font-medium text-sm text-gray-600">Properties (JSON)</label>
+      <Textarea
+        v-model="formTD_properties"
+        class="w-full font-mono mt-1 bg-gray-900 text-green-300"
+        rows="6"
+      />
+    </div>
+
+    <div class="flex justify-end gap-3 pt-4 border-t">
+      <Button label="Cancel" outlined @click="showUpdateModal = false" />
+      <Button
+        label="Update"
+        icon="pi pi-check"
+        class="bg-blue-600 text-white border-blue-600 hover:bg-blue-700"
+        @click="submitTDUpdate"
+      />
+    </div>
+
   </div>
 </Dialog>
+
+
+
 </template>
 
 <script lang="ts" setup>
@@ -93,6 +168,10 @@ import { Button } from 'primevue'
 import { useRealmNodeStore } from '~/stores/realm/node'
 import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
+import { TDsManagement, type ThingDescription } from '~/api/realm/td'
+import { useToast } from 'primevue/usetoast'
+
+const toast = useToast()
 
 const realmNodeStore = useRealmNodeStore()
 const router = useRouter()
@@ -100,23 +179,163 @@ const { myItem, loading } = storeToRefs(realmNodeStore)
 
 const realm = ref(route.params.realm as Realm)
 const itemId = ref(route.params.itemId as string)
+const nodeId = ref(route.params.id as string)
 
-watch(() => route.params.itemId, async newId => {
-  await realmNodeStore.getMyItem(String(newId))
-}, { immediate: true })
-
+watch(
+  () => route.params.itemId,
+  async newId => {
+    itemId.value = String(newId)
+    await realmNodeStore.getMyItem(realm.value, nodeId.value, itemId.value)
+  },
+  { immediate: true }
+)
 const goToItems = () => {
   const nodeId = route.params.id as string
   router.push({ path: `/${realm.value}/node-admin/${nodeId}/items` })
 }
 
-const showTDModal = ref(false)
+const showTDJSONModal = ref(false)
 
 const openTDModal = () => {
-  showTDModal.value = true
+  showTDJSONModal.value = true
 }
 
 const menuVisible = ref(false)
+
+const showTDDeleteModal = ref(false)
+const showDeleteModal = ref(false)
+const deleteInput = ref("")
+
+const openDeleteModal = () => {
+  deleteInput.value = ""
+  showDeleteModal.value = true
+}
+
+
+const openTDDeleteModal = async () => {
+  showTDDeleteModal.value = true
+  try {
+    const result = await TDsManagement.deleteTD(realm.value, nodeId.value, itemId.value)
+
+    if (!result) {
+      toast.add({
+        severity: 'error',
+        summary: 'Delete failed',
+        detail: 'Could not delete the item.',
+        life: 3000
+      })
+    } else {
+      toast.add({
+        severity: 'success',
+        summary: `deleted`,
+        detail: `success delete the TD with id ${itemId.value}`,
+        life: 3000
+      })
+    }
+    await realmNodeStore.getMyItems(realm.value, nodeId.value)
+    goToItems();
+
+  } catch (err) {
+
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Unexpected error occurred.',
+      life: 3000
+    })
+  } finally {
+    loading.value = false
+  }
+
+  menuVisible.value = false
+  showDeleteModal.value = false
+
+};
+
+const showUpdateModal = ref(false)
+const editTDJson = ref("")
+const formTD = ref<any>({})
+const formTD_properties = ref("")
+
+
+const openUpdateTDModal = () => {
+  const td = (myItem.value?.td ?? {}) as ThingDescription
+
+const openUpdateTDModal = () => {
+  const td = myItem.value?.td
+
+  if (!td) {
+    console.error("No TD found for this item")
+    return
+  }
+
+  // Fill formTD with editable top-level fields
+  formTD.value = {
+    title: td.title ?? "",
+    description: td.description ?? "",
+    "@type": td["@type"] ?? "",
+  }
+
+  // Properties as editable JSON
+  formTD_properties.value = JSON.stringify(td.properties ?? {}, null, 2)
+
+  showUpdateModal.value = true
+  menuVisible.value = false
+}
+
+  showUpdateModal.value = true
+  menuVisible.value = false
+}
+
+const submitTDUpdate = async () => {
+  try {
+    let parsedProperties
+    try {
+      parsedProperties = JSON.parse(formTD_properties.value)
+    } catch {
+      toast.add({
+        severity: 'error',
+        summary: 'Invalid JSON',
+        detail: 'Fix the JSON and try again.',
+        life: 3000
+      })
+      return
+    }
+
+    const updatedTD = {
+      ...formTD.value,
+      properties: parsedProperties
+    }
+
+    await realmNodeStore.updateMyItem(
+      realm.value,
+      nodeId.value,
+      itemId.value,
+      updatedTD
+    )
+
+    await realmNodeStore.getMyItem(realm.value, nodeId.value, itemId.value)
+
+    toast.add({
+      severity: 'success',
+      summary: 'TD Updated',
+      detail: 'Your changes were saved.',
+      life: 2500
+    })
+
+    showUpdateModal.value = false
+
+  } catch (err) {
+    toast.add({
+      severity: 'error',
+      summary: 'Update Failed',
+      detail: 'Unexpected error occurred.',
+      life: 3000
+    })
+  }
+}
+
+
 </script>
 
 <style></style>

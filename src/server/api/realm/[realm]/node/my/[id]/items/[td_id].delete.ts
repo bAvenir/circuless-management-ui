@@ -4,7 +4,7 @@ import { AllRealmsParamSchema, IdParamSchema, TDIdParamSchema } from "~/shared/t
 defineRouteMeta({
     openAPI: {
         tags: ["Circuless Discovery"],
-        description: "Get Thing Description in Discovery section of specific item",
+        description: "Delete Thing Description in Discovery section of specific item",
 
     },
 });
@@ -19,7 +19,7 @@ return await apiWrapper(
                 db.node.args.all
             )
             return await $fetch<string>(`${node.host}/api/v1/things/${params!.td_id}`, {
-        method: "GET",
+        method: "DELETE",
     });
         },
         {
