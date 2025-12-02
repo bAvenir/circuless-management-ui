@@ -28,6 +28,7 @@ await callOnce(async () => {
 const onNodeSelected = (nodeID: string) => {
   router.push({ path:`/${realm.value}/node-admin/${nodeID}`})
 }
+
 </script>
 
 <style></style>

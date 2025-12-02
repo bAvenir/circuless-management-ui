@@ -261,6 +261,28 @@ const formTD_properties = ref("")
 const openUpdateTDModal = () => {
   const td = (myItem.value?.td ?? {}) as FetchThingDescription
 
+// const openUpdateTDModal = () => {
+//   const td = myItem.value?.td
+
+//   if (!td) {
+//     console.error("No TD found for this item")
+//     return
+//   }
+
+//   // Fill formTD with editable top-level fields
+//   formTD.value = {
+//     title: td.title ?? "",
+//     description: td.description ?? "",
+//     "@type": td["@type"] ?? "",
+//   }
+
+//   // Properties as editable JSON
+//   formTD_properties.value = JSON.stringify(td.properties ?? {}, null, 2)
+
+//   showUpdateModal.value = true
+//   menuVisible.value = false
+// }
+
   showUpdateModal.value = true
   menuVisible.value = false
 }

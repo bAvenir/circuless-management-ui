@@ -137,7 +137,6 @@ const newTDEventsJson = ref("{}")
 
 const submitCreateTD = async () => {
   try {
-    console.log('HASTA AQUI 1')
     const properties = JSON.parse(newTDPropertiesJson.value || "{}")
     const actions = JSON.parse(newTDActionsJson.value || "{}")
     const events = JSON.parse(newTDEventsJson.value || "{}")
@@ -151,14 +150,11 @@ const submitCreateTD = async () => {
       events
     }
 
-    console.log('HASTA AQUI 2', finalTD)
-
     await TDsManagement.postTD(
       realm.value,
       nodeId.value,
       finalTD
     )
-    console.log('HASTA AQUI 3')
 
     await realmNodeStore.getMyItems(realm.value, nodeId.value)
 

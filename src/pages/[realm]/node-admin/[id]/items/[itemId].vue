@@ -169,7 +169,6 @@ const submitCreateTD = async () => {
   events
 }
 
-
     await TDsManagement.postTD(
       realm.value,
       nodeID.value,
@@ -193,7 +192,6 @@ const submitCreateTD = async () => {
     })
 
     showModal.value = false
-        console.log('HASTA AQUI 4')
 
   } catch (err) {
 

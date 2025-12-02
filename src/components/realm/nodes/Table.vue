@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full h-full flex flex-col overflow-y-auto">
+  <div  class="w-full h-full flex flex-col overflow-y-auto
+           bg-gradient-to-b from-[#0e1523] via-[#1d113e] to-[#05060a]">
     <!-- Sticky toolbar -->
     <div
       class="sticky top-0 z-30 w-full px-4 lg:px-16 py-3 lg:py-5
@@ -10,6 +11,7 @@
         <IconField class="flex-1 max-w-[520px]">
           <InputIcon class="pi pi-search text-white/50" />
           <InputText
+
             type="text"
             v-model="search"
             placeholder="Search node…"
@@ -25,7 +27,7 @@
             label="Add Node"
             icon="pi pi-plus"
             severity="secondary"
-            :loading="loading"
+            :loading="props.loading"
             class="!bg-cyan-500/10 hover:!bg-cyan-500/20 !text-cyan-300
                    !border !border-cyan-500/30 rounded-lg shadow-none"
             @click="showAddDialog = true"
@@ -40,16 +42,16 @@
         <span class="h-1.5 w-1.5 rounded-full bg-emerald-400/70"></span>
         Nodes
         <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/70">
-          {{ nodes.length }}
+          {{ props.nodes.length }}
         </span>
       </span>
     </div>
 
     <!-- Nodes -->
-    <div v-if="nodes.length > 0" class="w-full grow pb-24">
-      <div v-for="node of nodes" :key="node.id" class="px-4 lg:px-16">
+    <div v-if="filtered.length > 0" class="w-full grow pb-24">
+      <div v-for="filteredNode of filtered" :key="filteredNode.id" class="px-4 lg:px-16">
         <div
-          class="group relative my-2 rounded-xl border border-white/10
+          class="group relative my-5 rounded-xl border border-white/10
                  bg-white/[0.03] hover:bg-white/[0.06]
                  transition-colors duration-200
                  overflow-hidden"
@@ -58,12 +60,12 @@
           <button
             type="button"
             class="absolute inset-0"
-            @click="emit('onSelect', node.id)"
+            @click="emit('onSelect', filteredNode.id)"
             aria-label="Open node"
           />
           <!-- Row content -->
           <div class="flex items-center justify-between gap-4 px-4 lg:px-6 py-5">
-            <RealmNodesPreview :node="node" class="text-white" />
+            <RealmNodesPreview :node="filteredNode" class="text-white" />
 
             <div class="flex items-center gap-2 shrink-0">
               <Button
@@ -97,7 +99,7 @@
           label="Add Node"
           icon="pi pi-plus"
           severity="secondary"
-          :loading="loading"
+          :loading="props.loading"
           class="mt-6 !bg-cyan-500/10 hover:!bg-cyan-500/20 !text-cyan-300
                  !border !border-cyan-500/30 rounded-lg shadow-none"
           @click="showAddDialog = true"
@@ -109,7 +111,7 @@
     <RealmNodesAdd
       v-model:visible="showAddDialog"
       @node-added="handleNodeAdded"
-      :realm="realm"
+      :realm="props.realm"
     />
   </div>
 </template>
@@ -118,7 +120,7 @@
 import type { Realm } from '@prisma/client'
 import { nodeTypes } from '~/shared/types'
 
-const { nodes, loading } = defineProps<{
+const props = defineProps<{
   realm: Realm
   nodes: nodeTypes.WithStringDates[]
   loading: boolean
@@ -132,6 +134,13 @@ const showAddDialog = ref(false)
 const handleNodeAdded = (nodeData: any) => {
   emit('onNodeAdded', nodeData)
 }
+
+const nodesRef = toRef(props, 'nodes')
+
+const { filtered } = useNodeFilter(nodesRef, search)
+
+console.log(nodesRef)
+
 </script>
 
 <style scoped>
@@ -144,4 +153,5 @@ const handleNodeAdded = (nodeData: any) => {
   background: rgba(255,255,255,0.1);
   border-radius: 999px;
 }
+
 </style>
