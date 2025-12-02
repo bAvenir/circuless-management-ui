@@ -2,25 +2,56 @@
   <div class="container mx-auto px-4 py-8">
     <!-- Header -->
     <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-4">Marketplace</h1>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Marketplace</h1>
       <p class="text-gray-600">Browse and discover available datasets in the collaboration catalogue</p>
     </div>
 
     <!-- Search and Filters -->
     <div class="mb-6 flex flex-col md:flex-row gap-4">
+      <!-- Search -->
       <div class="flex-1">
         <div class="p-inputgroup">
-          <InputText v-model="searchQuery" placeholder="Search datasets..." class="w-full" />
-          <Button icon="pi pi-search" severity="secondary" />
+          <InputText
+            v-model="searchQuery"
+            placeholder="Search datasets..."
+            class="w-full rounded-lg
+                   !bg-white !border-gray-300 !text-gray-900
+                   placeholder:text-gray-400
+                   focus:!border-cyan-400"
+          />
+          <Button
+            icon="pi pi-search"
+            class="!bg-cyan-500 !border-cyan-500 !text-white hover:!bg-cyan-600"
+          />
         </div>
       </div>
-      <Dropdown v-model="selectedCategory" :options="categories" placeholder="All Categories" class="md:w-48" showClear />
-      <Dropdown v-model="selectedFormat" :options="formats" placeholder="All Formats" class="md:w-48" showClear />
+
+      <!-- Category Filter -->
+      <Dropdown
+        v-model="selectedCategory"
+        :options="categories"
+        placeholder="All Categories"
+        class="md:w-48 rounded-lg
+               !bg-white !border-gray-300 !text-gray-900"
+        showClear
+      />
+
+      <!-- Format Filter -->
+      <Dropdown
+        v-model="selectedFormat"
+        :options="formats"
+        placeholder="All Formats"
+        class="md:w-48 rounded-lg
+               !bg-white !border-gray-300 !text-gray-900"
+        showClear
+      />
     </div>
 
     <!-- Results Summary -->
     <div class="mb-6">
-      <p class="text-sm text-gray-600">Showing {{ filteredDatasets.length }} of {{ all.length }} datasets</p>
+      <p class="text-sm text-gray-600">
+        Showing {{ filteredDatasets.length }} of {{ all.length }} datasets
+      </p>
     </div>
 
     <!-- DataView -->
@@ -33,38 +64,68 @@
       dataKey="id"
       class="circuless-dataview"
     >
+      <!-- Sort Header -->
       <template #header>
-        <div class="flex justify-between items-center">
-          <div></div>
-          <Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Sort By" class="w-48" @change="onSortChange" />
+        <div class="flex justify-end items-center">
+          <Dropdown
+            v-model="sortKey"
+            :options="sortOptions"
+            optionLabel="label"
+            placeholder="Sort By"
+            class="w-48 rounded-lg
+                   !bg-white !border-gray-300 !text-gray-900"
+            @change="onSortChange"
+          />
         </div>
       </template>
 
+      <!-- List Rendering -->
       <template #list="slotProps">
         <div v-for="dataset in slotProps.items" :key="dataset.id" class="col-12">
-          <div class="border border-gray-200 rounded-lg p-6 mb-4 hover:shadow-md transition-shadow">
+
+          <!-- Card -->
+          <div
+            class="dataset-card bg-white border border-gray-200
+                   rounded-xl p-6 mb-6 shadow-sm
+                   hover:shadow-md hover:border-cyan-300/50 transition-all"
+          >
             <div class="flex flex-col lg:flex-row gap-6">
-              <!-- Dataset Icon/Image -->
+
+              <!-- Icon -->
               <div class="flex-shrink-0">
-                <div class="w-20 h-20 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <i class="pi pi-database text-2xl text-blue-600"></i>
+                <div
+                  class="w-20 h-20 rounded-lg flex items-center justify-center
+                         bg-cyan-50 border border-cyan-100"
+                >
+                  <i class="pi pi-database text-2xl text-cyan-600"></i>
                 </div>
               </div>
 
               <!-- Main Content -->
               <div class="flex-1">
                 <div class="flex flex-col lg:flex-row lg:justify-between gap-4">
+
+                  <!-- Left: Title, desc, tags, metadata -->
                   <div class="flex-1">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-1">
                       {{ dataset.title }}
                     </h3>
+
                     <p class="text-gray-600 mb-3 line-clamp-2">
                       {{ dataset.description }}
                     </p>
 
                     <!-- Tags -->
                     <div class="flex flex-wrap gap-2 mb-3">
-                      <Tag v-for="tag in dataset.tags" :key="tag" :value="tag" severity="info" class="text-xs" />
+                      <span
+                        v-for="tag in dataset.tags"
+                        :key="tag"
+                        class="px-2 py-1 rounded-md text-xs
+                               bg-cyan-50 text-cyan-700
+                               border border-cyan-200"
+                      >
+                        {{ tag }}
+                      </span>
                     </div>
 
                     <!-- Metadata -->
@@ -73,14 +134,17 @@
                         <i class="pi pi-calendar mr-1"></i>
                         Updated: {{ $formatDate(dataset.lastUpdated) }}
                       </span>
+
                       <span>
                         <i class="pi pi-download mr-1"></i>
                         {{ dataset.downloads }} downloads
                       </span>
+
                       <span>
                         <i class="pi pi-file mr-1"></i>
                         {{ dataset.format }}
                       </span>
+
                       <span>
                         <i class="pi pi-building mr-1"></i>
                         {{ dataset.organization }}
@@ -88,20 +152,40 @@
                     </div>
                   </div>
 
-                  <!-- Actions -->
-                  <div class="flex flex-col gap-2 lg:w-32">
-                    <Button label="View Details" icon="pi pi-eye" size="small" @click="viewDataset(dataset)" />
-                    <Button label="Download" icon="pi pi-download" severity="secondary" size="small" outlined @click="downloadDataset(dataset)" />
+                  <!-- Right: Actions -->
+                  <div class="flex flex-col gap-2 lg:w-40">
+                    <Button
+                      label="View Details"
+                      icon="pi pi-eye"
+                      size="small"
+                      class="rounded-lg !bg-cyan-500 !border-cyan-500 !text-white hover:!bg-cyan-600"
+                      @click="viewDataset(dataset)"
+                    />
+
+                    <Button
+                      label="Download"
+                      icon="pi pi-download"
+                      size="small"
+                      outlined
+                      class="rounded-lg
+                             !border-cyan-300 !text-cyan-700
+                             hover:!bg-cyan-50"
+                      @click="downloadDataset(dataset)"
+                    />
                   </div>
+
                 </div>
               </div>
+
             </div>
           </div>
+
         </div>
       </template>
     </DataView>
   </div>
 </template>
+
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'

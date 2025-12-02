@@ -57,14 +57,12 @@
                  transition-all duration-200
                  shadow-lg shadow-black/30"
         >
-          <!-- Click layer -->
           <button
             class="absolute inset-0"
             @click="emit('onSelect', node.id)"
             aria-label="Open node"
           />
 
-          <!-- Row content -->
           <div class="flex items-center justify-between gap-4 px-4 lg:px-6 py-5">
             <RealmNodesPreview :node="node" class="text-white" />
 
@@ -78,7 +76,6 @@
             </div>
           </div>
 
-          <!-- Cyan Neon Bottom Border -->
           <div
             class="pointer-events-none absolute inset-x-0 -bottom-px h-[2px]
                    bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-14 bg-circuless-lightGreen flex items-center justify-between">
+  <div class="w-full h-14 px-6 py-3 bg-gradient-to-r bg-cyan-100/70 border-b border-cyan-200 flex items-center justify-between">
     <CirculessHeaderLogo class="pl-4" />
     <div class="flex items-center gap-10 h-full">
       <div class="flex items-center justify-end gap-5">
