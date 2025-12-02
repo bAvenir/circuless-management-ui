@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { ThingDescription } from '~/api/realm/td';
+import type { FetchThingDescription } from '~/api/realm/td';
 
 defineProps<{
-  item?: ThingDescription
+  item?: FetchThingDescription
 }>()
 
 const emit = defineEmits(['onSelect', 'onDelete'])

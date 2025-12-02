@@ -114,10 +114,14 @@ const validateForm = () => {
 }
 
 const isValidHost = (host: string) => {
-  // Basic host validation - you can make this more sophisticated
-  const hostRegex = /^(?!:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/
-  return hostRegex.test(host.trim())
+  const trimmed = host.trim()
+
+  // Accept http(s)://hostname:port
+  const fullUrlRegex = /^(https?:\/\/)?([a-zA-Z0-9.-]+|\d+\.\d+\.\d+\.\d+)(:\d+)?$/
+
+  return fullUrlRegex.test(trimmed)
 }
+
 
 const addNode = async () => {
   if (!validateForm()) return

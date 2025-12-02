@@ -22,10 +22,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { ThingDescription } from '~/api/realm/td'
+import type { FetchThingDescription } from '~/api/realm/td'
 
 const { item } = defineProps<{
-    item?: ThingDescription
+    item?: FetchThingDescription
 }>()
 
 const { properties } = item?.td ?? {}

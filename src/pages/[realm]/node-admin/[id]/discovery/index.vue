@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useTDFilter } from '~/composables/useTDFilter'
-import { TDsManagement, type ThingDescription } from '~/api/realm/td'
+import { TDsManagement, type FetchThingDescription } from '~/api/realm/td'
 import { Realm } from '@prisma/client'
 
 const search = ref('')
@@ -40,7 +40,7 @@ const route = useRoute()
 const realm = route.params.realm as Realm
 const nodeID = route.params.nodeID as string
 
-const { data: thingDescriptions } = await useAsyncData<ThingDescription[]>(
+const { data: thingDescriptions } = await useAsyncData<FetchThingDescription[]>(
   'TDs',
   async () => TDsManagement.getAllTDs(realm, nodeID))
 

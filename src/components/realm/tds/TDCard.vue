@@ -32,11 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import type { ThingDescription } from '~/api/realm/td';
+import type { FetchThingDescription } from '~/api/realm/td';
 import {Button} from "primevue"
 
 const props = defineProps<{
-  td: ThingDescription
+  td: FetchThingDescription
 }>()
 
 

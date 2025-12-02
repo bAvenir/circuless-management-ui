@@ -1,6 +1,6 @@
 import type { Realm } from '@prisma/client'
 
-export interface ThingDescription {
+export interface FetchThingDescription {
     id: number | string
     oid: string
     td: {
@@ -14,13 +14,23 @@ export interface ThingDescription {
     }
 }
 
+export interface PostThingDescription {
+  title: string,
+  description: string,
+  properties: Record<string, any>,
+  actions: Record<string, any>,
+  events: Record<string, any>
+
+}
+
 export type ThingDescriptionEvent = Record<string, any>
 export type ThingDescriptionProperty = Record<string, any>
 
 export const TDsManagement = {
-    async postTD(realm: Realm, id: string, TD: ThingDescription) {
-        const instructions = await $fetch(
-            `/api/realm/${realm}/node-admin/${id}/items`,
+    async postTD(realm: Realm, nodeId: string, TD: PostThingDescription) {
+            console.log('HASTA AQUI 3:', )
+        return await $fetch(
+            `/api/realm/${realm}/node/my/${nodeId}/items`,
             {
                 method: 'POST' as any,
                 body: TD,
@@ -29,17 +39,17 @@ export const TDsManagement = {
                 },
             }
         )
-        return instructions
     },
 
     async getAllTDs(realm: Realm, nodeId: string) {
-        return $fetch<ThingDescription[]>(`/api/realm/${realm}/node/my/${nodeId}/items`, {
+        return $fetch<FetchThingDescription[]>(`/api/realm/${realm}/node/my/${nodeId}/items`, {
             method: 'GET',
         })
+
     },
 
     async getTDDetails(realm: Realm, nodeId: string, itemID: string) {
-        return $fetch<ThingDescription>(
+        return $fetch<FetchThingDescription>(
             `/api/realm/${realm}/node/my/${nodeId}/items/${itemID}`,
             {
                 method: 'GET',

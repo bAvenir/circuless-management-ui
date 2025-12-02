@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { ThingDescription } from '~/api/realm/td';
+import type { FetchThingDescription } from '~/api/realm/td';
 import { getItemMetaData } from '~/utils'
 
 const { item } = defineProps<{
-  item?: ThingDescription
+  item?: FetchThingDescription
 }>()
 
 const metaData = getItemMetaData(item)

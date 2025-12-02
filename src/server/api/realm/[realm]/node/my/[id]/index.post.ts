@@ -5,12 +5,13 @@ import {
   IdParamSchema,
   TDIdParamSchema
 } from "~/shared/types/misc"
-import type { FetchThingDescription } from "~/api/realm/td"
+
+import type { PostThingDescription, FetchThingDescription } from "~/api/realm/td"
 
 defineRouteMeta({
   openAPI: {
     tags: ["Circuless Discovery"],
-    description: "Update Thing Description in Discovery section of specific item",
+    description: "Create a Thing Description for a specific item",
   },
 })
 
@@ -18,9 +19,8 @@ export default defineEventHandler(async (event) => {
   return await apiWrapper(
     event,
     async ({ user, params }) => {
-
-      const updateBody = await readBody<FetchThingDescription>(event)
-
+      console.log('CALLBACK HE LLEGADO HASTA QUI')
+      const newTD = await readBody<PostThingDescription>(event)
       const node = await db.node.queries.getUserRealm(
         params!.id,
         user!.id,
@@ -28,20 +28,21 @@ export default defineEventHandler(async (event) => {
         db.node.args.all
       )
 
-      return await $fetch<FetchThingDescription>(
-        `${node.host}/api/v1/things/${params!.td_id}`,
+      const createdTD = await $fetch<FetchThingDescription>(
+        `${node.host}/api/v1/things`,
         {
-          method: "PATCH",
-          body: updateBody,
+          method: "POST",
+          body: newTD,
         }
       )
+      console.log(createdTD)
+      return createdTD
     },
     {
       protected: true,
       schemas: {
         params: AllRealmsParamSchema
           .concat(IdParamSchema)
-          .concat(TDIdParamSchema),
       },
     }
   )

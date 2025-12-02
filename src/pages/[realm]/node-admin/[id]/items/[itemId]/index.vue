@@ -168,7 +168,7 @@ import { Button } from 'primevue'
 import { useRealmNodeStore } from '~/stores/realm/node'
 import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
-import { TDsManagement, type ThingDescription } from '~/api/realm/td'
+import { TDsManagement, type FetchThingDescription } from '~/api/realm/td'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -259,29 +259,7 @@ const formTD_properties = ref("")
 
 
 const openUpdateTDModal = () => {
-  const td = (myItem.value?.td ?? {}) as ThingDescription
-
-const openUpdateTDModal = () => {
-  const td = myItem.value?.td
-
-  if (!td) {
-    console.error("No TD found for this item")
-    return
-  }
-
-  // Fill formTD with editable top-level fields
-  formTD.value = {
-    title: td.title ?? "",
-    description: td.description ?? "",
-    "@type": td["@type"] ?? "",
-  }
-
-  // Properties as editable JSON
-  formTD_properties.value = JSON.stringify(td.properties ?? {}, null, 2)
-
-  showUpdateModal.value = true
-  menuVisible.value = false
-}
+  const td = (myItem.value?.td ?? {}) as FetchThingDescription
 
   showUpdateModal.value = true
   menuVisible.value = false

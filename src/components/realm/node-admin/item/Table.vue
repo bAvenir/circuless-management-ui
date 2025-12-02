@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { useTDFilter } from '~/composables/useTDFilter'
-import type { ThingDescription } from '~/api/realm/td'
+import type { FetchThingDescription } from '~/api/realm/td'
 
 const { items, selectedItemId } = defineProps<{
-    items?: ThingDescription[]
+    items?: FetchThingDescription[]
     selectedItemId?: string
 }>()
 
@@ -48,7 +48,7 @@ onMounted(() => {
                 :key="item.id"
                 :id="item.id"
                 class="border-b border-slate-200 cursor-pointer hover:bg-realm-primary-100 transition-colors"
-                :class="{ 'bg-realm-primary-100': item.id === selectedItemId }"
+                :class="{ 'bg-realm-primary-100': String(item.id) === selectedItemId }"
                 @click="emit('onSelect', item.id)"
             >
                 <RealmNodeAdminItemPreview :item="item" />

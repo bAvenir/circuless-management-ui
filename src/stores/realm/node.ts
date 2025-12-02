@@ -1,5 +1,5 @@
 import type { Realm } from '@prisma/client'
-import { TDsManagement, type ThingDescription } from '~/api/realm/td'
+import { TDsManagement, type FetchThingDescription } from '~/api/realm/td'
 import type { nodeTypes } from '~/shared/types'
 
 export const useRealmNodeStore = defineStore('realmNodeStore', () => {
@@ -8,9 +8,9 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
   const allMy = ref<nodeTypes.GetAllMyRealm>([])
   const my = ref<nodeTypes.GetMyRealm | undefined>(undefined)
 
-  const allMyItems = ref<ThingDescription[] | undefined>(undefined)
-  const myItem = ref<ThingDescription | undefined>(undefined)
-  const tdData = ref<ThingDescription | undefined>(undefined)
+  const allMyItems = ref<FetchThingDescription[] | undefined>(undefined)
+  const myItem = ref<FetchThingDescription | undefined>(undefined)
+  const tdData = ref<FetchThingDescription | undefined>(undefined)
 
   const currentRealm = ref<Realm | null>(null)
   const currentNodeId = ref<string | null>(null)
@@ -143,6 +143,32 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
   }
 }
 
+  async function createMyItem(realm: Realm, nodeId: string, TD: any) {
+  loading.value = true
+
+  currentRealm.value = realm
+  currentNodeId.value = nodeId
+
+  try {
+    if (!currentRealm.value || !currentNodeId.value) {
+      throw new Error('Realm or Node ID not set before calling updateMyItem()')
+    }
+
+    const result = await TDsManagement.postTD(
+      currentRealm.value,
+      currentNodeId.value,
+      TD
+    )
+
+    return result
+  } catch (err) {
+    console.error('Failed to update item:', err)
+    throw err
+  } finally {
+    loading.value = false
+  }
+}
+
   return {
     loading,
     allMy,
@@ -155,6 +181,7 @@ export const useRealmNodeStore = defineStore('realmNodeStore', () => {
     getMyItems,
     getMyItem,
     deleteMyItem,
-    updateMyItem
+    updateMyItem,
+    createMyItem
   }
 })

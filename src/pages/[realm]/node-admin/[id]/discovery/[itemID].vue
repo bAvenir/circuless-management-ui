@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { TDsManagement, type ThingDescription } from '~/api/realm/td'
+import { TDsManagement, type FetchThingDescription } from '~/api/realm/td'
 import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import type { Realm } from '@prisma/client'
@@ -26,13 +26,13 @@ const realm = route.params.realm as Realm
 const nodeID = route.params.nodeID  as string
 
 
-const one = ref<ThingDescription | null>(null)
+const one = ref<FetchThingDescription | null>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
 
 onMounted(async () => {
   try {
-    const data = await TDsManagement.getTDDetails(realm, nodeID, itemID) as ThingDescription | null
+    const data = await TDsManagement.getTDDetails(realm, nodeID, itemID) as FetchThingDescription | null
 
     if (!data) throw new Error('Could not fetch TD detail info')
     console.log('data:', data)
