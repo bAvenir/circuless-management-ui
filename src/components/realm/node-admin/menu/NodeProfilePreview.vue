@@ -2,9 +2,10 @@
   <div class="w-full h-full flex">
     <div v-if="$viewport.isGreaterThan('tablet')" class="grow flex items-end">
       <div class="w-44 h-44 bg-white bg-opacity-5 flex flex-col">
-        <div class="w-full h-10 flex items-center group text-white cursor-pointer" @click="goToNodes">
+        <div class="w-full h-10 flex items-center group text-white cursor-pointer gap-2 mt-2" @click="goToNodes">
           <div
-            class="size-10 flex items-center justify-center bg-realm-primary-500 group-hover:bg-realm-primary-400 text-white cursor-pointer transition-colors shrink-0"
+            class="size-10 flex items-center justify-center !bg-cyan-500/10 hover:!bg-cyan-500/20 !text-cyan-300
+                 !border !border-cyan-400/40 rounded-lg shadow-md shadow-black/20 cursor-pointer transition-colors shrink-0 ml-3"
           >
             <i class="pi pi-chevron-left text-xxs"></i>
           </div>
@@ -14,7 +15,7 @@
           </div>
         </div>
         <div
-          class="w-full grow hover:bg-realm-secondary-900 transition-colors cursor-pointer flex flex-col items-center justify-center gap-6"
+          class="w-full grow mt-2 hover:bg-realm-secondary-900 transition-colors cursor-pointer flex flex-col items-center justify-center gap-6"
           @click="profileVisible = true"
         >
           <div class="w-8 h-0.5 bg-slate-500"></div>
@@ -25,7 +26,7 @@
               <div class="text-xs truncate max-w-24">{{ my?.owner.name }}</div>
             </div>
           </div>
-          <div class="flex items-center gap-1 text-realm-primary-500 font-semibold">
+          <div class="flex items-center gap-1 !text-cyan-500/90 font-semibold">
             <div class="text-xxs">Show more</div>
             <i class="pi pi-chevron-down text-xxs"></i>
           </div>

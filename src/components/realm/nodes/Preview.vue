@@ -1,26 +1,27 @@
 <template>
   <div class="flex items-center gap-4">
-    <div class="size-6 flex items-center justify-center rounded-md bg-realm-primary-500">
-      <font-awesome-icon icon="fa fa-circle-nodes" class="text-sm" />
+
+    <!-- Icon -->
+    <div class="size-8 flex items-center justify-center rounded-lg
+                bg-cyan-600/20 border border-cyan-500/30 shadow-cyan-500/20 shadow-md">
+      <font-awesome-icon icon="fa fa-circle-nodes" class="text-cyan-300 text-base" />
     </div>
-    <div class="flex flex-col leading-none">
-      <div>{{ node.name }}</div>
-      <div class="text-xs mt-1">{{ node.host }}</div>
-      <div class="text-xs mt-3 flex items-center gap-1">
-        <div class="text-realm-text-300">version:</div>
-        <div>{{ node.version }}</div>
-        <div>(created: {{ $formatDate(node.createdAt) }})</div>
+
+    <!-- Text -->
+    <div class="flex flex-col">
+      <div class="text-white font-medium text-base">{{ node.name }}</div>
+      <div class="text-sm text-white/60">{{ node.host }}</div>
+
+      <div class="text-xs mt-2 flex items-center gap-1 text-white/50">
+        <span class="text-white/40">version:</span>
+        <span class="text-white/60">{{ node.version ?? "—" }}</span>
+        <span class="text-white/40">(created: {{ $formatDate(node.createdAt) }})</span>
       </div>
     </div>
+
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { nodeTypes } from '~/shared/types'
-
-const { node } = defineProps<{
-  node: nodeTypes.WithStringDates
-}>()
+const { node } = defineProps<{ node: any }>()
 </script>
-
-<style></style>

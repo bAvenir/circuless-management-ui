@@ -8,7 +8,7 @@
         <Button
           label="New TD"
           icon="pi pi-plus"
-          class="bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
+          class="!bg-cyan-700 !border-none hover:!opacity-85"
           @click="showModal = true"
         />
       </div>

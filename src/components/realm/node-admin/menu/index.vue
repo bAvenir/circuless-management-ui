@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$viewport.isGreaterThan('tablet')" class="w-44 h-full bg-realm-secondary-950 pt-4 flex flex-col">
+  <div v-if="$viewport.isGreaterThan('tablet')" class="w-44 h-full   bg-gradient-to-b from-[#0e1523] via-[#1d113e] to-[#05060a] pt-4 flex flex-col">
     <RealmNodeAdminMenuNavButton icon="fa fa-cube" label="Items" :path="`${pathBase}/items`" />
     <RealmNodeAdminMenuNavButton icon="fa fa-plug" label="Adapters" :path="`${pathBase}/adapters`" />
     <RealmNodeAdminMenuNavButton icon="fa fa-file-signature" label="Contracts" :path="`${pathBase}/contracts`" />

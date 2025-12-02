@@ -36,8 +36,6 @@ export interface RealmNode {
   updatedAt: string;
 }
 
-
-
 export function useNodeFilter(
     node: any,
     search: any,
@@ -61,8 +59,6 @@ export function useNodeFilter(
             // createdAt
             const date = (node.createdAt ?? "")
             const dateMatch = date.includes(search.value.toLowerCase());
-
-
 
             return nameMatch || ownerMatch || hostMatch || dateMatch
         });
