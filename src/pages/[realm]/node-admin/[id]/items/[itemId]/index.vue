@@ -80,7 +80,7 @@
   </div>
   <Dialog v-model:visible="showTDJSONModal" modal maximizable header="Thing Description"
     :style="{ width: '90vw', maxWidth: '900px' }" class="rounded-lg overflow-hidden">
-    <div class="!bg-cyan-600 !border-none hover:!opacity-85 text-green-300 p-4 h-[70vh] overflow-y-auto rounded-lg">
+    <div class="!bg-gradient-to-b from-[#0e1523] via-[#1d113e] to-[#05060a] hover:!opacity-85 text-green-300 p-4 h-[70vh] overflow-y-auto rounded-lg">
       <pre class="whitespace-pre-wrap break-all">
 {{ JSON.stringify(myItem?.td, null, 2) }}
     </pre>
